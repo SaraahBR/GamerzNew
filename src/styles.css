@@ -1,1 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --bg: #ffffff;
+  --text: #111827;
+  --muted: #6b7280;
+
+  /* TEMA ROSA NUDE */
+  --rosa: #e4a4b4;       
+  --rosa-escuro: #c97a8c; 
+  --rosa-clarinho: #fbe7ec; 
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial;
+  background: var(--bg);
+  color: var(--text);
+}
+
+h1, h2, h3 { line-height: 1.2; margin: 0 0 8px; }
+a { color: var(--rosa-escuro); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+img { max-width: 100%; display: block; }
