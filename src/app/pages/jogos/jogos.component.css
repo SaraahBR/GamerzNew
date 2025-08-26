@@ -1,3 +1,6 @@
+/* =======================
+   LISTA DE JOGOS (cards)
+   ======================= */
 .jogos {
   max-width: 1100px;
   margin: 0 auto;
@@ -11,28 +14,28 @@
 
 .grid {
   display: grid;
-  gap: 16px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
 .card {
   border: 1px solid var(--rosa-escuro);
   background: #fff;
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
 }
 
 .card img {
   width: 100%;
-  height: 150px;
+  height: 160px;
   object-fit: cover;
 }
 
 .content {
-  padding: 14px;
+  padding: 14px 16px 16px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -40,29 +43,72 @@
 
 .content h2 {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   color: #111827;
 }
 
-.content p {
+.desc {
   margin: 0;
   color: #374151;
-  line-height: 1.5;
-  font-size: 0.95rem;
+  line-height: 1.55;
+  font-size: 0.96rem;
 }
 
-.content a {
-  align-self: flex-start;
+.meta {
+  margin: 2px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  font-size: 0.92rem;
+  color: #1f2937;
+}
+
+.meta li strong {
+  color: #111827;
+}
+
+/* =======================
+   Ações (botões)
+   ======================= */
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Botão primário gradiente: "Ver Detalhes" */
+.btn-gradiente {
+  display: inline-block;
   text-decoration: none;
-  background: var(--rosa);
+  background: linear-gradient(135deg, #e4a4b4, #c97a8c); /* rosa nude → rosa queimado */
   color: #fff;
-  padding: 8px 12px;
+  padding: 8px 14px;
   border-radius: 8px;
   font-weight: 600;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.content a:hover {
-  background: var(--rosa-escuro);
+.btn-gradiente:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+/* Botão secundário: "Ver na Steam" */
+.btn-sec {
+  display: inline-block;
+  text-decoration: none;
+  background: #fff;
+  color: #c97a8c;
+  border: 1px solid #c97a8c;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-sec:hover {
+  background: #fbe7ec;
+  color: #c97a8c;
   transform: translateY(-1px);
 }

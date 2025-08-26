@@ -1,17 +1,20 @@
 .gn-footer {
   margin-top: 24px;
-  background: #0b1220;
-  color: #9ca3af;
-  border-top: 1px solid #1f2937;
+  background: var(--rosa-clarinho);
+  color: var(--rosa-escuro);
+  border-top: 2px solid var(--rosa-escuro);
 }
 
 .gn-wrap {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 20px 16px;
+  padding: 18px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.made { font-size: 0.9rem; }
+.made {
+  font-size: 0.95rem;
+  font-weight: 600;
+}

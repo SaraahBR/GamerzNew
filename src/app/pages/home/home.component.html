@@ -1,82 +1,56 @@
-<section class="jogos">
-  <h1>Jogos</h1>
+<section class="hero">
+  <h1>Bem-vinda à GamerzNew</h1>
+  <p>Seu portal para descobrir, listar e acompanhar jogos que você ama.</p>
+  <!-- Botão leva para /jogos -->
+  <a routerLink="/jogos" class="btn">Ver todos os jogos</a>
+</section>
+
+<section class="previews">
+  <header class="previews-head">
+    <h2>Destaques</h2>
+    <a routerLink="/jogos" class="ver-mais">Explorar mais jogos</a>
+  </header>
 
   <div class="grid">
     <article class="card">
       <img
         src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1145360/header.jpg"
-        alt="Capa de Hades (Supergiant Games)"
+        alt="Hades"
         loading="lazy"
       />
       <div class="content">
-        <h2>Hades</h2>
-        <p>Ação roguelike da Supergiant Games com combates rápidos e narrativa reativa.</p>
-        <a href="https://store.steampowered.com/app/1145360/" target="_blank" rel="noopener noreferrer">Ver na Steam</a>
+        <h3>Hades</h3>
+        <p>Roguelike de ação com narrativa reativa no Submundo.</p>
+        <!-- Botão leva para /jogos/1 -->
+        <a routerLink="/jogos/1" class="btn-gradiente">Ver Detalhes</a>
       </div>
     </article>
 
     <article class="card">
       <img
         src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg"
-        alt="Capa de Elden Ring"
+        alt="Elden Ring"
         loading="lazy"
       />
       <div class="content">
-        <h2>Elden Ring</h2>
-        <p>RPG de ação em mundo aberto da FromSoftware com exploração e chefes desafiadores.</p>
-        <a href="https://store.steampowered.com/app/1245620/" target="_blank" rel="noopener noreferrer">Ver na Steam</a>
+        <h3>Elden Ring</h3>
+        <p>RPG de ação com exploração em mundo aberto.</p>
+        <!-- Botão leva para /jogos/2 -->
+        <a routerLink="/jogos/2" class="btn-gradiente">Ver Detalhes</a>
       </div>
     </article>
 
     <article class="card">
       <img
         src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/367520/header.jpg"
-        alt="Capa de Hollow Knight"
+        alt="Hollow Knight"
         loading="lazy"
       />
       <div class="content">
-        <h2>Hollow Knight</h2>
-        <p>Metroidvania atmosférico com mapa vasto, trilha marcante e combates precisos.</p>
-        <a href="https://store.steampowered.com/app/367520/" target="_blank" rel="noopener noreferrer">Ver na Steam</a>
-      </div>
-    </article>
-
-    <article class="card">
-      <img
-        src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1716740/header.jpg"
-        alt="Capa de Starfield"
-        loading="lazy"
-      />
-      <div class="content">
-        <h2>Starfield</h2>
-        <p>RPG espacial da Bethesda com exploração de planetas, facções e construção de naves.</p>
-        <a href="https://store.steampowered.com/app/1716740/" target="_blank" rel="noopener noreferrer">Ver na Steam</a>
-      </div>
-    </article>
-
-    <article class="card">
-      <img
-        src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1086940/header.jpg"
-        alt="Capa de Baldur's Gate 3"
-        loading="lazy"
-      />
-      <div class="content">
-        <h2>Baldur's Gate 3</h2>
-        <p>RPG tático baseado em D&amp;D, com escolhas profundas e companheiros memoráveis.</p>
-        <a href="https://store.steampowered.com/app/1086940/" target="_blank" rel="noopener noreferrer">Ver na Steam</a>
-      </div>
-    </article>
-
-    <article class="card">
-      <img
-        src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/header.jpg"
-        alt="Capa de Cyberpunk 2077"
-        loading="lazy"
-      />
-      <div class="content">
-        <h2>Cyberpunk 2077</h2>
-        <p>RPG futurista em mundo aberto com história cinematográfica e expansão Phantom Liberty.</p>
-        <a href="https://store.steampowered.com/app/1091500/" target="_blank" rel="noopener noreferrer">Ver na Steam</a>
+        <h3>Hollow Knight</h3>
+        <p>Metroidvania atmosférico e desafiador.</p>
+        <!-- Botão leva para /jogos/3 -->
+        <a routerLink="/jogos/3" class="btn-gradiente">Ver Detalhes</a>
       </div>
     </article>
   </div>

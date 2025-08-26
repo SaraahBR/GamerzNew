@@ -1,0 +1,27 @@
+<section class="detalhes" *ngIf="game; else notfound">
+  <div class="banner">
+    <img [src]="game!.img" [alt]="'Capa de ' + game!.title" />
+  </div>
+
+  <h1>{{ game!.title }}</h1>
+  <p class="desc">{{ game!.description }}</p>
+
+  <ul class="meta">
+    <li><strong>Gênero:</strong> {{ game!.genre.join(', ') }}</li>
+    <li><strong>Ano:</strong> {{ game!.year }}</li>
+    <li><strong>Desenvolvedora:</strong> {{ game!.dev }}</li>
+    <li><strong>Publicadora:</strong> {{ game!.pub }}</li>
+  </ul>
+
+  <div class="actions">
+    <a routerLink="/jogos" class="btn-sec">Voltar</a>
+    <a class="btn-gradiente" [href]="game!.steam" target="_blank" rel="noopener noreferrer">Ver na Steam</a>
+  </div>
+</section>
+
+<ng-template #notfound>
+  <section class="detalhes">
+    <h1>Jogo não encontrado</h1>
+    <a routerLink="/jogos" class="btn-sec">Voltar para /jogos</a>
+  </section>
+</ng-template>

@@ -1,12 +1,25 @@
-<section>
+<section class="jogos">
   <h1>Jogos</h1>
-  <p>Lista estática de exemplo (depois você pode trocar por uma API):</p>
 
-  <ul class="lista">
-    <li>Hades II</li>
-    <li>Elden Ring: Shadow of the Erdtree</li>
-    <li>Hollow Knight: Silksong</li>
-    <li>Starfield</li>
-    <li>Baldur's Gate 3</li>
-  </ul>
+  <div class="grid">
+    <article class="card" *ngFor="let g of games">
+      <img [src]="g.img" [alt]="'Capa do jogo ' + g.title" loading="lazy" />
+      <div class="content">
+        <h2>{{ g.title }}</h2>
+        <p class="desc">{{ g.description }}</p>
+
+        <ul class="meta">
+          <li><strong>Gênero:</strong> {{ g.genre.join(', ') }}</li>
+          <li><strong>Ano:</strong> {{ g.year }}</li>
+          <li><strong>Desenvolvedora:</strong> {{ g.dev }}</li>
+          <li><strong>Publicadora:</strong> {{ g.pub }}</li>
+        </ul>
+
+        <div class="actions">
+          <a class="btn-gradiente" [routerLink]="['/jogos', g.id]">Ver Detalhes</a>
+          <a class="btn-sec" [href]="g.steam" target="_blank" rel="noopener noreferrer">Ver na Steam</a>
+        </div>
+      </div>
+    </article>
+  </div>
 </section>

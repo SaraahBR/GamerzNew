@@ -1,8 +1,41 @@
-<section>
+<section class="sobre">
   <h1>Sobre a GamerzNew</h1>
-  <p>
-    A GamerzNew é um site simples em Angular criado para demonstrar rotas,
-    componentes e layout básico, servindo de base para evoluir sua aplicação
-    de catálogos e novidades do mundo dos games.
-  </p>
+
+  <div class="grid">
+    <article class="texto">
+      <p>
+        A <strong>GamerzNew</strong> é um site criado para facilitar a descoberta de jogos e a
+        navegação por catálogos. Aqui você encontra uma página inicial com destaques,
+        <em>previews</em> dos jogos e um atalho para a lista completa em <code>/jogos</code>.
+      </p>
+
+      <p>
+        Na seção <strong>Jogos</strong>, cada título é apresentado em cards com
+        <strong>descrição</strong>, <strong>gêneros</strong>, <strong>ano</strong>,
+        <strong>desenvolvedora</strong>, <strong>publicadora</strong> e link oficial.
+        Ao clicar em <em>Ver Detalhes</em>, você acessa a página individual do jogo
+        com as informações completas. O site é leve, responsivo e foi estruturado em
+        Angular (standalone) para facilitar futuras evoluções como busca, filtros e
+        favoritar jogos.
+      </p>
+
+      <ul class="lista">
+        <li>Home com destaques e CTA para <code>/jogos</code>;</li>
+        <li>Lista de jogos com cards e links oficiais;</li>
+        <li>Página de detalhes em <code>/jogos/:id</code>;</li>
+        <li>Tema visual em tons de rosa nude para combinar com a identidade.</li>
+      </ul>
+    </article>
+
+    <aside class="perfil" aria-label="Perfil de Sarah Hernandes">
+      <img
+        class="foto"
+        src="/Sarah-Hernandes.jpg"
+        alt="Foto de Sarah Hernandes"
+        loading="lazy"
+      />
+      <h2 class="nome">Sarah Hernandes</h2>
+      <p class="titulo">Desenvolvedora Full Stack</p>
+    </aside>
+  </div>
 </section>

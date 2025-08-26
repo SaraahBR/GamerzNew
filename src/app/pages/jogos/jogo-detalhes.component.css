@@ -1,0 +1,26 @@
+.actions { display: flex; gap: 10px; margin-top: 10px; }
+
+.btn-gradiente {
+  display: inline-block;
+  text-decoration: none;
+  background: linear-gradient(135deg, #e4a4b4, #c97a8c);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: transform .2s ease, opacity .2s ease;
+}
+.btn-gradiente:hover { transform: translateY(-2px); opacity: .9; }
+
+.btn-sec {
+  display: inline-block;
+  text-decoration: none;
+  background: #fff;
+  color: #c97a8c;
+  border: 1px solid #c97a8c;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all .2s ease;
+}
+.btn-sec:hover { background: #fbe7ec; transform: translateY(-1px); }
