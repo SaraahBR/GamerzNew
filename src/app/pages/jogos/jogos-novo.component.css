@@ -1,0 +1,14 @@
+.novo { max-width: 900px; margin: 0 auto; padding: 20px 16px; }
+.novo h1 { color: var(--rosa-escuro); margin-bottom: 12px; }
+form .grid { display: grid; gap: 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+label { display: grid; gap: 6px; font-weight: 600; color: #111827; }
+label input, label textarea {
+  border: 1px solid var(--rosa-escuro); border-radius: 8px; padding: 8px 10px; font: inherit;
+}
+label.full { grid-column: 1 / -1; }
+.btn-gradiente {
+  margin-top: 12px; background: linear-gradient(135deg, var(--rosa), var(--rosa-escuro));
+  color: #fff; padding: 10px 16px; border-radius: 8px; font-weight: 700; border: 0; cursor: pointer;
+  transition: transform .2s ease, opacity .2s ease;
+}
+.btn-gradiente:hover { transform: translateY(-2px); opacity: .9; }

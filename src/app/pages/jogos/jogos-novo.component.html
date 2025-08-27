@@ -1,0 +1,41 @@
+<section class="novo">
+  <h1>Novo Jogo</h1>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <div class="grid">
+      <label> Título
+        <input type="text" formControlName="title" />
+      </label>
+
+      <label> Ano
+        <input type="number" formControlName="year" />
+      </label>
+
+      <label> Desenvolvedora
+        <input type="text" formControlName="dev" />
+      </label>
+
+      <label> Publicadora
+        <input type="text" formControlName="pub" />
+      </label>
+
+      <label> Gêneros (separados por vírgula)
+        <input type="text" formControlName="genre" placeholder="RPG, Mundo Aberto" />
+      </label>
+
+      <label> URL da Imagem (header)
+        <input type="url" formControlName="img" />
+      </label>
+
+      <label> Link na Steam
+        <input type="url" formControlName="steam" />
+      </label>
+
+      <label class="full"> Descrição
+        <textarea rows="4" formControlName="description"></textarea>
+      </label>
+    </div>
+
+    <button type="submit" class="btn-gradiente">Salvar</button>
+  </form>
+</section>

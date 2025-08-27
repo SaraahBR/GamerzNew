@@ -1,0 +1,16 @@
+<section class="fav">
+  <h1>Favoritos</h1>
+
+  <div class="grid" *ngIf="favorites.length; else vazio">
+    <app-game-card
+      *ngFor="let g of favorites"
+      [game]="g"
+      [favorite]="g.favorite ?? false"
+      (favoriteChange)="updateFavorite(g, $event)">
+    </app-game-card>
+  </div>
+
+  <ng-template #vazio>
+    <p>Você ainda não favoritou nenhum jogo.</p>
+  </ng-template>
+</section>

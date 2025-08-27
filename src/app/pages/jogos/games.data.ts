@@ -8,6 +8,7 @@ export type Game = {
   pub: string;
   description: string;
   steam: string;
+  favorite?: boolean; 
 };
 
 export const GAMES: Game[] = [

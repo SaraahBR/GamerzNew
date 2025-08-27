@@ -1,25 +1,20 @@
 <section class="jogos">
-  <h1>Jogos</h1>
+  <header class="toolbar">
+    <h1>Jogos</h1>
+    <div class="actions">
+      <input type="search" placeholder="Buscar por título, gênero, dev..."
+             [(ngModel)]="search" (ngModelChange)="onSearchChange()" />
+      <a routerLink="/jogos/novo" class="btn-gradiente">+ Novo</a>
+      <a routerLink="/jogos/favoritos" class="btn-sec">Favoritos</a>
+    </div>
+  </header>
 
   <div class="grid">
-    <article class="card" *ngFor="let g of games">
-      <img [src]="g.img" [alt]="'Capa do jogo ' + g.title" loading="lazy" />
-      <div class="content">
-        <h2>{{ g.title }}</h2>
-        <p class="desc">{{ g.description }}</p>
-
-        <ul class="meta">
-          <li><strong>Gênero:</strong> {{ g.genre.join(', ') }}</li>
-          <li><strong>Ano:</strong> {{ g.year }}</li>
-          <li><strong>Desenvolvedora:</strong> {{ g.dev }}</li>
-          <li><strong>Publicadora:</strong> {{ g.pub }}</li>
-        </ul>
-
-        <div class="actions">
-          <a class="btn-gradiente" [routerLink]="['/jogos', g.id]">Ver Detalhes</a>
-          <a class="btn-sec" [href]="g.steam" target="_blank" rel="noopener noreferrer">Ver na Steam</a>
-        </div>
-      </div>
-    </article>
+    <app-game-card
+      *ngFor="let g of games"
+      [game]="g"
+      [favorite]="g.favorite ?? false"
+      (favoriteChange)="updateFavorite(g, $event)">
+    </app-game-card>
   </div>
 </section>

@@ -1,0 +1,143 @@
+/* Card */
+.card {
+  border: 1px solid var(--rosa-escuro);
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 18px rgba(0,0,0,.06);
+  display: flex;
+  flex-direction: column;
+}
+
+.card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+/* Conteúdo */
+.content {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.content h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #111827;
+}
+
+.desc {
+  margin: 0;
+  color: #374151;
+  line-height: 1.55;
+  font-size: .96rem;
+}
+
+.meta {
+  margin: 2px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  font-size: .92rem;
+  color: #1f2937;
+}
+
+.meta li strong { color: #111827; }
+
+/* Ações */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: nowrap; 
+}
+
+/* Botão primário */
+.btn-gradiente {
+  text-decoration: none;
+  background: linear-gradient(135deg, var(--rosa), var(--rosa-escuro));
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: transform .2s ease, opacity .2s ease;
+  border: 0;
+}
+.btn-gradiente:hover { transform: translateY(-2px); opacity: .9; }
+
+/* Botão secundário */
+.btn-sec {
+  text-decoration: none;
+  background: #fff;
+  color: var(--rosa-escuro);
+  border: 1px solid var(--rosa-escuro);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all .2s ease;
+}
+.btn-sec:hover { background: var(--rosa-clarinho); transform: translateY(-1px); }
+
+/* Coração alinhado à direita */
+.fav-btn {
+  margin-left: auto;       
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--rosa-escuro);
+  background: #fff;
+  cursor: pointer;
+  transition: transform .2s ease, background .2s ease;
+  padding: 0;
+}
+.fav-btn:hover { transform: translateY(-1px); background: var(--rosa-clarinho); }
+.fav-btn:active { transform: translateY(0) scale(0.96); }
+
+/* Ícone do coração  */
+.fav-icon {
+  width: 22px;
+  height: 22px;
+  transform: scaleY(1.12);   
+  will-change: transform;    
+}
+
+/* Estado padrão do coração (sem favoritar) */
+.fav-icon path {
+  fill: none;
+  stroke: #911c3f;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Favoritado: preenchido preto */
+.fav-icon.is-active path {
+  fill: #d03569;
+  stroke: #851738;
+}
+
+/* Animação ao favoritar */
+@media (prefers-reduced-motion: no-preference) {
+  .fav-icon.is-active {
+    animation: fav-pop 0.32s cubic-bezier(.2,.7,.3,1.2);
+  }
+
+  @keyframes fav-pop {
+    0%   { transform: scale(0.60) scaleY(1.12); }
+    60%  { transform: scale(1.25) scaleY(1.12); }
+    100% { transform: scale(1.00) scaleY(1.12); }
+  }
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+  .card img { height: 140px; }
+}

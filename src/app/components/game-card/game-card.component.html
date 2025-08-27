@@ -1,0 +1,33 @@
+<article class="card">
+  <img [src]="game.img" [alt]="'Capa do jogo ' + game.title" loading="lazy" />
+
+  <div class="content">
+    <h2>{{ game.title }}</h2>
+    <p class="desc">{{ game.description }}</p>
+
+    <ul class="meta">
+      <li><strong>Gênero:</strong> {{ game.genre.join(', ') }}</li>
+      <li><strong>Ano:</strong> {{ game.year }}</li>
+      <li><strong>Desenvolvedora:</strong> {{ game.dev }}</li>
+      <li><strong>Publicadora:</strong> {{ game.pub }}</li>
+    </ul>
+
+    <!-- AÇÕES -->
+    <div class="actions">
+      <a class="btn-gradiente" [routerLink]="['/jogos', game.id]">Detalhes</a>
+      <a class="btn-sec" [href]="game.steam" target="_blank" rel="noopener">Steam</a>
+
+      <button
+        type="button"
+        class="fav-btn"
+        (click)="toggleFavorite()"
+        [attr.aria-pressed]="favorite"
+        [attr.aria-label]="favorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'">
+        <svg class="fav-icon" viewBox="0 0 24 24" aria-hidden="true" [class.is-active]="favorite">
+          <!-- Coração -->
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</article>
