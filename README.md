@@ -222,7 +222,6 @@ ng build
 </p>
 
 **Sarah Hernandes** – Desenvolvedora Full Stack  
-Contato e redes sociais
 
 ---
 
