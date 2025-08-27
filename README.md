@@ -5,7 +5,7 @@ O objetivo é oferecer uma **navegação clara** e um **visual coerente** (tema 
 
 </br>
 <p align="center">
-  <img src="public/logo.png" alt="Logo GamerzNew" width="120" />
+  <img src="public/logo.png" alt="Logo GamerzNew" width="680" />
 </p>
 
 ---
