@@ -26,7 +26,7 @@ type DealRow = {
 })
 export class JogoDetalhesComponent {
   game?: Game;
-  deals$ = of<DealRow[]>([]); // SSR-safe
+  deals$ = of<DealRow[]>([]); 
 
   constructor(
     private route: ActivatedRoute,
