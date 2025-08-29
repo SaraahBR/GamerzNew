@@ -118,6 +118,15 @@ export class GamesService {
         favorite: !!x.favorite,
       }));
 
+      // Se a sua API começar a retornar itadId aqui, grava no cache leve (não quebra se não vier)
+      try {
+        for (const x of items) {
+          const t = typeof x?.title === 'string' ? x.title : null;
+          const id = typeof x?.itadId === 'string' ? x.itadId : null;
+          if (t && id) this.rememberItadId(t, id);
+        }
+      } catch {}
+
       return mapped;
     } catch {
       // fallback: usa o localStorage se a API falhar
@@ -141,6 +150,13 @@ export class GamesService {
       const j = await r.json();
       const it = j?.item;
       if (!it) return null;
+
+      // Se backend devolver itadId, guarda localmente (cache leve)
+      try {
+        if (typeof it?.title === 'string' && typeof it?.itadId === 'string') {
+          this.rememberItadId(it.title, it.itadId);
+        }
+      } catch {}
 
       const created: Game = {
         id: Number(it.id),
@@ -336,5 +352,109 @@ export class GamesService {
     this._games$.next(next);
 
     return game;
+  }
+
+  /** Países preferidos p/ preços do ITAD: tenta BR, cai para US */
+  readonly preferredItadCountries: ReadonlyArray<string> = ['BR', 'US'];
+
+  /** Normaliza título para usar como chave de cache */
+  private normTitle(t: string): string {
+    return (t || '')
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim()
+      .toLowerCase();
+  }
+
+  /** Lê o mapa (título -> itadId) do sessionStorage (rápido) e do localStorage (persistente) */
+  private readItadMap(): Record<string, string> {
+    if (!this.isBrowser) return {};
+    let acc: Record<string, string> = {};
+    try {
+      const s = window.sessionStorage.getItem('gn_itad_map_v1');
+      if (s) acc = { ...acc, ...(JSON.parse(s) || {}) };
+    } catch {}
+    try {
+      const l = window.localStorage.getItem('gn_itad_map_v1');
+      if (l) acc = { ...acc, ...(JSON.parse(l) || {}) };
+    } catch {}
+    return acc;
+    }
+
+  /** Persiste o mapa leve (merge) */
+  private writeItadMap(partial: Record<string, string>, persist = true): void {
+    if (!this.isBrowser) return;
+    try {
+      const current = this.readItadMap();
+      const next = { ...current, ...partial };
+      window.sessionStorage.setItem('gn_itad_map_v1', JSON.stringify(next));
+      if (persist) {
+        window.localStorage.setItem('gn_itad_map_v1', JSON.stringify(next));
+      }
+    } catch {}
+  }
+
+  /** Retorna itadId do cache local */
+  getItadIdFromCache(title: string): string | null {
+    const m = this.readItadMap();
+    const k = this.normTitle(title);
+    return m[k] || null;
+  }
+
+  /** Guarda itadId no cache local */
+  rememberItadId(title: string, itadId: string, persist = true): void {
+    const k = this.normTitle(title);
+    if (!k || !itadId) return;
+    this.writeItadMap({ [k]: itadId }, persist);
+  }
+
+  async lookupAndCacheItadId(title: string): Promise<string | null> {
+    if (!this.isBrowser) return null;
+
+    const fromCache = this.getItadIdFromCache(title);
+    if (fromCache) return fromCache;
+
+    try {
+      const q = encodeURIComponent(title || '');
+      const r = await fetch(`/api/itad/lookup?title=${q}`, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' },
+        credentials: 'include',
+      });
+
+      if (!r.ok) return null;
+      const j = await r.json();
+      const itadId = typeof j?.id === 'string' ? j.id : null;
+      if (itadId) this.rememberItadId(title, itadId);
+      return itadId;
+    } catch {
+      return null;
+    }
+  }
+
+  async setItadIdForCustomGame(gameId: number, itadId: string): Promise<boolean> {
+    if (!this.isBrowser) return false;
+    try {
+      const r = await fetch('/api/games/custom/set-itad-id', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: gameId, itadId }),
+      });
+      if (r.ok) {
+        const g = this.snapshot.find(x => x.id === gameId);
+        if (g?.title) this.rememberItadId(g.title, itadId); 
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  }
+
+  clearClientCaches(): void {
+    if (!this.isBrowser) return;
+    try { window.sessionStorage.removeItem('gn_catalog_loaded'); } catch {}
+    try { window.sessionStorage.removeItem('gn_itad_map_v1'); } catch {}
   }
 }

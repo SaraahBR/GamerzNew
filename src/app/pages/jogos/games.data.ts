@@ -13,7 +13,7 @@ export type Game = {
 
 export const GAMES: Game[] = [
   {
-    id: 1,
+    id: 991,
     title: 'Hades',
     img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1145360/header.jpg',
     genre: ['Ação', 'Roguelike'],
@@ -24,7 +24,7 @@ export const GAMES: Game[] = [
     steam: 'https://store.steampowered.com/app/1145360/'
   },
   {
-    id: 2,
+    id: 992,
     title: 'Elden Ring',
     img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg',
     genre: ['RPG de Ação', 'Mundo Aberto'],
@@ -35,7 +35,7 @@ export const GAMES: Game[] = [
     steam: 'https://store.steampowered.com/app/1245620/'
   },
   {
-    id: 3,
+    id: 993,
     title: 'Hollow Knight',
     img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/367520/header.jpg',
     genre: ['Metroidvania', 'Ação'],
@@ -46,7 +46,7 @@ export const GAMES: Game[] = [
     steam: 'https://store.steampowered.com/app/367520/'
   },
   {
-    id: 4,
+    id: 994,
     title: 'Starfield',
     img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1716740/header.jpg',
     genre: ['RPG', 'Mundo Aberto', 'Espaço'],
@@ -57,7 +57,7 @@ export const GAMES: Game[] = [
     steam: 'https://store.steampowered.com/app/1716740/'
   },
   {
-    id: 5,
+    id: 995,
     title: "Baldur's Gate 3",
     img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1086940/header.jpg',
     genre: ['RPG Tático'],
@@ -68,7 +68,7 @@ export const GAMES: Game[] = [
     steam: 'https://store.steampowered.com/app/1086940/'
   },
   {
-    id: 6,
+    id: 996,
     title: 'Cyberpunk 2077',
     img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1091500/header.jpg',
     genre: ['RPG', 'Mundo Aberto'],
