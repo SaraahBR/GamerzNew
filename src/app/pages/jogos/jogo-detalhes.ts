@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { GAMES, Game } from './games.data';
 import { ItadService, ItadOffer } from '../../services/itad.service';
@@ -24,11 +25,12 @@ type DealRow = {
 })
 export class JogoDetalhesComponent {
   game?: Game;
-  deals$ = of<DealRow[]>([]);
+  deals$ = of<DealRow[]>([]); // SSR-safe
 
   constructor(
     private route: ActivatedRoute,
-    private itad: ItadService
+    private itad: ItadService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit() {
@@ -36,16 +38,20 @@ export class JogoDetalhesComponent {
     this.game = GAMES.find(g => g.id === id);
     if (!this.game) return;
 
-    this.deals$ = this.itad.offersByTitle(this.game.title).pipe(
-      map((list: ItadOffer[]) => list.slice(0, 6).map(o => ({
-        store: o.store,
-        price: o.price,
-        currency: o.currency,
-        cut: o.cut,
-        regular: o.regular,
-        url: o.url
-      }))),
-      shareReplay({ bufferSize: 1, refCount: true })
-    );
+    if (isPlatformBrowser(this.platformId)) {
+      this.deals$ = this.itad.offersByTitle(this.game.title).pipe(
+        map((list: ItadOffer[]) =>
+          list.slice(0, 6).map(o => ({
+            store: o.store,
+            price: o.price,
+            currency: o.currency,
+            cut: o.cut,
+            regular: o.regular,
+            url: o.url
+          }))
+        ),
+        shareReplay({ bufferSize: 1, refCount: true })
+      );
+    }
   }
 }

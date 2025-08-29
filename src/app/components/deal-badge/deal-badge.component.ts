@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, OnInit, Inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
 import { ItadService, ItadOffer } from '../../services/itad.service';
-import { map, of } from 'rxjs';
+import { map, of, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-deal-badge',
@@ -71,15 +72,20 @@ import { map, of } from 'rxjs';
 export class DealBadgeComponent implements OnInit {
   @Input({ required: true }) title!: string;
 
-  vm$ = of<ItadOffer | null>(null);
+  vm$: Observable<ItadOffer | null> = of(null);
   ready = false;
 
-  constructor(private itad: ItadService) {}
+  constructor(
+    private itad: ItadService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit() {
-    this.vm$ = this.itad.bestOffer(this.title).pipe(
-      map(o => o ? o : null)
-    );
-    setTimeout(() => this.ready = true);
+    if (isPlatformBrowser(this.platformId)) {
+      this.vm$ = this.itad.bestOffer(this.title).pipe(map(o => o ?? null));
+    } else {
+      this.vm$ = of(null); 
+    }
+    setTimeout(() => (this.ready = true));
   }
 }
