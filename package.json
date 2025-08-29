@@ -1,6 +1,7 @@
 {
   "name": "gamerz-new",
   "version": "0.0.0",
+  "private": true,
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -8,16 +9,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:GamerzNew": "node dist/GamerzNew/server/server.mjs",
-    "prepare": "prisma generate",
-    "db:generate": "prisma generate",
-    "db:migrate": "prisma migrate dev",
-    "db:deploy": "prisma migrate deploy",
-    "db:seed": "prisma db seed",
-    "db:studio": "prisma studio",
-    "db:reset": "prisma migrate reset --force --skip-seed=false"
-  },
-  "prisma": {
-    "seed": "ts-node --transpile-only prisma/seed.ts"
+    "dev": "vercel dev"
   },
   "prettier": {
     "printWidth": 100,
@@ -31,7 +23,6 @@
       }
     ]
   },
-  "private": true,
   "dependencies": {
     "@angular/common": "^20.2.0",
     "@angular/compiler": "^20.2.0",
