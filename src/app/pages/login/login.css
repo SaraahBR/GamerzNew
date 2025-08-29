@@ -26,6 +26,7 @@ input {
   font: inherit;
 }
 
+/* Botão primário do formulário */
 .btn-gradiente {
   text-decoration: none;
   background: linear-gradient(135deg, var(--rosa), var(--rosa-escuro));
@@ -40,3 +41,78 @@ input {
 .btn-gradiente:hover { transform: translateY(-2px); opacity: .9; }
 
 .error { color: #b00020; font-weight: 600; }
+
+/* ===== Divisor "ou" ===== */
+.divider{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0;
+  color: #6b7280;
+  font-weight: 700;
+  text-transform: lowercase;
+  letter-spacing: .3px;
+}
+.divider::before,
+.divider::after{
+  content: "";
+  height: 1px;
+  background: #e5e7eb;
+  flex: 1;
+}
+
+/* ===== Social login ===== */
+.social-login{ display: grid; justify-items: center; }
+
+/* Botão Google – fiel ao material design */
+.btn-google{
+  --ring: rgba(26,115,232,.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 44px;
+  border-radius: 8px;
+  border: 1px solid #dadce0;
+  background: #fff;
+  color: #1f2937;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none; /* também vale para <a> no noscript */
+  box-shadow:
+    0 1px 2px rgba(60,64,67,.30),
+    0 1px 3px 1px rgba(60,64,67,.15);
+  transition: box-shadow .15s ease, transform .05s ease, background .2s ease;
+}
+.btn-google:hover{
+  background: #f7f8f8;
+  box-shadow:
+    0 2px 4px rgba(60,64,67,.30),
+    0 2px 6px 2px rgba(60,64,67,.15);
+}
+.btn-google:active{ transform: translateY(.5px); background:#eee; }
+.btn-google:focus{ outline: none; }
+.btn-google:focus-visible{ box-shadow: 0 0 0 3px var(--ring), inset 0 0 0 1px #dadce0; }
+
+.g-icon{
+  display: grid; place-items: center;
+  width: 20px; height: 20px;
+  background: #fff;
+  border-radius: 2px;
+}
+
+.label{ line-height: 1; }
+
+@media (prefers-color-scheme: dark){
+  .btn-google{
+    border-color: #3d3f44;
+    color: #e5e7eb;
+    background: #1f232a;
+    box-shadow:
+      0 1px 2px rgba(0,0,0,.5),
+      0 1px 3px 1px rgba(0,0,0,.4);
+  }
+  .btn-google:hover{ background: #232832; }
+  .divider::before, .divider::after{ background: #2d3036; }
+}

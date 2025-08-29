@@ -64,19 +64,44 @@
     <p *ngIf="error" class="error" role="alert">{{ error }}</p>
   </form>
 
-  <hr />
+  <!-- divisor "ou" com linhas -->
+  <div class="divider" role="separator" aria-label="ou">
+    <span>ou</span>
+  </div>
 
+  <!-- Social login -->
   <div class="social-login">
-    <p>ou</p>
     <button
       type="button"
-      class="btn-sec"
+      class="btn-google"
       (click)="google()"
       aria-label="Entrar com Google">
-      Entrar com Google
+      <span class="g-icon" aria-hidden="true">
+        <!-- Logomarca 'G' oficial -->
+        <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.64 9.2045c0-.6395-.0573-1.2518-.1636-1.8364H9v3.4727h4.8445a4.143 4.143 0 0 1-1.7973 2.7173v2.255h2.9064c1.7018-1.5673 2.6864-3.8736 2.6864-6.6086z" fill="#4285F4"/>
+          <path d="M9 18c2.43 0 4.4686-.806 5.9582-2.1873l-2.9064-2.255c-.806.54-1.8377.861-3.0518.861-2.3473 0-4.3346-1.5832-5.0427-3.7082H.9573v2.3332C2.4382 15.9836 5.4818 18 9 18z" fill="#34A853"/>
+          <path d="M3.9573 10.7105a5.408 5.408 0 0 1 0-3.421V4.9568H.9573a9.003 9.003 0 0 0 0 8.0864l3.0000-2.3327z" fill="#FBBC05"/>
+          <path d="M9 3.5427c1.3209 0 2.5086.4545 3.4418 1.3473l2.5814-2.5814C13.4659.8918 11.4273 0 9 0 5.4818 0 2.4382 2.0164.9573 4.9568l3.0000 2.3332C4.6654 5.1659 6.6527 3.5427 9 3.5427z" fill="#EA4335"/>
+        </svg>
+      </span>
+      <span class="label">Entrar com Google</span>
     </button>
+
     <noscript>
-      <p><a class="btn-sec" href="/api/auth/google/start">Entrar com Google</a></p>
+      <p>
+        <a class="btn-google" href="/api/auth/google/start">
+          <span class="g-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.64 9.2045c0-.6395-.0573-1.2518-.1636-1.8364H9v3.4727h4.8445a4.143 4.143 0 0 1-1.7973 2.7173v2.255h2.9064c1.7018-1.5673 2.6864-3.8736 2.6864-6.6086z" fill="#4285F4"/>
+              <path d="M9 18c2.43 0 4.4686-.806 5.9582-2.1873l-2.9064-2.255c-.806.54-1.8377.861-3.0518.861-2.3473 0-4.3346-1.5832-5.0427-3.7082H.9573v2.3332C2.4382 15.9836 5.4818 18 9 18z" fill="#34A853"/>
+              <path d="M3.9573 10.7105a5.408 5.408 0 0 1 0-3.421V4.9568H.9573a9.003 9.003 0 0 0 0 8.0864l3.0000-2.3327z" fill="#FBBC05"/>
+              <path d="M9 3.5427c1.3209 0 2.5086.4545 3.4418 1.3473l2.5814-2.5814C13.4659.8918 11.4273 0 9 0 5.4818 0 2.4382 2.0164.9573 4.9568l3.0000 2.3332C4.6654 5.1659 6.6527 3.5427 9 3.5427z" fill="#EA4335"/>
+            </svg>
+          </span>
+          <span class="label">Entrar com Google</span>
+        </a>
+      </p>
     </noscript>
   </div>
 </section>
