@@ -53,13 +53,13 @@
 
             <!-- Preço já vem com moeda da ITAD (ex.: BRL) -->
             <td [attr.data-label]="'Preço'">
-              {{ r.price | currency:r.currency:'symbol':'1.2-2':'pt-BR' }}
-              <small class="muted" *ngIf="r.regular">
-                (normal: {{ r.regular | currency:r.currency:'symbol':'1.2-2':'pt-BR' }})
+              {{ r.price | currency:(r.currency || 'BRL'):'symbol':'1.2-2':'pt-BR' }}
+              <small class="muted" *ngIf="r.regular != null">
+                (normal: {{ r.regular | currency:(r.currency || 'BRL'):'symbol':'1.2-2':'pt-BR' }})
               </small>
             </td>
 
-            <td [attr.data-label]="'Economia'">{{ r.cut | number:'1.0-0':'pt-BR' }}%</td>
+            <td [attr.data-label]="'Economia'">{{ (r.cut ?? 0) | number:'1.0-0':'pt-BR' }}%</td>
 
             <td [attr.data-label]="'Ação'" class="cta">
               <a [href]="r.url" target="_blank" rel="noopener" class="btn-sec">Comprar</a>
