@@ -8,7 +8,7 @@
   <h1>{{ game!.title }}</h1>
 
   <!-- Badge com melhor preço (ITAD) -->
-  <app-deal-badge [title]="game!.title"></app-deal-badge>
+  <app-deal-badge [title]="game!.title" [steam]="game!.steam" [compact]="false"></app-deal-badge>
 
   <!-- Descrição -->
   <p class="desc">{{ game!.description }}</p>

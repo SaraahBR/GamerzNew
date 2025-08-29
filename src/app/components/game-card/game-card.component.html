@@ -13,7 +13,7 @@
     </ul>
 
     <!-- Badge de preço (CheapShark + tooltip) -->
-    <app-deal-badge class="deal" [title]="game.title"></app-deal-badge>
+    <app-deal-badge [title]="game.title" [steam]="game.steam" [compact]="true"></app-deal-badge>
 
     <div class="actions">
       <a class="btn-gradiente" [routerLink]="['/jogos', game.id]">Detalhes</a>
