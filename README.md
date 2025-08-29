@@ -36,7 +36,7 @@ O objetivo é oferecer uma **navegação clara** e um **visual coerente** (tema 
 - **Signals (signal, computed, effect)** no **Backlog** (CRUD em LocalStorage)  
 - **Loader progressivo** para evitar flicker em **/jogos** e **/jogos/favoritos**
 
-### Integração externa
+### Integração externa (API)
 - **IsThereAnyDeal (ITAD)** – melhor preço por jogo via endpoint serverless com fallback **BR → US**
 
 ### Testes
