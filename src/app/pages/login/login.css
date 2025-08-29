@@ -64,7 +64,7 @@ input {
 /* ===== Social login ===== */
 .social-login{ display: grid; justify-items: center; }
 
-/* Botão Google – fiel ao material design */
+/* Botão Google */
 .btn-google{
   --ring: rgba(26,115,232,.35);
   display: inline-flex;
@@ -79,7 +79,7 @@ input {
   color: #1f2937;
   font-weight: 700;
   cursor: pointer;
-  text-decoration: none; /* também vale para <a> no noscript */
+  text-decoration: none; 
   box-shadow:
     0 1px 2px rgba(60,64,67,.30),
     0 1px 3px 1px rgba(60,64,67,.15);
@@ -104,15 +104,4 @@ input {
 
 .label{ line-height: 1; }
 
-@media (prefers-color-scheme: dark){
-  .btn-google{
-    border-color: #3d3f44;
-    color: #e5e7eb;
-    background: #1f232a;
-    box-shadow:
-      0 1px 2px rgba(0,0,0,.5),
-      0 1px 3px 1px rgba(0,0,0,.4);
-  }
-  .btn-google:hover{ background: #232832; }
-  .divider::before, .divider::after{ background: #2d3036; }
-}
+

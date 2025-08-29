@@ -45,8 +45,13 @@
   font-size: .92rem;
   color: #1f2937;
 }
-
 .meta li strong { color: #111827; }
+
+/* Badge de preço dentro do card */
+.deal { align-self: flex-start; }
+@media (max-width: 520px) {
+  .deal { width: 100%; display:flex; justify-content:center; }
+}
 
 /* Ações */
 .actions {
@@ -54,7 +59,7 @@
   align-items: center;
   gap: 10px;
   margin-top: 10px;
-  flex-wrap: nowrap; 
+  flex-wrap: wrap; 
 }
 
 /* Botão primário */
@@ -85,7 +90,7 @@
 
 /* Coração alinhado à direita */
 .fav-btn {
-  margin-left: auto;       
+  margin-left: auto; 
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -105,8 +110,8 @@
 .fav-icon {
   width: 22px;
   height: 22px;
-  transform: scaleY(1.12);   
-  will-change: transform;    
+  transform: scaleY(1.12);
+  will-change: transform;
 }
 
 /* Estado padrão do coração (sem favoritar) */
@@ -118,13 +123,30 @@
   stroke-linejoin: round;
 }
 
-/* botão backlog */
+/* Favoritado: preenchido */
+.fav-icon.is-active path {
+  fill: #d03569;
+  stroke: #851738;
+}
+
+/* Animação ao favoritar */
+@media (prefers-reduced-motion: no-preference) {
+  .fav-icon.is-active { animation: fav-pop 0.32s cubic-bezier(.2,.7,.3,1.2); }
+  @keyframes fav-pop {
+    0%   { transform: scale(0.60) scaleY(1.12); }
+    60%  { transform: scale(1.25) scaleY(1.12); }
+    100% { transform: scale(1.00) scaleY(1.12); }
+  }
+}
+
+/* Botão backlog */
 .btn-backlog{
   display:inline-flex; align-items:center; gap:8px;
   padding:8px 12px; border-radius:10px; font-weight:700;
   background: transparent; color: var(--rosa-escuro);
   border: 2px solid var(--rosa-escuro);
-  cursor: pointer; transition: transform .12s ease, box-shadow .12s ease, background .12s ease, color .12s ease;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease, color .12s ease;
 }
 .btn-backlog:hover{ transform: translateY(-1px); background: rgba(255, 105, 130, .07); }
 .btn-backlog:active{ transform: translateY(0); }
@@ -145,28 +167,6 @@
 .btn-backlog.added .ico{
   background: radial-gradient(circle at 30% 30%, #fff 0 40%, transparent 45%);
   opacity: .95;
-}
-
-.actions { display:flex; gap:10px; align-items:center; flex-wrap: wrap; }
-
-
-/* Favoritado: preenchido preto */
-.fav-icon.is-active path {
-  fill: #d03569;
-  stroke: #851738;
-}
-
-/* Animação ao favoritar */
-@media (prefers-reduced-motion: no-preference) {
-  .fav-icon.is-active {
-    animation: fav-pop 0.32s cubic-bezier(.2,.7,.3,1.2);
-  }
-
-  @keyframes fav-pop {
-    0%   { transform: scale(0.60) scaleY(1.12); }
-    60%  { transform: scale(1.25) scaleY(1.12); }
-    100% { transform: scale(1.00) scaleY(1.12); }
-  }
 }
 
 /* Responsivo */

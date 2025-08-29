@@ -12,11 +12,14 @@
       <li><strong>Publicadora:</strong> {{ game.pub }}</li>
     </ul>
 
+    <!-- Badge de preço (CheapShark + tooltip) -->
+    <app-deal-badge class="deal" [title]="game.title"></app-deal-badge>
+
     <div class="actions">
       <a class="btn-gradiente" [routerLink]="['/jogos', game.id]">Detalhes</a>
       <a class="btn-sec" [href]="game.steam" target="_blank" rel="noopener">Steam</a>
 
-      <!-- ❤️ favoritos  -->
+      <!-- favoritos  -->
       <button
         type="button"
         class="fav-btn"
@@ -28,7 +31,7 @@
         </svg>
       </button>
 
-      <!-- 🕹️ backlog — estilizado e reativo -->
+      <!-- backlog — estilizado e reativo -->
       <button
         type="button"
         class="btn-backlog"

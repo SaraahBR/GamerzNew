@@ -4,6 +4,10 @@
   </div>
 
   <h1>{{ game!.title }}</h1>
+
+  <!-- Badge de preço (tooltip com economia) -->
+  <app-deal-badge [title]="game!.title"></app-deal-badge>
+
   <p class="desc">{{ game!.description }}</p>
 
   <ul class="meta">
@@ -17,6 +21,43 @@
     <a routerLink="/jogos" class="btn-sec">Voltar</a>
     <a class="btn-gradiente" [href]="game!.steam" target="_blank" rel="noopener noreferrer">Ver na Steam</a>
   </div>
+
+  <!-- ======= Acordeão de ofertas ======= -->
+  <details class="deals-acc">
+    <summary>
+      <span>Melhores preços agora</span>
+      <small class="count" *ngIf="deals$ | async as rows">{{ rows.length ? rows.length + ' ofertas' : '—' }}</small>
+    </summary>
+
+    <div class="panel">
+      <table class="deals-table" *ngIf="deals$ | async as rows; else loadingDeals">
+        <thead>
+          <tr>
+            <th>Loja</th>
+            <th>Preço</th>
+            <th>Economia</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let r of rows">
+            <td [attr.data-label]="'Loja'">{{ r.store }}</td>
+            <td [attr.data-label]="'Preço'">{{ r.priceBRL | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</td>
+            <td [attr.data-label]="'Economia'">{{ r.savingsPct | number:'1.0-0':'pt-BR' }}%</td>
+            <td [attr.data-label]="'Ação'" class="cta">
+              <a [href]="r.url" target="_blank" rel="noopener" class="btn-sec">Comprar</a>
+            </td>
+          </tr>
+          <tr *ngIf="rows.length === 0">
+            <td colspan="4" class="muted">Nenhuma oferta encontrada agora.</td>
+          </tr>
+        </tbody>
+      </table>
+      <ng-template #loadingDeals>
+        <p class="muted">Buscando ofertas…</p>
+      </ng-template>
+    </div>
+  </details>
 </section>
 
 <ng-template #notfound>

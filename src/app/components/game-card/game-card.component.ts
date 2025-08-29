@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Game } from '../../pages/jogos/games.data';
 import { BacklogStore } from '../../features/backlog/backlog.store';
+import { DealBadgeComponent } from '../..//components/deal-badge/deal-badge.component';
 
 @Component({
   selector: 'app-game-card',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, DealBadgeComponent],
   templateUrl: './game-card.component.html',
   styleUrls: ['./game-card.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,9 +24,9 @@ export class GameCardComponent {
 
   constructor(private backlog: BacklogStore) {}
 
-  /** Reativo: como é uma Signal, ler `items()` em render dispara atualização automática */
+  /** Reativo: Signal, ler `items()` em render dispara atualização automática */
   get isInBacklog(): boolean {
-    const items = this.backlog.items(); 
+    const items = this.backlog.items();
     return !!items.find(it => it.gameId === this.game?.id);
   }
 
