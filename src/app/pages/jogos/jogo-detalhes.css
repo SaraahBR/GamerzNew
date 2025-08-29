@@ -70,7 +70,7 @@
 .deals-table .cta{ text-align: right; }
 .muted{ opacity:.8; }
 
-/* -------- Responsivo: transforma a tabela em "cards" abaixo de 640px -------- */
+/* -------- Responsivo: vira "cards" abaixo de 640px -------- */
 @media (max-width: 640px){
   .deals-table thead{ display:none; }
   .deals-table, .deals-table tbody, .deals-table tr, .deals-table td{ display:block; width:100%; }

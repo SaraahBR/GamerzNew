@@ -62,7 +62,7 @@ export class JogosNovoComponent {
 
       this.toasts.success('Jogo salvo com sucesso!', { timeout: 2200 });
 
-      // limpa o formulário para um próximo cadastro
+      // limpa o formulário
       this.form.reset({
         title: '',
         img: '',
@@ -74,8 +74,8 @@ export class JogosNovoComponent {
         description: '',
       });
 
-      // navega para a lista; 
       this.router.navigate(['/jogos'], { queryParams: { added: created.id } });
+
     } catch (e: any) {
       if (e?.code === 'login_required') {
         this.toasts.danger('Você precisa estar logada para adicionar jogos.', {

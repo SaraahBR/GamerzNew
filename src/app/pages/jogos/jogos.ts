@@ -10,7 +10,7 @@ import { GamesService } from '../../services/games.service';
 import { GameCardComponent } from '../../components/game-card/game-card.component';
 import { Subscription } from 'rxjs';
 import { ToastService } from '../../shared/ui/toast.service';
-import { AuthService } from '../../services/auth.service'; // NOVO
+import { AuthService } from '../../services/auth.service'; 
 
 @Component({
   selector: 'app-jogos',
@@ -72,7 +72,6 @@ export class JogosComponent implements OnInit, OnDestroy {
         }
       });
     } else {
-      // SSR: não anima
       this.loading = false;
     }
   }

@@ -13,4 +13,3 @@ label.full { grid-column: 1 / -1; }
 }
 .btn-gradiente:hover { transform: translateY(-2px); opacity: .9; }
 .btn-gradiente[disabled] { opacity: .55; cursor: not-allowed; transform: none; }
-
