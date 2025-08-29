@@ -1,18 +1,15 @@
-<!-- Carregando -->
-<span *ngIf="loading; else loaded" class="badge skeleton" [class.badge--compact]="compact" aria-hidden="true"></span>
-
-<!-- Carregado -->
-<ng-template #loaded>
-  <!-- Com oferta -->
-  <a *ngIf="vm$ | async as vm; else empty"
-     class="badge badge--ok"
-     [class.badge--compact]="compact"
-     [href]="vm.url"
-     target="_blank" rel="noopener"
-     [attr.aria-label]="'Melhor preço: ' + (vm.price | currency:vm.currency:'symbol':'1.2-2':'pt-BR') + ' na ' + vm.store">
+<ng-container *ngIf="ready; else skeleton">
+  <a *ngIf="vm$ | async as vm; else nooffer"
+     class="deal-badge"
+     [href]="vm.url" target="_blank" rel="noopener"
+     [attr.aria-label]="'Melhor preço: ' +
+       (vm.price | currency:vm.currency:'symbol':'1.2-2':'pt-BR') +
+       ' na ' + vm.store">
     <span class="from">a&nbsp;partir&nbsp;de</span>
-    <strong class="price">{{ vm.price | currency:vm.currency:'symbol':'1.2-2':'pt-BR' }}</strong>
-    <span class="store">· {{ vm.store }}</span>
+    <strong class="price">
+      {{ vm.price | currency:vm.currency:'symbol':'1.2-2':'pt-BR' }}
+    </strong>
+    <span class="store">• {{ vm.store }}</span>
 
     <span class="tip" role="tooltip">
       <ng-container *ngIf="vm.regular; else onlyCut">
@@ -24,11 +21,12 @@
       </ng-template>
     </span>
   </a>
+</ng-container>
 
-  <!-- Sem oferta -->
-  <ng-template #empty>
-    <span class="badge badge--empty" [class.badge--compact]="compact">
-      sem ofertas no momento
-    </span>
-  </ng-template>
+<ng-template #nooffer>
+  <span class="deal-badge muted">sem ofertas no momento</span>
+</ng-template>
+
+<ng-template #skeleton>
+  <span class="deal-badge shimmer" aria-hidden="true"></span>
 </ng-template>

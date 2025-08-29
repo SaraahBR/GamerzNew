@@ -10,7 +10,7 @@ import { GamesService } from '../../services/games.service';
 import { GameCardComponent } from '../../components/game-card/game-card.component';
 import { Subscription } from 'rxjs';
 import { ToastService } from '../../shared/ui/toast.service';
-import { AuthService } from '../../services/auth.service'; 
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-jogos',
@@ -23,19 +23,20 @@ export class JogosComponent implements OnInit, OnDestroy {
   search = '';
   games: Game[] = [];
   private sub?: Subscription;
-  private subAuth?: Subscription;            
-  private lastUserId?: string | null = null; 
+  private subAuth?: Subscription;
+  private lastUserId?: string | null = null;
 
   // LOADER
   loading = true;
   progress = 0;
   private timer?: any;
+  private loadToken = 0;
 
   constructor(
     private gamesSvc: GamesService,
     private toasts: ToastService,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private auth: AuthService,              
+    private auth: AuthService,
   ) {}
 
   ngOnInit() {
@@ -50,25 +51,26 @@ export class JogosComponent implements OnInit, OnDestroy {
       if (hasCache) {
         this.loading = false;
         this.progress = 100;
+        // atualiza em background, sem travar a UI
         this.gamesSvc.refresh().catch(() => {});
       } else {
-        // primeira visita: mostra loader
-        this.startLoading();
+        // primeira visita: mostra loader e amarra no token
+        const t = this.startLoading();
         this.gamesSvc.refresh()
           .catch(() => {})
-          .finally(() => this.completeLoading());
+          .finally(() => this.completeLoading(t));
       }
 
-      // mostrar loader em login/logout (mudança de usuário)
+      // ao trocar usuário (login/logout), força novo ciclo de loading
       this.lastUserId = this.auth.snapshot?.id ?? null;
       this.subAuth = this.auth.user$.subscribe(u => {
         const cur = u?.id ?? null;
         if (cur !== this.lastUserId) {
           this.lastUserId = cur;
-          this.startLoading();
+          const t = this.startLoading();
           this.gamesSvc.refresh()
             .catch(() => {})
-            .finally(() => this.completeLoading());
+            .finally(() => this.completeLoading(t));
         }
       });
     } else {
@@ -78,7 +80,7 @@ export class JogosComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.sub?.unsubscribe();
-    this.subAuth?.unsubscribe(); 
+    this.subAuth?.unsubscribe();
     if (this.timer) clearInterval(this.timer);
   }
 
@@ -96,22 +98,30 @@ export class JogosComponent implements OnInit, OnDestroy {
   }
 
   // ---------- Loader ----------
-  private startLoading() {
+  private startLoading(): number {
+    if (this.timer) clearInterval(this.timer);
+    const token = ++this.loadToken;
+
     this.loading = true;
     this.progress = 0;
-    this.timer = setInterval(() => this.tickLoading(), 120);
+
+    this.timer = setInterval(() => {
+      if (token !== this.loadToken) return;
+      if (this.progress >= 90) return;
+      const p = this.progress;
+      const delta = p < 15 ? 6 : p < 30 ? 5 : p < 50 ? 4 : p < 70 ? 3 : p < 85 ? 2 : 1;
+      this.progress = Math.min(90, p + delta);
+    }, 120);
+
+    return token;
   }
 
-  private tickLoading() {
-    if (this.progress >= 90) return; 
-    const p = this.progress;
-    const delta = p < 15 ? 6 : p < 30 ? 5 : p < 50 ? 4 : p < 70 ? 3 : p < 85 ? 2 : 1;
-    this.progress = Math.min(90, p + delta);
-  }
+  private async completeLoading(token: number) {
+    if (token !== this.loadToken) return;
 
-  private async completeLoading() {
     const run = () => new Promise<void>(resolve => {
       const fin = setInterval(() => {
+        if (token !== this.loadToken) { clearInterval(fin); resolve(); return; }
         this.progress += 4;
         if (this.progress >= 100) {
           this.progress = 100;
@@ -122,8 +132,11 @@ export class JogosComponent implements OnInit, OnDestroy {
     });
 
     await run();
-    if (this.timer) clearInterval(this.timer);
-    setTimeout(() => (this.loading = false), 180);
+
+    if (token === this.loadToken) {
+      if (this.timer) { clearInterval(this.timer); this.timer = undefined; }
+      setTimeout(() => { if (token === this.loadToken) this.loading = false; }, 180);
+    }
   }
 
   async updateFavorite(game: Game, value: boolean) {
