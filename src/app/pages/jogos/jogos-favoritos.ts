@@ -27,7 +27,7 @@ export class JogosFavoritosComponent implements OnInit, OnDestroy {
   private timer?: any;
 
   private sub?: Subscription;
-  private subAuth?: Subscription; 
+  private subAuth?: Subscription;
 
   constructor(
     private svc: GamesService,
@@ -58,7 +58,7 @@ export class JogosFavoritosComponent implements OnInit, OnDestroy {
         await Promise.allSettled([this.svc.refresh(), this.auth.me()]);
         this.logged = !!this.auth.snapshot;
       } else {
-        // primeira vez: com overlay
+        // primeira vez: com overlay animado
         this.startLoading();
         await Promise.allSettled([this.svc.refresh(), this.auth.me()]);
         this.logged = !!this.auth.snapshot;
@@ -66,7 +66,7 @@ export class JogosFavoritosComponent implements OnInit, OnDestroy {
         this.loading = false;
       }
 
-      // mostrar loader quando houver login/logout
+      // reagir a login/logout
       let last = this.auth.snapshot?.id ?? null;
       this.subAuth = this.auth.user$.subscribe(u => {
         const cur = u?.id ?? null;
@@ -81,7 +81,6 @@ export class JogosFavoritosComponent implements OnInit, OnDestroy {
         }
       });
     } else {
-      // SSR: não anima, evita piscadas
       try { await this.svc.refresh(); } catch {}
       this.logged = !!this.auth.snapshot;
       this.progress = 100;
@@ -91,7 +90,7 @@ export class JogosFavoritosComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.sub?.unsubscribe();
-    this.subAuth?.unsubscribe(); 
+    this.subAuth?.unsubscribe();
     if (this.timer) clearInterval(this.timer);
   }
 
@@ -126,7 +125,7 @@ export class JogosFavoritosComponent implements OnInit, OnDestroy {
   }
 
   private tickLoading() {
-    if (this.progress >= 90) return; 
+    if (this.progress >= 90) return;
     const p = this.progress;
     const delta = p < 15 ? 6 : p < 30 ? 5 : p < 50 ? 4 : p < 70 ? 3 : p < 85 ? 2 : 1;
     this.progress = Math.min(90, p + delta);

@@ -19,6 +19,8 @@ export class AuthService {
   }
 
   async me(): Promise<void> {
+    if (typeof window === 'undefined') return;
+
     const res = await firstValueFrom(
       this.http.get<{ user: User | null }>('/api/auth/me', { withCredentials: true })
     );

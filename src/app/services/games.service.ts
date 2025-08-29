@@ -94,7 +94,10 @@ export class GamesService {
 
   /** Recarrega a lista, aplica favoritos e **ordena** por título. */
   async refresh(): Promise<void> {
-    try { await this.auth.me(); } catch {}
+    if (this.isBrowser) {
+      try { await this.auth.me(); } catch {}
+    }
+
     const logged = !!this.auth.snapshot;
 
     if (!logged) {
@@ -109,17 +112,16 @@ export class GamesService {
     // carregar jogos custom deste usuário
     this.loadCustom();
 
-    // base: custom da usuária + catálogo fixo
     const base = [...this._custom, ...GAMES];
 
-    // favoritos vindos do backend 
-    const favIds = new Set<number>(await this.fetchFavoriteIds());
+    // favoritos vindos do backend (somente no browser)
+    const favIds = new Set<number>(this.isBrowser ? await this.fetchFavoriteIds() : []);
 
     const list = base.map(g => {
       if (this.isServerGame(g.id)) {
         return { ...g, favorite: favIds.has(g.id) };
       }
-      // jogo custom mantém seu favorite local 
+      // jogo custom mantém seu favorite local
       return { ...g };
     });
 
