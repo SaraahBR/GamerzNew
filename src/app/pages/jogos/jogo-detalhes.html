@@ -59,7 +59,7 @@
               </small>
             </td>
 
-            <td [attr.data-label]="'Economia'">{{ (r.cut ?? 0) | number:'1.0-0':'pt-BR' }}%</td>
+            <td [attr.data-label]="'Economia'">{{ r.cut | number:'1.0-0':'pt-BR' }}%</td>
 
             <td [attr.data-label]="'Ação'" class="cta">
               <a [href]="r.url" target="_blank" rel="noopener" class="btn-sec">Comprar</a>

@@ -26,7 +26,9 @@
   </a>
 
   <!-- Sem oferta -->
-  <span #empty class="badge badge--empty" [class.badge--compact]="compact">
-    sem ofertas no momento
-  </span>
+  <ng-template #empty>
+    <span class="badge badge--empty" [class.badge--compact]="compact">
+      sem ofertas no momento
+    </span>
+  </ng-template>
 </ng-template>
