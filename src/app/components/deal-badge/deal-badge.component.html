@@ -1,43 +1,38 @@
-<!-- Carregando -->
-<span *ngIf="loading; else loaded"
-      class="badge skeleton"
-      [class.badge--compact]="compact"
-      aria-hidden="true"></span>
+<ng-container *ngIf="vm$ | async as vm">
+  <!-- SKELETON -->
+  <span *ngIf="vm === undefined"
+        class="badge skeleton"
+        [class.badge--compact]="compact"
+        aria-hidden="true"></span>
 
-<!-- Carregado -->
-<ng-template #loaded>
-  <!-- Com oferta -->
-  <a *ngIf="vm$ | async as vm; else empty"
-     class="badge badge--ok"
-     [class.badge--compact]="compact"
-     [href]="vm.url"
-     target="_blank" rel="noopener"
-     [attr.aria-label]="'Melhor preço: ' +
-       (vm.price | currency:vm.currency:'symbol':'1.2-2':'pt-BR') +
-       ' na ' + vm.store">
-    <span class="from">a&nbsp;partir&nbsp;de</span>
-    <strong class="price">
-      {{ vm.price | currency:vm.currency:'symbol':'1.2-2':'pt-BR' }}
-    </strong>
-    <span class="store">· {{ vm.store }}</span>
+  <ng-container *ngIf="vm !== undefined">
+    <!-- Com oferta -->
+    <a *ngIf="vm; else empty"
+       class="badge badge--ok"
+       [class.badge--compact]="compact"
+       [href]="vm.url"
+       target="_blank" rel="noopener"
+       [attr.aria-label]="'Melhor preço: ' + (vm.price | currency: vm.currency:'symbol':'1.2-2':'pt-BR') + ' na ' + vm.store">
+      <span class="from">a&nbsp;partir&nbsp;de</span>
+      <strong class="price">{{ vm.price | currency: vm.currency:'symbol':'1.2-2':'pt-BR' }}</strong>
+      <span class="store">· {{ vm.store }}</span>
 
-    <span class="tip" role="tooltip">
-      <ng-container *ngIf="vm.regular; else onlyCut">
-        Economia ~{{ vm.cut | number:'1.0-0':'pt-BR' }}%
-        <small class="muted">
-          normal: {{ vm.regular | currency:vm.currency:'symbol':'1.2-2':'pt-BR' }}
-        </small>
-      </ng-container>
-      <ng-template #onlyCut>
-        Desconto ~{{ vm.cut | number:'1.0-0':'pt-BR' }}%
-      </ng-template>
-    </span>
-  </a>
+      <span class="tip" role="tooltip">
+        <ng-container *ngIf="vm.regular; else onlyCut">
+          Economia ~{{ vm.cut | number:'1.0-0':'pt-BR' }}%
+          <small class="muted">normal: {{ vm.regular | currency: vm.currency:'symbol':'1.2-2':'pt-BR' }}</small>
+        </ng-container>
+        <ng-template #onlyCut>
+          Desconto ~{{ vm.cut | number:'1.0-0':'pt-BR' }}%
+        </ng-template>
+      </span>
+    </a>
 
-  <!-- Sem oferta -->
-  <ng-template #empty>
-    <span class="badge badge--empty" [class.badge--compact]="compact">
-      sem ofertas no momento
-    </span>
-  </ng-template>
-</ng-template>
+    <!-- Sem oferta -->
+    <ng-template #empty>
+      <span class="badge badge--empty" [class.badge--compact]="compact">
+        sem ofertas no momento
+      </span>
+    </ng-template>
+  </ng-container>
+</ng-container>

@@ -1,8 +1,7 @@
 import { Component, Input, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { catchError, timeout, finalize, tap } from 'rxjs/operators';
+import { Observable, of, catchError, timeout, startWith, shareReplay } from 'rxjs';
 import { ItadService, ItadOffer } from '../../services/itad.service';
 
 @Component({
@@ -16,19 +15,14 @@ import { ItadService, ItadOffer } from '../../services/itad.service';
 export class DealBadgeComponent implements OnInit {
   /** Título do jogo */
   @Input({ required: true }) title!: string;
-
-  /** URL da Steam (ou appid embutido) */
+  /** URL da Steam (para extrair appid e melhorar o match) */
   @Input() steam?: string;
-
-  /** País preferido; o endpoint já faz fallback para US se BR vier vazio */
+  /** País preferido */
   @Input() country: 'BR' | 'US' = 'BR';
-
-  /** Modo compacto do chip */
+  /** Versão compacta para usar no card da listagem */
   @Input() compact = true;
 
-  vm$: Observable<ItadOffer | null> = of(null);
-
-  loading = true;
+  vm$: Observable<ItadOffer | null | undefined> = of(undefined);
 
   constructor(
     private itad: ItadService,
@@ -36,22 +30,20 @@ export class DealBadgeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // SSR-safe: não dispara HTTP no servidor
     if (!isPlatformBrowser(this.platformId)) {
-      this.loading = false;
       this.vm$ = of(null);
       return;
     }
 
-    const src$ = this.steam
+    const base$ = this.steam
       ? this.itad.bestOfferForGame({ title: this.title, steam: this.steam }, { country: this.country })
       : this.itad.bestOffer(this.title, { country: this.country });
 
-    this.vm$ = src$.pipe(
-      timeout(10_000),                 
-      catchError(() => of(null)),      
-      tap(() => (this.loading = false)),
-      finalize(() => (this.loading = false))
+    this.vm$ = base$.pipe(
+      timeout(10_000),              
+      catchError(() => of(null)),   
+      startWith(undefined),         
+      shareReplay({ bufferSize: 1, refCount: true }) 
     );
   }
 }
