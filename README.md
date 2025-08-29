@@ -15,203 +15,227 @@ O objetivo é oferecer uma **navegação clara** e um **visual coerente** (tema 
 ### Core
 - **Angular (Standalone Components)** – arquitetura sem módulos, leve e moderna  
 - **Angular Router** – navegação entre páginas e rotas dinâmicas (`/jogos/:id`)  
-- **TypeScript** – tipagem estática, mais segurança e produtividade  
-- **SSR / Prerender** – build com renderização no servidor e pré-renderização de rotas (Vercel)
+- **TypeScript** – tipagem estática  
+- **SSR / Prerender (Angular 20 + Vercel)** – renderização no servidor e pré‐render de rotas
+
+### Backend & Dados
+- **Vercel Functions (Node runtime)** – rotas serverless em `api/*`  
+- **PostgreSQL Serverless (Neon)** com **`@neondatabase/serverless`** (conexão HTTP/Fetch)  
+- **Sessões por cookie** (`gn_session`) e utilitários próprios (`api/_http.ts`)  
+- **Favoritos persistidos** no banco e **jogos “custom” por usuário** no **LocalStorage**  
+- **Login com Google (OAuth 2)** – endpoints `/api/auth/google/start` e `/api/auth/google/callback`
 
 ### UI & Tema
 - **CSS puro** com **variáveis globais** (tema rosa nude)  
-- **Layout base**: Header, Main e Footer (componentes reutilizáveis)  
-- **Cards responsivos** e botões com **gradiente rosa**  
-- **Ícone de favorito** (coração SVG) com **animação “pop”** ao favoritar  
-- **Acessibilidade**: `aria-label`, `aria-pressed` no botão de favorito
+- **Cards responsivos**, botões em **gradiente rosa** e **toasts** modernos (estilo “gamer”)  
+- **Ícone de favorito** com animação; botão **Backlog** com estados (adicionado/pendente)
 
-### Formulários & Estado
+### Estado & Formulários
 - **Reactive Forms** (criação de jogos em `/jogos/novo`)  
-- **FormsModule** com **[(ngModel)]** para busca (two-way binding)  
-- **Service com BehaviorSubject** para gerenciar a lista de jogos e favoritos
+- **BehaviorSubject** para catálogo de jogos (+ ordenação alfabética)  
+- **Signals (signal, computed, effect)** no **Backlog** (CRUD em LocalStorage)  
+- **Loader progressivo** para evitar flicker em **/jogos** e **/jogos/favoritos**
+
+### Integração externa (API)
+- **IsThereAnyDeal (ITAD)** – melhor preço por jogo via endpoint serverless com fallback **BR → US**
 
 ### Testes
 - **TestBed** com componentes standalone em `imports`  
-- Testes básicos de criação de componente (ex.: `jogos.spec.ts`)
+- Testes básicos de criação de componente
 
 ---
 
 ## 🕹️ Bio do Projeto
 O **GamerzNew** nasce como um espaço para **descobrir e acompanhar jogos**, mantendo um **catálogo simples**, informações essenciais (gênero, ano, desenvolvedora, publicadora) e atalhos oficiais (Steam).  
-A proposta é evoluir para **integrações reais** (APIs) e recursos como **busca avançada**, **filtros**, **listas personalizadas** e **perfil de usuário** — sem perder a leveza e o foco na experiência.
+A proposta é evoluir para **integrações reais** e recursos como **busca avançada**, **filtros**, **listas personalizadas** e **perfil de usuário** — sem perder a leveza e o foco na experiência.
 
 ---
 
 ## ✨ Funcionalidades
 
-- **Home**  
-  - Destaques com **cards de preview** e botão “Ver detalhes” → encaminha para **/jogos/:id**  
-  - CTA “Ver todos os jogos” → **/jogos**
-
-- **Jogos** (`/jogos`)  
-  - Grid de cards com imagem, descrição e metadados  
-  - **Busca** com `[(ngModel)]` (título, gênero, dev, pub, ano)  
-  - Botões: **Ver Detalhes** (rota interna) e **Ver na Steam** (link externo)  
-  - **Favoritar** com coração (🤍 → 🖤) e **animação “pop”** ao ativar
-
-- **Detalhes do jogo** (`/jogos/:id`)  
-  - Página individual com informações completas (IDs pré-renderizados no build)
-
-- **Favoritos** (`/jogos/favoritos`)  
-  - Lista apenas dos jogos marcados como favoritos
-
-- **Novo Jogo** (`/jogos/novo`)  
-  - **Reactive Form** com validações (mínimo de caracteres, intervalo de ano etc.)  
-  - Gêneros via string separada por vírgulas → `string[]`
-
-- **Sobre** (`/sobre`)  
-  - Propósito do site e **perfil da autora**  
-  - Foto em `public/MinhaFoto.png`  
-  - Rodapé com **“Sarah Hernandes”** (sem “Feito com ♥ em Angular”)
+- **Home**: destaques e CTA para **/jogos**  
+- **Jogos** (`/jogos`): grid com busca, detalhes, link Steam, **favoritar** e **adicionar ao Backlog**  
+- **Detalhes** (`/jogos/:id`): infos completas + **selo de preço (ITAD)**  
+- **Favoritos** (`/jogos/favoritos`): só os marcados como favoritos (com loader progressivo)  
+- **Novo Jogo** (`/jogos/novo`): Reactive Form; gêneros em string → `string[]`  
+- **Backlog** (`/backlog`): CRUD local com **Signals**, agrupamento por status e ordenação  
+- **Login** (`/login`): email simples + **Google OAuth**; sessões via cookie
 
 ---
 
-## 🧱 Fluxos de Dados & Decorators
+## 🔌 Integração de Preços (ITAD)
 
-- **Interpolação**: `{{ game.title }}`, `{{ year }}` etc.  
-- **Unidirecional (`@Input`)**: `GameCardComponent` recebe `game` e `favorite` do pai  
-- **Bidirecional custom (`@Output` + EventEmitter)**:  
-  - `GameCardComponent` emite `favoriteChange`  
-  - Uso no pai:  
-    - em `/jogos` e `/jogos/favoritos`: `[favorite]="g.favorite ?? false" (favoriteChange)="updateFavorite(g, $event)"`  
-- **Two-way com Forms**: `[(ngModel)]="search"` na busca de jogos
+**Fluxo**  
+1. Front chama `GET /api/itad?q={titulo}`.  
+2. A função serverless faz:
+   - `GET /games/lookup/v1` → ID do jogo (UUID)  
+   - `POST /games/overview/v2` → melhor preço e histórico  
+3. Preferência por **BR**; fallback automático para **US**.  
+4. O componente `DealBadgeComponent` exibe “a partir de …” com loja e valor.
 
----
+**Variáveis**  
+`ITAD_API_KEY=suachave`
 
-## 🎨 Tema (variáveis CSS)
-
-As variáveis estão centralizadas (rosa nude):
-
-```css
-:root{
-  --bg:#ffffff;
-  --text:#111827;
-  --muted:#6b7280;
-
-  /* Tema rosa nude */
-  --rosa:#e4a4b4;
-  --rosa-escuro:#c97a8c;
-  --rosa-clarinho:#fbe7ec;
-}
-```
-
-Todos os componentes utilizam `var(--rosa*)` para cores, bordas e efeitos.
+**Uso**  
+- Componente: `<app-deal-badge [title]="game!.title"></app-deal-badge>`  
+- Teste direto: `/api/itad?q=Hades` (opcional `&country=US`)
 
 ---
 
-## 📂 Estrutura de Pastas (estado atual)
+## 🔐 Autenticação & Sessões
+
+- **Endpoints**:
+  - `GET /api/auth/me` – retorna usuária atual
+  - `POST /api/auth/login` – email simples (debug/local)
+  - `POST /api/auth/logout`
+  - `GET /api/auth/google/start` – redireciona para o Google
+  - `GET /api/auth/google/callback` – troca code por token, **upsert de usuário** no Neon e cria sessão
+- **Cookies**: `gn_session` (HttpOnly, `SameSite=Lax`, `Secure`)
+
+---
+
+## 💾 Catálogo, Favoritos & Jogos Customizados
+
+- **Catálogo base**: arquivo estático `GAMES`  
+- **Favoritos**:
+  - Jogos do catálogo: persistidos no Neon via `/api/games/favorite`
+  - Jogos customizados (criados pelo usuário): sinalizados localmente e persistidos em **LocalStorage**
+- **Ordenação alfabética**: aplicada após cada refresh  
+- **Heurística de sessão**: evita “piscada” de login com leitura de cookie (`hasSessionCookie()`)
+
+---
+
+## 📂 Estrutura de Pastas (unificada)
 
 ```bash
 GamerzNew/
+├── api/
+│   ├── _db.ts                 # conexão Neon (neon(DATABASE_URL))
+│   ├── _http.ts               # getBaseUrl, parse/setCookie, json, etc.
+│   ├── itad.ts                # integração IsThereAnyDeal
+│   ├── auth/
+│   │   ├── login.ts
+│   │   ├── logout.ts
+│   │   ├── me.ts
+│   │   └── google/
+│   │       ├── start.ts
+│   │       └── callback.ts
+│   └── games/
+│       ├── index.ts           # (se usado) listagem/CRUD serverless
+│       ├── favorites.ts       # GET ids favoritos do usuário
+│       └── favorite.ts        # POST { id, value } – marca/desmarca
+│
 ├── public/
-│   ├── MinhaFoto.png                 # foto exibida em /sobre
-│   └── favicon.ico                   # logo do projeto
+│   ├── logo.png
+│   ├── Sarah-Hernandes.jpg
+│   └── favicon.ico
 │
 └── src/
     ├── app/
     │   ├── components/
-    │   │   ├── header/
-    │   │   │   ├── header.component.ts
-    │   │   │   ├── header.component.html
-    │   │   │   └── header.component.css
-    │   │   ├── footer/
-    │   │   │   ├── footer.component.ts
-    │   │   │   ├── footer.component.html
-    │   │   │   └── footer.component.css
-    │   │   └── game-card/            # card reutilizável com @Input/@Output
+    │   │   ├── header/...
+    │   │   ├── footer/...
+    │   │   ├── toasts/...                 # container + serviço visual
+    │   │   └── game-card/
     │   │       ├── game-card.component.ts
     │   │       ├── game-card.component.html
     │   │       └── game-card.component.css
-    │   │
+    │   ├── features/
+    │   │   └── backlog/
+    │   │       ├── backlog.store.ts       # Signals: signal/computed/effect
+    │   │       ├── backlog.page.ts
+    │   │       ├── backlog.page.html
+    │   │       └── backlog.page.css
+    │   ├── guards/
+    │   │   └── auth.guard.ts
     │   ├── pages/
-    │   │   ├── home/
-    │   │   │   ├── home.component.ts
-    │   │   │   ├── home.component.html
-    │   │   │   └── home.component.css
-    │   │   ├── jogos/
-    │   │   │   ├── games.data.ts            # base estática com jogos
-    │   │   │   ├── jogos.component.ts
-    │   │   │   ├── jogos.component.html
-    │   │   │   ├── jogos.component.css
-    │   │   │   ├── jogo-detalhes.component.ts
-    │   │   │   ├── jogo-detalhes.component.html
-    │   │   │   ├── jogos-favoritos.component.ts
-    │   │   │   ├── jogos-favoritos.component.html
-    │   │   │   ├── jogos-novo.component.ts  # Reactive Form
-    │   │   │   └── jogos-novo.component.html
-    │   │   └── sobre/
-    │   │       ├── sobre.component.ts
-    │   │       ├── sobre.component.html
-    │   │       └── sobre.component.css
-    │   │
+    │   │   ├── home/...
+    │   │   └── jogos/
+    │   │       ├── games.data.ts
+    │   │       ├── jogos.ts|html|css
+    │   │       ├── jogos-favoritos.ts|html|css
+    │   │       ├── jogos-novo.ts|html|css
+    │   │       ├── jogo-detalhes.ts|html|css
+    │   │       └── login/...
     │   ├── services/
-    │   │   └── games.service.ts      # BehaviorSubject, addGame, setFavorite
-    │   │
-    │   ├── app.ts                    # App root (RouterOutlet + Header/Footer)
-    │   ├── app.html
-    │   ├── app.css
-    │   ├── app.routes.ts             # rotas da aplicação (home, jogos, etc.)
-    │   ├── app.config.ts             # provideRouter + hydration
-    │   └── app.routes.server.ts      # SSR/Prerender (getPrerenderParams)
-    │
+    │   │   ├── auth.service.ts
+    │   │   ├── games.service.ts
+    │   │   ├── itad.service.ts
+    │   │   └── shared/ui/toast.service.ts
+    │   ├── app.ts|html|css
+    │   ├── app.routes.ts
+    │   ├── app.config.ts
+    │   └── app.routes.server.ts           # SSR/Prerender params
     ├── index.html
-    └── styles.css                    # variáveis e resets globais
+    └── styles.css
+```
+
+---
+
+## 🔧 Variáveis de Ambiente
+
+Configure localmente (`.env`, não commitar) ou na Vercel:
+
+```
+# Banco (Neon)
+DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/DB?sslmode=require
+
+# Google OAuth
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+
+# ITAD
+ITAD_API_KEY=...
+
+# Base URL fallback (opcional p/ dev)
+APP_URL=http://localhost:3000
 ```
 
 ---
 
 ## ⚙️ SSR / Prerender
 
-- O projeto utiliza **prerender** para rotas estáticas e para **/jogos/:id** via `getPrerenderParams`, que gera as páginas com base nos IDs do `GAMES`.  
-- Arquivo: `src/app/app.routes.server.ts`  
-- Alternativamente, é possível deixar `/jogos/:id` somente como **Server** (`RenderMode.Server`) se a lista for muito grande.
-
----
-
-## 🧪 Testes
-
-- Exemplos com **TestBed** usando **standalone components** (entrando em `imports`, não `declarations`)  
-- Corrigido `jogos.spec.ts` para importar `./jogos.component` corretamente
+- Prerender para rotas estáticas e **/jogos/:id** via `getPrerenderParams`  
+- Endpoints sensíveis (auth/games) rodam **apenas** em runtime (sem SSR de chamadas externas)  
+- Loader progressivo evita travas/timeout em rotas como **/jogos/favoritos**
 
 ---
 
 ## ▶️ Como rodar localmente
 
 ```bash
-# Instalar dependências
 npm install
 
-# Rodar em desenvolvimento
+# Angular puro
+npm start
+# ou
 ng serve -o
 
-# Rodar testes (opcional)
-ng test
-
-# Build de produção
-ng build
+# Angular + rotas serverless (recomendado para testar ITAD/auth/favoritos)
+vercel dev
 ```
 
 ---
 
 ## ☁️ Deploy (Vercel)
 
-- Projeto configurado para **SSR/Prerender**  
-- Erros resolvidos envolvendo **prerender de rotas dinâmicas**  
-- Ao subir para `main`, a Vercel executa `npm run build` e publica
+- Ao subir no `main`, a Vercel executa `npm run build` e publica
+- Configure as **Environment Variables** (acima) no projeto da Vercel
 
 ---
 
-## 🧭 Roadmap (próximos passos)
+## 🧪 Testes
 
-- Integração com **API de jogos** (ex.: IGDB/RAWG)  
-- **Filtro avançado** por plataforma, gênero e tags  
-- **Autenticação** + **listas do usuário** (jogados, jogando, quero jogar)  
-- **PWA** (offline, add-to-home-screen)  
+- Exemplos com **TestBed** usando **standalone components** em `imports`  
+- Ajustes de paths e imports para Angular 20
+
+---
+
+## 🗺️ Roadmap
+
+- Integração com API pública de jogos (IGDB/RAWG)  
+- Filtros avançados (plataforma/gênero/tags)  
+- PWA (offline + A2HS)
 
 ---
 
@@ -221,7 +245,7 @@ ng build
   <img src="public/Sarah-Hernandes.jpg" width="140" style="border-radius: 50%;"/>
 </p>
 
-**Sarah Hernandes** – Desenvolvedora Full Stack  
+**Sarah Hernandes** – Desenvolvedora Full Stack
 
 ---
 
