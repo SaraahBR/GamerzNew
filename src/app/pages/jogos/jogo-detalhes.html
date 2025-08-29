@@ -1,15 +1,19 @@
 <section class="detalhes" *ngIf="game; else notfound">
+  <!-- Banner/Capa -->
   <div class="banner">
     <img [src]="game!.img" [alt]="'Capa de ' + game!.title" />
   </div>
 
+  <!-- Título -->
   <h1>{{ game!.title }}</h1>
 
-  <!-- Badge de preço (tooltip com economia) -->
+  <!-- Badge com melhor preço (ITAD) -->
   <app-deal-badge [title]="game!.title"></app-deal-badge>
 
+  <!-- Descrição -->
   <p class="desc">{{ game!.description }}</p>
 
+  <!-- Metadados -->
   <ul class="meta">
     <li><strong>Gênero:</strong> {{ game!.genre.join(', ') }}</li>
     <li><strong>Ano:</strong> {{ game!.year }}</li>
@@ -17,12 +21,15 @@
     <li><strong>Publicadora:</strong> {{ game!.pub }}</li>
   </ul>
 
+  <!-- Ações -->
   <div class="actions">
     <a routerLink="/jogos" class="btn-sec">Voltar</a>
-    <a class="btn-gradiente" [href]="game!.steam" target="_blank" rel="noopener noreferrer">Ver na Steam</a>
+    <a class="btn-gradiente" [href]="game!.steam" target="_blank" rel="noopener noreferrer">
+      Ver na Steam
+    </a>
   </div>
 
-  <!-- ======= Acordeão de ofertas ======= -->
+  <!-- ================== Acordeão de ofertas (ITAD) ================== -->
   <details class="deals-acc">
     <summary>
       <span>Melhores preços agora</span>
@@ -39,20 +46,32 @@
             <th></th>
           </tr>
         </thead>
+
         <tbody>
           <tr *ngFor="let r of rows">
             <td [attr.data-label]="'Loja'">{{ r.store }}</td>
-            <td [attr.data-label]="'Preço'">{{ r.priceBRL | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</td>
-            <td [attr.data-label]="'Economia'">{{ r.savingsPct | number:'1.0-0':'pt-BR' }}%</td>
+
+            <!-- Preço já vem com moeda da ITAD (ex.: BRL) -->
+            <td [attr.data-label]="'Preço'">
+              {{ r.price | currency:r.currency:'symbol':'1.2-2':'pt-BR' }}
+              <small class="muted" *ngIf="r.regular">
+                (normal: {{ r.regular | currency:r.currency:'symbol':'1.2-2':'pt-BR' }})
+              </small>
+            </td>
+
+            <td [attr.data-label]="'Economia'">{{ r.cut | number:'1.0-0':'pt-BR' }}%</td>
+
             <td [attr.data-label]="'Ação'" class="cta">
               <a [href]="r.url" target="_blank" rel="noopener" class="btn-sec">Comprar</a>
             </td>
           </tr>
+
           <tr *ngIf="rows.length === 0">
             <td colspan="4" class="muted">Nenhuma oferta encontrada agora.</td>
           </tr>
         </tbody>
       </table>
+
       <ng-template #loadingDeals>
         <p class="muted">Buscando ofertas…</p>
       </ng-template>
