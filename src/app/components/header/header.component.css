@@ -1,5 +1,5 @@
 :root {
-  --rosa: #e91e63; /* rosa da sua logo */
+  --rosa: #e91e63;
   --rosa-escuro: #ad1457;
   --fundo: #fff;
   --texto: #111;
@@ -33,19 +33,13 @@
   font-size: 1.25rem;
 }
 
-.logo {
-  height: 40px;
-  width: auto;
-}
-
-.brand-text {
-  font-size: 1.3rem;
-  font-weight: bold;
-}
+.logo { height: 40px; width: auto; }
+.brand-text { font-size: 1.3rem; font-weight: bold; }
 
 .nav {
   display: flex;
   gap: 14px;
+  align-items: center;
 }
 
 .nav a {
@@ -66,3 +60,27 @@
   color: var(--rosa-escuro);
   font-weight: bold;
 }
+
+.spacer {
+  display: inline-block;
+  width: 12px;
+}
+
+.user-pill {
+  background: rgba(255,255,255,.15);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.btn-logout {
+  background: #fff;
+  color: var(--rosa-escuro);
+  border: 1px solid var(--rosa-escuro);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .2s ease, background .2s ease;
+}
+.btn-logout:hover { background: var(--rosa-escuro); color: #fff; transform: translateY(-2px); }

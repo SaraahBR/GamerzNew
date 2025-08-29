@@ -1,0 +1,82 @@
+<section class="login">
+  <h1>Login</h1>
+  <p class="hint">Entre para salvar seus favoritos e os jogos adicionados na sua conta.</p>
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="submit()"
+    novalidate
+    [attr.aria-busy]="submitting ? 'true' : 'false'">
+
+    <label>
+      <span>Nome (opcional)</span>
+      <input type="text" formControlName="name" autocomplete="name" />
+    </label>
+
+    <label>
+      <span>E-mail</span>
+      <input
+        type="email"
+        formControlName="email"
+        required
+        inputmode="email"
+        autocomplete="email"
+        [attr.aria-invalid]="form.get('email')?.touched && form.get('email')?.invalid ? 'true' : null"
+        [attr.aria-describedby]="form.get('email')?.touched && form.get('email')?.invalid ? 'email-error' : null"
+      />
+      <small
+        id="email-error"
+        class="error"
+        *ngIf="form.get('email')?.touched && form.get('email')?.invalid">
+        <ng-container *ngIf="form.get('email')?.hasError('required'); else emailInvalid">
+          Informe seu e-mail.
+        </ng-container>
+        <ng-template #emailInvalid>E-mail inválido.</ng-template>
+      </small>
+    </label>
+
+    <label>
+      <span>Senha</span>
+      <input
+        type="password"
+        formControlName="password"
+        required
+        minlength="3"
+        autocomplete="current-password"
+        [attr.aria-invalid]="form.get('password')?.touched && form.get('password')?.invalid ? 'true' : null"
+        [attr.aria-describedby]="form.get('password')?.touched && form.get('password')?.invalid ? 'password-error' : null"
+      />
+      <small
+        id="password-error"
+        class="error"
+        *ngIf="form.get('password')?.touched && form.get('password')?.invalid">
+        <ng-container *ngIf="form.get('password')?.hasError('required'); else passMin">
+          Informe sua senha.
+        </ng-container>
+        <ng-template #passMin>A senha deve ter pelo menos 3 caracteres.</ng-template>
+      </small>
+    </label>
+
+    <button type="submit" class="btn-gradiente" [disabled]="submitting || form.invalid">
+      {{ submitting ? 'Entrando...' : 'Entrar / Criar conta' }}
+    </button>
+
+    <p *ngIf="error" class="error" role="alert">{{ error }}</p>
+  </form>
+
+  <hr />
+
+  <div class="social-login">
+    <p>ou</p>
+    <button
+      type="button"
+      class="btn-sec"
+      (click)="google()"
+      aria-label="Entrar com Google">
+      Entrar com Google
+    </button>
+    <noscript>
+      <p><a class="btn-sec" href="/api/auth/google/start">Entrar com Google</a></p>
+    </noscript>
+  </div>
+</section>

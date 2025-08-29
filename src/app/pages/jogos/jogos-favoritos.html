@@ -1,0 +1,48 @@
+<section class="fav">
+  <!-- Overlay de carregamento -->
+  <div class="loader" *ngIf="loading">
+    <div class="panel" role="status" aria-live="polite">
+      <div class="logo">💖</div>
+      <h2>Carregando seus favoritos</h2>
+      <p class="tip">Sincronizando catálogo e preferências…</p>
+
+      <div class="bar">
+        <div class="fill" [style.width.%]="progress"></div>
+      </div>
+      <div class="pct">{{ progress }}%</div>
+    </div>
+  </div>
+
+  <h1>Favoritos</h1>
+
+  <div *ngIf="loading" class="skeleton" aria-hidden="true"></div>
+
+  <!-- Quando NÃO estiver logada (e não estiver carregando), mostra o aviso + CTA de login -->
+  <div *ngIf="!loading && !logged; else conteudo" class="login-hint">
+    <h2>Faça login para ver seus favoritos</h2>
+    <p>Entre na sua conta para salvar e visualizar os jogos que você ama.</p>
+
+    <a
+      class="btn-login"
+      routerLink="/login"
+      [queryParams]="{ from: '/jogos/favoritos', reason: 'login_required' }"
+    >Fazer login</a>
+  </div>
+
+  <!-- Conteúdo normal quando logada -->
+  <ng-template #conteudo>
+    <div class="grid" *ngIf="favorites.length; else vazio">
+      <app-game-card
+        *ngFor="let g of favorites"
+        [game]="g"
+        [favorite]="g.favorite ?? false"
+        (favoriteChange)="updateFavorite(g, $event)"
+      >
+      </app-game-card>
+    </div>
+
+    <ng-template #vazio>
+      <p>Você ainda não favoritou nenhum jogo.</p>
+    </ng-template>
+  </ng-template>
+</section>

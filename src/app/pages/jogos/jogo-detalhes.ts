@@ -7,8 +7,8 @@ import { GAMES, Game } from './games.data';
   selector: 'app-jogo-detalhes',
   standalone: true,
   imports: [CommonModule, RouterLink],
-  templateUrl: './jogo-detalhes.component.html',
-  styleUrls: ['./jogo-detalhes.component.css']
+  templateUrl: './jogo-detalhes.html',
+  styleUrls: ['./jogo-detalhes.css']
 })
 export class JogoDetalhesComponent {
   game?: Game;

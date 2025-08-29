@@ -9,6 +9,21 @@
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
       <a routerLink="/jogos" routerLinkActive="active">Jogos</a>
       <a routerLink="/sobre" routerLinkActive="active">Sobre</a>
+
+      <span class="spacer" aria-hidden="true"></span>
+
+      <!-- Quando logada ele mostra nome e botão Sair -->
+      <ng-container *ngIf="user$ | async as user; else guestLinks">
+        <span class="user-pill" aria-label="Usuária logada">
+          {{ user.name || user.email }}
+        </span>
+        <button class="btn-logout" type="button" (click)="logout()">Sair</button>
+      </ng-container>
+
+      <!-- Quando convidada ele encaminha para um link de login -->
+      <ng-template #guestLinks>
+        <a routerLink="/login" routerLinkActive="active">Login</a>
+      </ng-template>
     </nav>
   </div>
 </header>

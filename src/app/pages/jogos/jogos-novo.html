@@ -36,6 +36,12 @@
       </label>
     </div>
 
-    <button type="submit" class="btn-gradiente">Salvar</button>
+    <button
+      type="submit"
+      class="btn-gradiente"
+      [disabled]="form.invalid || submitting"
+    >
+      {{ submitting ? 'Salvando…' : 'Salvar' }}
+    </button>
   </form>
 </section>

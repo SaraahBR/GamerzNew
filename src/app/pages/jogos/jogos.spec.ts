@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { JogosComponent } from './jogos.component';
+import { JogosComponent } from './jogos';
 import { GamesService } from '../../services/games.service';
 
 describe('JogosComponent', () => {

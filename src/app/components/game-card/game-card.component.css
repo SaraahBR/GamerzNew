@@ -118,6 +118,38 @@
   stroke-linejoin: round;
 }
 
+/* botão backlog */
+.btn-backlog{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:8px 12px; border-radius:10px; font-weight:700;
+  background: transparent; color: var(--rosa-escuro);
+  border: 2px solid var(--rosa-escuro);
+  cursor: pointer; transition: transform .12s ease, box-shadow .12s ease, background .12s ease, color .12s ease;
+}
+.btn-backlog:hover{ transform: translateY(-1px); background: rgba(255, 105, 130, .07); }
+.btn-backlog:active{ transform: translateY(0); }
+
+.btn-backlog .ico{
+  width:16px; height:16px; border-radius:4px; display:inline-block;
+  background: radial-gradient(circle at 30% 30%, var(--rosa) 0 40%, transparent 45%);
+  opacity:.85; transition: transform .2s ease;
+}
+.btn-backlog:hover .ico{ transform: scale(1.08); }
+
+/* quando já está no backlog: muda cor e mostra o “+ Backlog” */
+.btn-backlog.added{
+  background: linear-gradient(135deg, var(--rosa), var(--rosa-escuro));
+  color:#fff; border-color: transparent;
+  box-shadow: 0 8px 18px rgba(255,105,130,.25);
+}
+.btn-backlog.added .ico{
+  background: radial-gradient(circle at 30% 30%, #fff 0 40%, transparent 45%);
+  opacity: .95;
+}
+
+.actions { display:flex; gap:10px; align-items:center; flex-wrap: wrap; }
+
+
 /* Favoritado: preenchido preto */
 .fav-icon.is-active path {
   fill: #d03569;

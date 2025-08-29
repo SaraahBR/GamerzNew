@@ -1,4 +1,18 @@
 <section class="jogos">
+  <!-- Overlay de carregamento -->
+  <div class="loader" *ngIf="loading">
+    <div class="panel" role="status" aria-live="polite">
+      <div class="logo">🎮</div>
+      <h2>Carregando catálogo</h2>
+      <p class="tip">Buscando jogos e favoritos…</p>
+
+      <div class="bar">
+        <div class="fill" [style.width.%]="progress"></div>
+      </div>
+      <div class="pct">{{ progress }}%</div>
+    </div>
+  </div>
+
   <header class="toolbar">
     <h1>Jogos</h1>
     <div class="actions">
@@ -6,6 +20,7 @@
              [(ngModel)]="search" (ngModelChange)="onSearchChange()" />
       <a routerLink="/jogos/novo" class="btn-gradiente">+ Novo</a>
       <a routerLink="/jogos/favoritos" class="btn-sec">Favoritos</a>
+      <a class="top-btn top-btn--hollow" routerLink="/backlog">Backlog</a>
     </div>
   </header>
 

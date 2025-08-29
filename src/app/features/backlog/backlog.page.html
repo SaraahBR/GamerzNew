@@ -1,0 +1,94 @@
+<section class="backlog">
+  <header class="toolbar">
+    <div class="title">
+      <h1>Backlog</h1>
+      <small class="counter">{{ total() }} item(s)</small>
+    </div>
+  </header>
+
+  <!-- Formulário de novo item -->
+  <form [formGroup]="form" (ngSubmit)="submit()" class="grid new-item">
+    <label class="field">
+      <span class="label">Título</span>
+      <input placeholder="Título" formControlName="title" />
+    </label>
+
+    <label class="field">
+      <span class="label">Plataforma</span>
+      <input placeholder="Plataforma" formControlName="platform" />
+    </label>
+
+    <label class="field">
+      <span class="label">Imagem (URL)</span>
+      <input placeholder="https://..." formControlName="img" />
+    </label>
+
+    <label class="field">
+      <span class="label">Prioridade</span>
+      <select formControlName="priority">
+        <option value="alta">Prioridade: Alta</option>
+        <option value="media">Prioridade: Média</option>
+        <option value="baixa">Prioridade: Baixa</option>
+      </select>
+    </label>
+
+    <label class="field">
+      <span class="label">Status</span>
+      <select formControlName="status">
+        <option value="pendente">Pendente</option>
+        <option value="jogando">Jogando</option>
+        <option value="zerado">Zerado</option>
+        <option value="dropado">Dropado</option>
+      </select>
+    </label>
+
+    <label class="field full">
+      <span class="label">Notas</span>
+      <textarea rows="2" placeholder="Notas" formControlName="notes"></textarea>
+    </label>
+
+    <button type="submit" class="btn">Adicionar</button>
+  </form>
+
+  <!-- Lista de itens -->
+  <ul class="list">
+    <li class="item" *ngFor="let it of items()">
+      <!-- thumb -->
+      <img *ngIf="it.img" [src]="it.img" [alt]="it.title" class="thumb" />
+
+      <div class="info">
+        <div class="row">
+          <strong class="title">{{ it.title }}</strong>
+          <span
+            class="badge"
+            [class.pendente]="it.status === 'pendente'"
+            [class.jogando]="it.status === 'jogando'"
+            [class.zerado]="it.status === 'zerado'"
+            [class.dropado]="it.status === 'dropado'">
+            {{ it.status }}
+          </span>
+        </div>
+
+        <div class="meta">
+          <span class="tag hollow" *ngIf="it.platform">{{ it.platform }}</span>
+          <span class="tag hollow" *ngIf="it.priority">Prioridade: {{ it.priority }}</span>
+          <span class="muted">Adicionado {{ it.createdAt | date:'dd/MM/yyyy, HH:mm' }}</span>
+        </div>
+
+        <p class="notes" *ngIf="it.notes">{{ it.notes }}</p>
+
+        <div class="actions">
+          <button type="button" (click)="setStatus(it.id, 'pendente')" class="chip">Pendente</button>
+          <button type="button" (click)="setStatus(it.id, 'jogando')"  class="chip">Jogando</button>
+          <button type="button" (click)="setStatus(it.id, 'zerado')"   class="chip">Zerado</button>
+          <button type="button" (click)="setStatus(it.id, 'dropado')"  class="chip">Dropado</button>
+          <button type="button" class="danger" (click)="remove(it.id)">Excluir</button>
+        </div>
+      </div>
+    </li>
+  </ul>
+
+  <footer class="footer">
+    <button class="ghost" type="button" (click)="clear()">Limpar tudo</button>
+  </footer>
+</section>
