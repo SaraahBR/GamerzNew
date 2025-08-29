@@ -17,7 +17,7 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink, GameCardComponent],
   templateUrl: './jogos.html',
-  styleUrls: ['./jogos.css']
+  styleUrls: ['./jogos.css'],
 })
 export class JogosComponent implements OnInit, OnDestroy {
   search = '';
@@ -29,18 +29,25 @@ export class JogosComponent implements OnInit, OnDestroy {
   // LOADER
   loading = true;
   progress = 0;
-  private timer?: any;
-  private loadToken = 0;
+
+  /** controles de concorrência do loader */
+  private cycle = 0; 
+  private timer: any | null = null; 
+  private capTimeout: any | null = null; 
 
   constructor(
     private gamesSvc: GamesService,
     private toasts: ToastService,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private auth: AuthService,
+    private auth: AuthService
   ) {}
 
   ngOnInit() {
-    this.sub = this.gamesSvc.games$.subscribe(list => this.applyFilter(list));
+    // fecha o loader assim que **a primeira lista** chegar
+    this.sub = this.gamesSvc.games$.subscribe((list) => {
+      this.applyFilter(list);
+      if (this.loading) this.completeLoading(this.cycle);
+    });
 
     if (isPlatformBrowser(this.platformId)) {
       const hasCache =
@@ -49,28 +56,32 @@ export class JogosComponent implements OnInit, OnDestroy {
         this.gamesSvc.loadedOnce;
 
       if (hasCache) {
+        // já tem algo para mostrar: oculta overlay e faz refresh “silencioso”
         this.loading = false;
         this.progress = 100;
-        // atualiza em background, sem travar a UI
         this.gamesSvc.refresh().catch(() => {});
       } else {
-        // primeira visita: mostra loader e amarra no token
-        const t = this.startLoading();
-        this.gamesSvc.refresh()
+        // primeira visita: exibe loader e espera a **primeira emissão**
+        this.startLoading();
+        this.gamesSvc
+          .refresh()
           .catch(() => {})
-          .finally(() => this.completeLoading(t));
+          .finally(() => {});
       }
 
-      // ao trocar usuário (login/logout), força novo ciclo de loading
+      // login/logout (troca de usuária): um novo ciclo
       this.lastUserId = this.auth.snapshot?.id ?? null;
-      this.subAuth = this.auth.user$.subscribe(u => {
+      this.subAuth = this.auth.user$.subscribe((u) => {
         const cur = u?.id ?? null;
         if (cur !== this.lastUserId) {
           this.lastUserId = cur;
-          const t = this.startLoading();
-          this.gamesSvc.refresh()
+          this.startLoading();
+          this.gamesSvc
+            .refresh()
             .catch(() => {})
-            .finally(() => this.completeLoading(t));
+            .finally(() => {
+             
+            });
         }
       });
     } else {
@@ -81,71 +92,107 @@ export class JogosComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.sub?.unsubscribe();
     this.subAuth?.unsubscribe();
-    if (this.timer) clearInterval(this.timer);
+    this.clearTimers();
   }
 
-  onSearchChange() { this.applyFilter(this.gamesSvc.snapshot); }
+  onSearchChange() {
+    this.applyFilter(this.gamesSvc.snapshot);
+  }
 
   private applyFilter(list: Game[]) {
     const q = this.search.trim().toLowerCase();
-    this.games = !q ? list : list.filter(g =>
-      g.title.toLowerCase().includes(q) ||
-      g.genre.join(' ').toLowerCase().includes(q) ||
-      g.dev.toLowerCase().includes(q) ||
-      g.pub.toLowerCase().includes(q) ||
-      String(g.year).includes(q)
-    );
+    this.games = !q
+      ? list
+      : list.filter(
+          (g) =>
+            g.title.toLowerCase().includes(q) ||
+            g.genre.join(' ').toLowerCase().includes(q) ||
+            g.dev.toLowerCase().includes(q) ||
+            g.pub.toLowerCase().includes(q) ||
+            String(g.year).includes(q)
+        );
   }
 
-  // ---------- Loader ----------
-  private startLoading(): number {
-    if (this.timer) clearInterval(this.timer);
-    const token = ++this.loadToken;
+  // ---------------------- Loader ----------------------
+  private startLoading() {
+    this.cycle++;
+    const my = this.cycle;
 
     this.loading = true;
     this.progress = 0;
 
+    this.clearTimers();
+
+    // barra vai até 90% enquanto espera a primeira lista
     this.timer = setInterval(() => {
-      if (token !== this.loadToken) return;
-      if (this.progress >= 90) return;
+      if (this.cycle !== my) return;
       const p = this.progress;
+      if (p >= 90) return;
       const delta = p < 15 ? 6 : p < 30 ? 5 : p < 50 ? 4 : p < 70 ? 3 : p < 85 ? 2 : 1;
       this.progress = Math.min(90, p + delta);
     }, 120);
 
-    return token;
+    // hard cap de segurança (8s): se algo der MUITO errado, fecha
+    this.capTimeout = setTimeout(() => {
+      if (this.cycle === my) this.forceClose();
+    }, 8000);
   }
 
   private async completeLoading(token: number) {
-    if (token !== this.loadToken) return;
+    if (token !== this.cycle) return;
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
 
-    const run = () => new Promise<void>(resolve => {
+    await new Promise<void>((resolve) => {
       const fin = setInterval(() => {
-        if (token !== this.loadToken) { clearInterval(fin); resolve(); return; }
-        this.progress += 4;
+        this.progress += 6;
         if (this.progress >= 100) {
-          this.progress = 100;
           clearInterval(fin);
           resolve();
         }
-      }, 40);
+      }, 30);
     });
 
-    await run();
-
-    if (token === this.loadToken) {
-      if (this.timer) { clearInterval(this.timer); this.timer = undefined; }
-      setTimeout(() => { if (token === this.loadToken) this.loading = false; }, 180);
+    if (token !== this.cycle) return;
+    this.loading = false;
+    if (this.capTimeout) {
+      clearTimeout(this.capTimeout);
+      this.capTimeout = null;
     }
   }
+
+  private forceClose() {
+    this.clearTimers();
+    this.progress = 100;
+    this.loading = false;
+  }
+
+  private clearTimers() {
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+    if (this.capTimeout) {
+      clearTimeout(this.capTimeout);
+      this.capTimeout = null;
+    }
+  }
+  // -----------------------------------------------------------
 
   async updateFavorite(game: Game, value: boolean) {
     try {
       await this.gamesSvc.setFavorite(game.id, value);
-      this.toasts.success(value ? 'Adicionado aos favoritos.' : 'Removido dos favoritos.', { timeout: 2200 });
+      this.toasts.success(value ? 'Adicionado aos favoritos.' : 'Removido dos favoritos.', {
+        timeout: 2200,
+      });
     } catch (e: any) {
       if (e?.code === 'login_required') {
-        this.toasts.danger('Entre na sua conta para favoritar jogos.', { title: 'Login necessário', timeout: 4500 });
+        this.toasts.danger('Entre na sua conta para favoritar jogos.', {
+          title: 'Login necessário',
+          timeout: 4500,
+        });
       } else {
         this.toasts.danger('Não foi possível atualizar o favorito.', { title: 'Atenção' });
       }
