@@ -56,7 +56,6 @@ export class JogosComponent implements OnInit, OnDestroy {
         this.gamesSvc.loadedOnce;
 
       if (hasCache) {
-        // já tem algo para mostrar: oculta overlay e faz refresh “silencioso”
         this.loading = false;
         this.progress = 100;
         this.gamesSvc.refresh().catch(() => {});
@@ -69,7 +68,7 @@ export class JogosComponent implements OnInit, OnDestroy {
           .finally(() => {});
       }
 
-      // login/logout (troca de usuária): um novo ciclo
+      // login/logout (troca de usuário): um novo ciclo
       this.lastUserId = this.auth.snapshot?.id ?? null;
       this.subAuth = this.auth.user$.subscribe((u) => {
         const cur = u?.id ?? null;
@@ -79,9 +78,7 @@ export class JogosComponent implements OnInit, OnDestroy {
           this.gamesSvc
             .refresh()
             .catch(() => {})
-            .finally(() => {
-             
-            });
+            .finally(() => {});
         }
       });
     } else {
@@ -182,6 +179,14 @@ export class JogosComponent implements OnInit, OnDestroy {
   // -----------------------------------------------------------
 
   async updateFavorite(game: Game, value: boolean) {
+    if (!this.auth.snapshot) {
+      this.toasts.danger('Entre na sua conta para favoritar jogos.', {
+        title: 'Login necessário',
+        timeout: 4500,
+      });
+      return;
+    }
+
     try {
       await this.gamesSvc.setFavorite(game.id, value);
       this.toasts.success(value ? 'Adicionado aos favoritos.' : 'Removido dos favoritos.', {

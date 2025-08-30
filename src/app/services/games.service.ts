@@ -118,7 +118,6 @@ export class GamesService {
         favorite: !!x.favorite,
       }));
 
-      // Se a sua API começar a retornar itadId aqui, grava no cache leve (não quebra se não vier)
       try {
         for (const x of items) {
           const t = typeof x?.title === 'string' ? x.title : null;

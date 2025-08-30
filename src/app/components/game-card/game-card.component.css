@@ -5,8 +5,11 @@
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 8px 18px rgba(0,0,0,.06);
+
+  /* garante altura uniforme dentro do grid */
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .card img {
@@ -21,19 +24,48 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  /* ocupa o espaço restante entre a imagem e o rodapé de ações */
+  flex: 1 1 auto;
 }
 
+/* Título: no máx. 2 linhas para manter altura consistente */
 .content h2 {
   margin: 0;
-  font-size: 1.15rem;
   color: #111827;
+
+  font-size: 1.08rem;
+  line-height: 1.25;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;                 /* <- padrão, evita o aviso do VS Code */
+  overflow: hidden;
+
+  /* evita cortes estranhos dentro da palavra */
+  word-break: normal;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
+/* Descrição: clamp para 3 linhas no desktop */
 .desc {
   margin: 0;
   color: #374151;
   line-height: 1.55;
   font-size: .96rem;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;         /* <= ajuste fino se quiser 2 ou 4 linhas */
+  line-clamp: 3;                  /* <- padrão para compatibilidade */
+  overflow: hidden;
+
+  /* ajuda a não “cortar no meio” visualmente */
+  word-break: normal;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .meta {
@@ -53,13 +85,13 @@
   .deal { width: 100%; display:flex; justify-content:center; }
 }
 
-/* Ações */
+/* Ações – sempre coladas ao rodapé do card */
 .actions {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: 10px;
-  flex-wrap: wrap; 
+  margin-top: auto;          /* <- empurra para o fim */
+  flex-wrap: wrap;
 }
 
 /* Botão primário */
@@ -90,7 +122,7 @@
 
 /* Coração alinhado à direita */
 .fav-btn {
-  margin-left: auto; 
+  margin-left: auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -170,6 +202,19 @@
 }
 
 /* Responsivo */
+@media (max-width: 880px) {
+  .card img { height: 150px; }
+  .content h2 {
+    font-size: 1.02rem;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;              /* <- padrão */
+  }
+  .desc {
+    -webkit-line-clamp: 2;
+    line-clamp: 2;              /* <- padrão */
+  }       /* menos texto em telas menores */
+}
+
 @media (max-width: 480px) {
   .card img { height: 140px; }
 }

@@ -13,6 +13,7 @@ import { authGuard } from './guards/auth.guard';
 export const routes: Routes = [
   {
     path: 'backlog',
+    canActivate: [authGuard], 
     loadComponent: () =>
       import('./features/backlog/backlog.page').then(m => m.BacklogPage),
   },

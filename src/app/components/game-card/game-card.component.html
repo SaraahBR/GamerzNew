@@ -2,8 +2,11 @@
   <img [src]="game.img" [alt]="'Capa do jogo ' + game.title" loading="lazy" />
 
   <div class="content">
-    <h2>{{ game.title }}</h2>
-    <p class="desc">{{ game.description }}</p>
+    <!-- clamp de 2 linhas SEM cortar no meio da palavra -->
+    <h2 appWordClamp="2">{{ game.title }}</h2>
+
+    <!-- clamp de 3 linhas SEM cortar no meio da palavra -->
+    <p class="desc" appWordClamp="3">{{ game.description }}</p>
 
     <ul class="meta">
       <li><strong>Gênero:</strong> {{ game.genre.join(', ') }}</li>
@@ -12,8 +15,8 @@
       <li><strong>Publicadora:</strong> {{ game.pub }}</li>
     </ul>
 
-    <!-- Badge de preço (CheapShark + tooltip) -->
-    <app-deal-badge [title]="game.title" [steam]="game.steam" [compact]="true"></app-deal-badge>
+    <!-- Badge de preço (CheapShark/ITAD) -->
+    <app-deal-badge class="deal" [title]="game.title" [steam]="game.steam" [compact]="true"></app-deal-badge>
 
     <div class="actions">
       <a class="btn-gradiente" [routerLink]="['/jogos', game.id]">Detalhes</a>

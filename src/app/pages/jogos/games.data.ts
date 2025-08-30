@@ -108,7 +108,7 @@ export const GAMES: Game[] = [
     year: 2025,
     dev: 'Maxis', 
     pub: 'Electronic Arts',
-    description: 'Viva em meio à magia da natureza no The Sims™ 4 Pacote de Expansão Natureza Encantada*. Adote um estilo de vida livre, em que você pode Coletar itens e dormir sob as estrelas, ou cultive os presentes da natureza dentro de casa, com vasos versáteis para jardinagem. Um mundo encantador espera por você, onde é possível criar Elixires, curar Doenças, conhecer a Mãe Natureza e até se tornar uma Fada!',
+    description: 'Viva em meio à magia da natureza no The Sims™ 4 Pacote de Expansão Natureza Encantada. Adote um estilo de vida livre, em que você pode Coletar itens e dormir sob as estrelas, ou cultive os presentes da natureza dentro de casa, com vasos versáteis para jardinagem. Um mundo encantador espera por você, onde é possível criar Elixires, curar Doenças, conhecer a Mãe Natureza e até se tornar uma Fada!',
     steam: 'https://store.steampowered.com/app/3199780/The_Sims_4_Pacote_de_Expanso_Natureza_Encantada/'
   },
   {

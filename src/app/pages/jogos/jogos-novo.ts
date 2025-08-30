@@ -78,7 +78,7 @@ export class JogosNovoComponent {
 
     } catch (e: any) {
       if (e?.code === 'login_required') {
-        this.toasts.danger('Você precisa estar logada para adicionar jogos.', {
+        this.toasts.danger('Você precisa estar logado para adicionar jogos.', {
           title: 'Login necessário',
         });
       } else {
