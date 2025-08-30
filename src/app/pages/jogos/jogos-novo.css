@@ -1,15 +1,96 @@
-.novo { max-width: 900px; margin: 0 auto; padding: 20px 16px; }
-.novo h1 { color: var(--rosa-escuro); margin-bottom: 12px; }
-form .grid { display: grid; gap: 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-label { display: grid; gap: 6px; font-weight: 600; color: #111827; }
-label input, label textarea {
-  border: 1px solid var(--rosa-escuro); border-radius: 8px; padding: 8px 10px; font: inherit;
+.novo{
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 16px 28px;
 }
-label.full { grid-column: 1 / -1; }
-.btn-gradiente {
-  margin-top: 12px; background: linear-gradient(135deg, var(--rosa), var(--rosa-escuro));
-  color: #fff; padding: 10px 16px; border-radius: 8px; font-weight: 700; border: 0; cursor: pointer;
-  transition: transform .2s ease, opacity .2s ease;
+
+.novo h1{
+  color: var(--rosa-escuro);
+  margin: 0 0 12px;
 }
-.btn-gradiente:hover { transform: translateY(-2px); opacity: .9; }
-.btn-gradiente[disabled] { opacity: .55; cursor: not-allowed; transform: none; }
+
+/* ====== GRID ====== */
+form .grid{
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-flow: row dense;
+}
+
+/* cada label é um "campo" */
+label{
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+  color: #111827;
+  min-width: 0;
+}
+
+/* inputs bonitos e touch-friendly */
+label input,
+label textarea{
+  width: 100%;
+  min-width: 0;
+  font: inherit;            
+  padding: 12px 14px;      
+  border: 1px solid var(--rosa-escuro);
+  border-radius: 10px;
+  background: #fff;
+  outline: none;
+  transition: box-shadow .15s ease, border-color .15s ease, background .15s ease;
+}
+
+label textarea{
+  resize: vertical;
+  min-height: 110px;
+}
+
+label input::placeholder,
+label textarea::placeholder{
+  color: #9aa3b2;
+}
+
+/* foco */
+label input:focus,
+label textarea:focus{
+  border-color: var(--rosa-escuro);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(255,105,130,.15);
+}
+
+label.full{ grid-column: 1 / -1; }
+
+/* ====== BOTÃO ====== */
+.btn-gradiente{
+  margin-top: 14px;
+  background: linear-gradient(135deg, var(--rosa), var(--rosa-escuro));
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-weight: 700;
+  border: 0;
+  cursor: pointer;
+  transition: transform .2s ease, opacity .2s ease, filter .15s ease;
+  box-shadow: 0 8px 18px rgba(255,105,130,.18);
+}
+.btn-gradiente:hover{ transform: translateY(-2px); opacity: .95; }
+.btn-gradiente[disabled]{ opacity:.55; cursor:not-allowed; transform:none; }
+
+/* ====== RESPONSIVO ====== */
+/* tablets/telefones grandes: um pouco mais de ar */
+@media (max-width: 900px){
+  .novo{ padding-inline: 14px; }
+}
+
+/* empilha em 1 coluna no mobile */
+@media (max-width: 700px){
+  form .grid{ grid-template-columns: 1fr; }
+  .btn-gradiente{ width: 100%; }      /* botão full-width */
+  .novo h1{ font-size: clamp(1.35rem, 3.5vw, 1.6rem); }
+}
+
+/* telas bem estreitas */
+@media (max-width: 420px){
+  label input, label textarea{ padding: 12px; }
+  .btn-gradiente{ padding: 12px 14px; border-radius: 9px; }
+}
