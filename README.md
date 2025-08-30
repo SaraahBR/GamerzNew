@@ -251,4 +251,4 @@ vercel dev
 
 ## 📜 Licença
 
-Este projeto é distribuído sob a licença MIT
+Distribuído sob a licença **MIT**. Consulte `LICENSE`.
