@@ -16,7 +16,7 @@ export const authGuard: CanActivateFn = async (_route, state) => {
 
   // Notificação bonitinha (somente no browser)
   if (typeof window !== 'undefined') {
-    toasts.danger('Você precisa estar logada para adicionar/alterar jogos.', {
+    toasts.danger('Você precisa estar logado para adicionar/alterar jogos.', {
       title: 'Atenção',
       timeout: 4500,
     });

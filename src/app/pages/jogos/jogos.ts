@@ -1,8 +1,7 @@
 import { Component, OnDestroy, OnInit, Inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
 
 import { Game } from './games.data';
@@ -30,10 +29,9 @@ export class JogosComponent implements OnInit, OnDestroy {
   loading = true;
   progress = 0;
 
-  /** controles de concorrência do loader */
-  private cycle = 0; 
-  private timer: any | null = null; 
-  private capTimeout: any | null = null; 
+  private cycle = 0;
+  private timer: any | null = null;
+  private capTimeout: any | null = null;
 
   constructor(
     private gamesSvc: GamesService,
@@ -43,42 +41,60 @@ export class JogosComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    // fecha o loader assim que **a primeira lista** chegar
+    // fecha o loader assim que a primeira lista chegar
     this.sub = this.gamesSvc.games$.subscribe((list) => {
       this.applyFilter(list);
+
+      if (isPlatformBrowser(this.platformId)) {
+        try { sessionStorage.setItem('gn_catalog_loaded', '1'); } catch {}
+      }
+
       if (this.loading) this.completeLoading(this.cycle);
     });
 
     if (isPlatformBrowser(this.platformId)) {
+      let switched = false;
+      try {
+        const cur = this.auth.snapshot?.id ?? 'anon';
+        const prev = sessionStorage.getItem('gn_last_user_id') ?? 'anon';
+        switched = prev !== cur;
+        sessionStorage.setItem('gn_last_user_id', cur);
+      } catch {
+      }
+
+      // ====== FLUXO INICIAL ======
       const hasCache =
         this.gamesSvc.snapshot.length > 0 ||
         sessionStorage.getItem('gn_catalog_loaded') === '1' ||
         this.gamesSvc.loadedOnce;
 
-      if (hasCache) {
+      if (switched) {
+        // troca de conta detectada: sempre mostra overlay
+        this.startLoading();
+        this.gamesSvc.refresh().catch(() => {});
+      } else if (hasCache) {
+        // já tem algo para mostrar: oculta overlay e faz refresh “silencioso”
         this.loading = false;
         this.progress = 100;
         this.gamesSvc.refresh().catch(() => {});
       } else {
-        // primeira visita: exibe loader e espera a **primeira emissão**
+        // primeira visita real: exibe loader e espera a primeira emissão
         this.startLoading();
-        this.gamesSvc
-          .refresh()
-          .catch(() => {})
-          .finally(() => {});
+        this.gamesSvc.refresh().catch(() => {});
       }
 
-      // login/logout (troca de usuário): um novo ciclo
+      // ====== LOGIN/LOGOUT ENQUANTO ESTÁ EM /JOGOS ======
       this.lastUserId = this.auth.snapshot?.id ?? null;
       this.subAuth = this.auth.user$.subscribe((u) => {
         const cur = u?.id ?? null;
         if (cur !== this.lastUserId) {
           this.lastUserId = cur;
+          try { sessionStorage.setItem('gn_last_user_id', cur ?? 'anon'); } catch {}
           this.startLoading();
           this.gamesSvc
             .refresh()
             .catch(() => {})
-            .finally(() => {});
+            .finally(() => {/* a conclusão é feita na primeira emissão */});
         }
       });
     } else {
@@ -129,7 +145,7 @@ export class JogosComponent implements OnInit, OnDestroy {
       this.progress = Math.min(90, p + delta);
     }, 120);
 
-    // hard cap de segurança (8s): se algo der MUITO errado, fecha
+    // hard cap (8s): se algo der MUITO errado, fecha
     this.capTimeout = setTimeout(() => {
       if (this.cycle === my) this.forceClose();
     }, 8000);
@@ -179,14 +195,6 @@ export class JogosComponent implements OnInit, OnDestroy {
   // -----------------------------------------------------------
 
   async updateFavorite(game: Game, value: boolean) {
-    if (!this.auth.snapshot) {
-      this.toasts.danger('Entre na sua conta para favoritar jogos.', {
-        title: 'Login necessário',
-        timeout: 4500,
-      });
-      return;
-    }
-
     try {
       await this.gamesSvc.setFavorite(game.id, value);
       this.toasts.success(value ? 'Adicionado aos favoritos.' : 'Removido dos favoritos.', {
