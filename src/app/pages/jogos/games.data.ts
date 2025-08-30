@@ -13,6 +13,17 @@ export type Game = {
 
 export const GAMES: Game[] = [
   {
+    id: 990,
+    title: 'inZOI',
+    img: 'https://cdn-flowgames.s3.us-east-2.amazonaws.com/wp-content/uploads/2025/03/26145946/inzoi-pc-jogo-steam-cover-1.jpg',
+    genre: ['Simulador de Vida Real', 'Realístico'],
+    year: 2025,
+    dev: 'inZOI Studio',
+    pub: 'KRAFTON, Inc.',
+    description: '"Toda vida se torna uma história". Crie sua própria história única enquanto guia e observa a vida de seus Zois. Crie a vida ideal com as ferramentas do inZOI, projetando personagens únicos e construindo casas deslumbrantes.',
+    steam: 'https://store.steampowered.com/app/2456740/inZOI/'
+  },
+  {
     id: 991,
     title: 'Hades',
     img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1145360/header.jpg',
@@ -110,5 +121,27 @@ export const GAMES: Game[] = [
     pub: 'Electronic Arts',
     description: 'Crie vários gatos e cães, adicione-os às casas dos seus Sims para mudar as vidas deles para sempre e cuide dos bichinhos da vizinhança como veterinário com o The Sims™ 4 Gatos e Cães.',
     steam: 'https://store.steampowered.com/app/1235721/The_Sims_4_Cats__Dogs/'
+  },
+  {
+    id: 1000,
+    title: 'Resident Evil 4',
+    img: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2050650/capsule_616x353.jpg?t=1736385712',
+    genre: ['Terror', 'Tiro', 'Zumbis'],
+    year: 2023,
+    dev: 'CAPCOM Co., Ltd.', 
+    pub: 'CAPCOM Co., Ltd.',
+    description: 'Sobrevivência é apenas o começo. Seis anos se passaram desde o desastre biológico em Raccoon City. Leon S. Kennedy, um dos sobreviventes, segue o rastro da raptada filha do presidente até uma vila europeia isolada, onde há algo terrivelmente errado com os habitantes.',
+    steam: 'https://store.steampowered.com/app/2050650/Resident_Evil_4/'
+  },
+   {
+    id: 1001,
+    title: 'Bayonetta',
+    img: 'https://image.api.playstation.com/vulcan/img/cfn/1130713kl3mfwnbkusAOq2GK2g5oLlfTRa_ekbYFVvcCMyQkZOtN9sT3o5D9SBQ5uWF7F01GYWTJhwzEfxwagzuX5EU7TeII.png',
+    genre: ['Ação', 'Protagonista Mulher', 'Hack and Slash'],
+    year: 2017,
+    dev: 'PlatinumGames', 
+    pub: 'SEGA',
+    description: 'A obra-prima de ação da PlatinumGames, aclamada mundialmente, finalmente chega ao PC. Experimente a ação estilosa e exagerada em 60fps com resoluções HD desbloqueadas. A forma definitiva de jogar: ser mau nunca pareceu tão bom.',
+    steam: 'https://store.steampowered.com/app/460790/Bayonetta/'
   }
 ];
