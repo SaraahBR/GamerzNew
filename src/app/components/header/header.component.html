@@ -1,28 +1,44 @@
 <header class="gn-header" role="banner">
   <div class="gn-wrap">
-    <a class="brand" routerLink="/">
+    <a class="brand" routerLink="/" (click)="closeMenu()">
       <img src="/logo.png" alt="Logo GamerzNew" class="logo" />
       <span class="brand-text">GamerzNew</span>
     </a>
 
-    <nav class="nav" aria-label="Navegação principal">
-      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
-      <a routerLink="/jogos" routerLinkActive="active">Jogos</a>
-      <a routerLink="/sobre" routerLinkActive="active">Sobre</a>
+    <!-- Botão Hambúrguer -->
+    <button
+      class="hamburger"
+      type="button"
+      aria-label="Abrir menu"
+      aria-controls="primary-nav"
+      [attr.aria-expanded]="menuOpen ? 'true' : 'false'"
+      [class.active]="menuOpen"
+      (click)="toggleMenu()">
+      <span class="hamburger-bar" aria-hidden="true"></span>
+      <span class="hamburger-bar" aria-hidden="true"></span>
+      <span class="hamburger-bar" aria-hidden="true"></span>
+    </button>
+
+    <nav
+      id="primary-nav"
+      class="nav"
+      [class.open]="menuOpen"
+      aria-label="Navegação principal">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Home</a>
+      <a routerLink="/jogos" routerLinkActive="active" (click)="closeMenu()">Jogos</a>
+      <a routerLink="/sobre" routerLinkActive="active" (click)="closeMenu()">Sobre</a>
 
       <span class="spacer" aria-hidden="true"></span>
 
-      <!-- Quando logada ele mostra nome e botão Sair -->
       <ng-container *ngIf="user$ | async as user; else guestLinks">
         <span class="user-pill" aria-label="Usuária logada">
           {{ user.name || user.email }}
         </span>
-        <button class="btn-logout" type="button" (click)="logout()">Sair</button>
+        <button class="btn-logout" type="button" (click)="logout(); closeMenu()">Sair</button>
       </ng-container>
 
-      <!-- Quando convidada ele encaminha para um link de login -->
       <ng-template #guestLinks>
-        <a routerLink="/login" routerLinkActive="active">Login</a>
+        <a routerLink="/login" routerLinkActive="active" (click)="closeMenu()">Login</a>
       </ng-template>
     </nav>
   </div>

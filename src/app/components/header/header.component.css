@@ -1,6 +1,7 @@
 :root {
   --rosa: #e91e63;
   --rosa-escuro: #ad1457;
+  --rosa-medio: #d81b60;  
   --fundo: #fff;
   --texto: #111;
 }
@@ -17,10 +18,12 @@
 .gn-wrap {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 14px 16px;
+  padding: 10px 12px;
+  min-height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
 }
 
 .brand {
@@ -30,12 +33,13 @@
   font-weight: 700;
   text-decoration: none;
   color: #fff;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
 }
 
-.logo { height: 40px; width: auto; }
-.brand-text { font-size: 1.3rem; font-weight: bold; }
+.logo { height: 34px; width: auto; }
+.brand-text { font-size: 1.2rem; font-weight: bold; }
 
+/* NAV padrão (desktop) */
 .nav {
   display: flex;
   gap: 14px;
@@ -84,3 +88,99 @@
   transition: transform .2s ease, background .2s ease;
 }
 .btn-logout:hover { background: var(--rosa-escuro); color: #fff; transform: translateY(-2px); }
+
+/* ===================== HAMBÚRGUER ===================== */
+.hamburger {
+  display: none;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 10px;
+  background: var(--rosa-medio);              
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 2px 6px rgba(0,0,0,.25);     
+}
+.hamburger:focus-visible {
+  outline: 3px solid rgba(255,255,255,.55);
+  outline-offset: 2px;
+}
+.hamburger-bar {
+  position: absolute;
+  left: 50%;
+  width: 18px;
+  height: 2px;
+  margin-left: -9px;
+  background: #fff;
+  border-radius: 2px;
+  transition: transform .18s ease, opacity .18s ease;
+}
+.hamburger-bar:nth-child(1) { top: 11px; }
+.hamburger-bar:nth-child(2) { top: 17px; }
+.hamburger-bar:nth-child(3) { top: 23px; }
+
+/* Animação para “X” quando ativo */
+.hamburger.active .hamburger-bar:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+.hamburger.active .hamburger-bar:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active .hamburger-bar:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* ===================== MOBILE ===================== */
+@media (max-width: 960px) {
+  .hamburger { display: inline-block; }
+
+  .nav {
+    position: fixed;
+    top: 62px;
+    right: 10px;
+    left: 10px;
+    display: grid;
+    gap: 8px;
+    background: #fff;
+    color: var(--texto);
+    border: 2px solid var(--rosa-escuro);
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 20px 40px rgba(0,0,0,.18);
+    transform: translateY(-12px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .15s ease, transform .15s ease;
+  }
+  .nav.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav a {
+    color: var(--rosa-escuro);
+    background: transparent;
+    border-radius: 8px;
+  }
+  .nav a:hover { background: rgba(233,30,99,.08); transform: none; }
+  .nav a.active { background: rgba(233,30,99,.12); color: var(--rosa-escuro); }
+
+  .spacer { display: none; }
+
+  .user-pill {
+    justify-self: start;
+    background: rgba(233,30,99,.12);
+    color: var(--rosa-escuro);
+  }
+
+  .btn-logout { justify-self: start; }
+
+  .gn-wrap {
+    padding: 8px 10px;
+    min-height: 54px;
+  }
+  .logo { height: 30px; }
+  .brand-text { font-size: 1.1rem; }
+}

@@ -185,3 +185,52 @@
   }
   .loader .bar{ background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.08); }
 }
+
+/* ======== RESPONSIVO LOADER ======== */
+@media (max-width: 480px) {
+  .loader .panel { padding: 16px 14px; border-radius: 12px; }
+  .loader .logo { font-size: 24px; }
+  .loader h2 { font-size: 1.1rem; }
+  .loader .tip { font-size: .95rem; }
+  .loader .bar { height: 12px; }
+  .loader .pct { font-size: .95rem; }
+}
+
+/* ======== TOASTS (notificações) responsivas ======== */
+.toast-container{
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  display: grid;
+  gap: 10px;
+  z-index: 10000;
+  max-width: min(420px, calc(100vw - 32px));
+}
+.toast{
+  background: #fff;
+  color: #1f2937;
+  border: 1px solid rgba(0,0,0,.08);
+  border-left: 4px solid var(--rosa-escuro);
+  border-radius: 10px;
+  padding: 12px 14px;
+  box-shadow: 0 10px 20px rgba(0,0,0,.10);
+  display: grid;
+  gap: 4px;
+  font-weight: 600;
+}
+.toast.--success{ border-left-color: #10b981; }
+.toast.--danger { border-left-color: #ef4444; }
+.toast__title{ font-weight: 800; }
+.toast__close{ justify-self: end; cursor: pointer; }
+
+@media (max-width: 520px) {
+  .toast-container{
+    left: 16px;
+    right: 16px;
+    bottom: 14px;
+  }
+  .toast{
+    padding: 10px 12px;
+    font-size: .98rem;
+  }
+}

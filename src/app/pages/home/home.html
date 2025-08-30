@@ -1,8 +1,80 @@
-<section class="hero">
-  <h1>Bem-vinda à GamerzNew</h1>
-  <p>Seu portal para descobrir, listar e acompanhar jogos que você ama.</p>
-  <a routerLink="/jogos" class="btn">Ver todos os jogos</a>
-</section>
+<div class="neon-frame hero-frame">
+  <svg class="nb" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="nb-grad-hero" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#ff77c8" />
+        <stop offset="25%" stop-color="#ff2d95" />
+        <stop offset="50%" stop-color="#ff8ab3" />
+        <stop offset="75%" stop-color="#d946ef" />
+        <stop offset="100%" stop-color="#ff77c8" />
+      </linearGradient>
+      <filter id="nb-glow-hero" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="2.2" result="b" />
+        <feMerge>
+          <feMergeNode in="b" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </defs>
+
+    <!-- Contorno fixo -->
+    <rect
+      x="1"
+      y="1"
+      width="98"
+      height="98"
+      rx="12"
+      ry="12"
+      fill="none"
+      stroke="url(#nb-grad-hero)"
+      stroke-width="2"
+      vector-effect="non-scaling-stroke"
+      filter="url(#nb-glow-hero)"
+    />
+
+    <!-- Pingo correndo -->
+    <rect
+      x="1"
+      y="1"
+      width="98"
+      height="98"
+      rx="12"
+      ry="12"
+      fill="none"
+      stroke="url(#nb-grad-hero)"
+      stroke-width="2"
+      stroke-linecap="round"
+      vector-effect="non-scaling-stroke"
+      pathLength="1"
+      stroke-dasharray="0.03 0.97"
+    >
+      <animate attributeName="stroke-dashoffset" values="1;0" dur="3.6s" repeatCount="indefinite" />
+    </rect>
+  </svg>
+
+  <section class="hero reveal">
+    <h1>Bem-vinda à GamerzNew</h1>
+    <p class="hero-sub">
+      Catálogo inteligente para <strong>descobrir</strong>, <strong>favoritar</strong> e
+      <strong>acompanhar</strong> seus jogos. Veja preço promocional em tempo real, organize seu
+      backlog e encontre o link oficial em 1 clique.
+    </p>
+
+    <ul class="hero-pills" aria-label="Principais benefícios">
+      <li>
+        <span class="pill">💾 <strong>Favoritos salvos por conta</strong></span>
+      </li>
+      <li>
+        <span class="pill">💸 <strong>Melhor preço do momento</strong></span>
+      </li>
+      <li>
+        <span class="pill">📚 <strong>Backlog simples e rápido</strong></span>
+      </li>
+    </ul>
+
+    <a routerLink="/jogos" class="btn">Ver todos os jogos</a>
+  </section>
+</div>
 
 <section class="previews">
   <header class="previews-head">
@@ -12,7 +84,11 @@
 
   <div class="grid">
     <article class="card">
-      <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1145360/header.jpg" alt="Hades" loading="lazy" />
+      <img
+        src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1145360/header.jpg"
+        alt="Hades"
+        loading="lazy"
+      />
       <div class="content">
         <h3>Hades</h3>
         <p>Roguelike de ação com narrativa reativa no Submundo.</p>
@@ -21,7 +97,11 @@
     </article>
 
     <article class="card">
-      <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg" alt="Elden Ring" loading="lazy" />
+      <img
+        src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg"
+        alt="Elden Ring"
+        loading="lazy"
+      />
       <div class="content">
         <h3>Elden Ring</h3>
         <p>RPG de ação com exploração em mundo aberto.</p>
@@ -30,7 +110,11 @@
     </article>
 
     <article class="card">
-      <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/367520/header.jpg" alt="Hollow Knight" loading="lazy" />
+      <img
+        src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/367520/header.jpg"
+        alt="Hollow Knight"
+        loading="lazy"
+      />
       <div class="content">
         <h3>Hollow Knight</h3>
         <p>Metroidvania atmosférico e desafiador.</p>

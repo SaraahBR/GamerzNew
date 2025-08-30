@@ -27,15 +27,51 @@
       </ul>
     </article>
 
-    <aside class="perfil" aria-label="Perfil de Sarah Hernandes">
-      <img
-        class="foto"
-        src="/Sarah-Hernandes.jpg"
-        alt="Foto de Sarah Hernandes"
-        loading="lazy"
-      />
-      <h2 class="nome">Sarah Hernandes</h2>
-      <p class="titulo">Desenvolvedora Full Stack</p>
-    </aside>
+    <div class="neon-frame profile-frame">
+      <svg class="nb" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="nb-grad-profile" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#ff77c8"/>
+            <stop offset="25%"  stop-color="#ff2d95"/>
+            <stop offset="50%"  stop-color="#ff8ab3"/>
+            <stop offset="75%"  stop-color="#d946ef"/>
+            <stop offset="100%" stop-color="#ff77c8"/>
+          </linearGradient>
+          <filter id="nb-glow-profile" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2.2" result="b"/>
+            <feMerge>
+              <feMergeNode in="b"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+
+        <!-- Contorno fixo -->
+        <rect x="1" y="1" width="98" height="98" rx="12" ry="12"
+              fill="none" stroke="url(#nb-grad-profile)" stroke-width="2"
+              vector-effect="non-scaling-stroke"
+              filter="url(#nb-glow-profile)"/>
+
+        <!-- Pingo correndo -->
+        <rect x="1" y="1" width="98" height="98" rx="12" ry="12"
+              fill="none" stroke="url(#nb-grad-profile)" stroke-width="2"
+              stroke-linecap="round" vector-effect="non-scaling-stroke"
+              pathLength="1" stroke-dasharray="0.03 0.97">
+          <animate attributeName="stroke-dashoffset"
+                   values="1;0" dur="3.6s" repeatCount="indefinite"/>
+        </rect>
+      </svg>
+
+      <aside class="perfil" aria-label="Perfil de Sarah Hernandes">
+        <img
+          class="foto"
+          src="/Sarah-Hernandes.jpg"
+          alt="Foto de Sarah Hernandes"
+          loading="lazy"
+        />
+        <h2 class="nome">Sarah Hernandes</h2>
+        <p class="titulo">Desenvolvedora Full Stack</p>
+      </aside>
+    </div>
   </div>
 </section>
