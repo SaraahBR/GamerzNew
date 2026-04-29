@@ -44,166 +44,161 @@ import { ToastService, Toast } from './toast.service';
         position: fixed;
         inset: 0;
         pointer-events: none;
-        z-index: 2147483647; /* acima de qualquer header */
+        z-index: 2147483647;
       }
 
-      /* permite ajustar a distância do topo sem mexer no TS */
       .toasts {
-        --toast-offset-top: 88px; /* ajuste fino: altura aproximada do header */
+        --toast-offset-top: 88px;
         position: fixed;
         top: var(--toast-offset-top);
         right: 16px;
         display: grid;
-        gap: 12px;
+        gap: 10px;
         z-index: inherit;
         pointer-events: none;
       }
 
+      /* ── BASE ── */
       .toast {
-        --pink-1: #ff68a7;
-        --pink-2: #ff8fc2;
-        --danger: #ff3366;
-
-        color: #fff;
-        background: linear-gradient(135deg, var(--pink-1), var(--pink-2));
+        color: #f0e8ff;
+        background: rgba(16,4,32,.88);
+        border: 1px solid rgba(233,30,99,.35);
         border-radius: 14px;
         min-width: 290px;
-        max-width: 420px;
-        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+        max-width: 400px;
+        box-shadow:
+          0 0 24px rgba(233,30,99,.12),
+          0 12px 32px rgba(0,0,0,.55);
         overflow: hidden;
         position: relative;
         display: grid;
-        grid-template-columns: 46px 1fr auto;
+        grid-template-columns: 44px 1fr auto;
         gap: 10px;
-        padding: 12px 12px 14px 10px;
+        padding: 12px 12px 16px 10px;
         pointer-events: auto;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(4px);
-        animation: pop 0.18s ease-out both;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        animation: toast-in .2s cubic-bezier(.22,.68,0,1.2) both;
       }
 
+      /* ── VARIANTES ── */
+      .toast.success {
+        border-color: rgba(233,30,99,.40);
+        box-shadow: 0 0 28px rgba(233,30,99,.16), 0 12px 32px rgba(0,0,0,.55);
+      }
       .toast.danger {
-        border-color: rgba(255, 51, 102, 0.55);
+        border-color: rgba(255,50,80,.50);
+        box-shadow: 0 0 28px rgba(255,50,80,.20), 0 12px 32px rgba(0,0,0,.55);
       }
-      .toast.danger .glow {
-        box-shadow: 0 0 24px rgba(255, 51, 102, 0.45);
+      .toast.warning {
+        border-color: rgba(217,70,239,.40);
+        box-shadow: 0 0 28px rgba(217,70,239,.16), 0 12px 32px rgba(0,0,0,.55);
+      }
+      .toast.info {
+        border-color: rgba(139,92,246,.40);
+        box-shadow: 0 0 28px rgba(139,92,246,.16), 0 12px 32px rgba(0,0,0,.55);
       }
 
+      /* ── GLOW (linha de brilho no topo) ── */
       .glow {
         position: absolute;
-        inset: -2px;
-        border-radius: 16px;
+        top: 0; left: 0; right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255,119,200,.6), transparent);
         pointer-events: none;
       }
+      .toast.danger  .glow { background: linear-gradient(90deg, transparent, rgba(255,80,100,.7), transparent); }
+      .toast.warning .glow { background: linear-gradient(90deg, transparent, rgba(217,70,239,.7), transparent); }
+      .toast.info    .glow { background: linear-gradient(90deg, transparent, rgba(139,92,246,.7), transparent); }
 
+      /* ── ÍCONE ── */
       .icon {
-        width: 42px;
-        height: 42px;
+        width: 40px;
+        height: 40px;
         border-radius: 10px;
         display: grid;
         place-items: center;
-        font-size: 20px;
-        background: rgba(255, 255, 255, 0.12);
-        border: 1px solid rgba(255, 255, 255, 0.18);
+        font-size: 18px;
+        background: rgba(255,119,200,.10);
+        border: 1px solid rgba(255,119,200,.20);
         margin-left: 2px;
       }
+      .toast.danger  .icon { background: rgba(255,80,100,.12); border-color: rgba(255,80,100,.25); }
+      .toast.warning .icon { background: rgba(217,70,239,.12); border-color: rgba(217,70,239,.25); }
+      .toast.info    .icon { background: rgba(139,92,246,.12); border-color: rgba(139,92,246,.25); }
 
-      .content {
-        padding-top: 2px;
-      }
+      /* ── TEXTO ── */
+      .content { padding-top: 2px; }
       h4 {
-        margin: 0 0 2px;
-        font-size: 14px;
-        letter-spacing: 0.3px;
+        margin: 0 0 3px;
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: .3px;
+        background: linear-gradient(90deg, #ff77c8, #d946ef);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
+      .toast.danger  h4 { background: linear-gradient(90deg, #ff5068, #ff8090); -webkit-background-clip: text; background-clip: text; }
+      .toast.warning h4 { background: linear-gradient(90deg, #d946ef, #a855f7); -webkit-background-clip: text; background-clip: text; }
+      .toast.info    h4 { background: linear-gradient(90deg, #818cf8, #a78bfa); -webkit-background-clip: text; background-clip: text; }
       p {
         margin: 0;
-        font-size: 13px;
-        line-height: 1.35;
-        opacity: 0.95;
+        font-size: 12.5px;
+        line-height: 1.4;
+        color: rgba(240,232,255,.75);
       }
 
+      /* ── FECHAR ── */
       .close {
         align-self: start;
         font: inherit;
-        color: #fff;
-        opacity: 0.9;
+        color: rgba(255,255,255,.5);
         background: transparent;
         border: 0;
         cursor: pointer;
-        width: 28px;
-        height: 28px;
+        width: 26px;
+        height: 26px;
         border-radius: 6px;
-        transition: background 0.15s ease;
+        font-size: 18px;
+        line-height: 1;
+        transition: color .15s, background .15s;
       }
-      .close:hover {
-        background: rgba(0, 0, 0, 0.18);
-      }
+      .close:hover { color: #fff; background: rgba(255,255,255,.08); }
 
+      /* ── TIMER (barra inferior) ── */
       .timer {
         position: absolute;
-        left: 0;
-        bottom: 0;
-        height: 3px;
+        left: 0; bottom: 0;
+        height: 2px;
         width: 100%;
-        background: rgba(0, 0, 0, 0.18);
+        background: rgba(255,255,255,.06);
         overflow: hidden;
       }
       .timer::after {
         content: '';
         display: block;
         height: 100%;
-        background: #fff;
-        opacity: 0.95;
+        background: linear-gradient(90deg, #e91e63, #d946ef);
         animation: shrink linear forwards;
         transform-origin: left center;
       }
+      .toast.danger  .timer::after { background: linear-gradient(90deg, #ff3350, #ff6080); }
+      .toast.warning .timer::after { background: linear-gradient(90deg, #d946ef, #a855f7); }
+      .toast.info    .timer::after { background: linear-gradient(90deg, #818cf8, #a78bfa); }
 
       @keyframes shrink {
-        from {
-          transform: scaleX(1);
-        }
-        to {
-          transform: scaleX(0);
-        }
+        from { transform: scaleX(1); }
+        to   { transform: scaleX(0); }
       }
-      @keyframes pop {
-        from {
-          transform: translateY(-6px) scale(0.98);
-          opacity: 0;
-        }
-        to {
-          transform: translateY(0) scale(1);
-          opacity: 1;
-        }
+      @keyframes toast-in {
+        from { transform: translateX(18px) scale(.97); opacity: 0; }
+        to   { transform: translateX(0)     scale(1);   opacity: 1; }
       }
 
-      /* variantes */
-      .toast.success {
-        background: linear-gradient(135deg, #ff78b2, #ff9dd0);
-      }
-      .toast.warning {
-        background: linear-gradient(135deg, #ff6aa0, #ff8bb6);
-      }
-      .toast.info {
-        background: linear-gradient(135deg, #ff6fb0, #ff92c7);
-      }
-
-      @media (prefers-color-scheme: dark) {
-        .toast {
-          color: #fff;
-        }
-      }
-
-      /* responsivo em telas bem estreitas */
       @media (max-width: 420px) {
-        .toasts {
-          left: 12px;
-          right: 12px;
-        }
-        .toast {
-          max-width: 100%;
-        }
+        .toasts { left: 12px; right: 12px; }
+        .toast  { max-width: 100%; min-width: 0; }
       }
     `,
   ],

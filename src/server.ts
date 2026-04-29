@@ -36,6 +36,15 @@ app.use(
 );
 
 /**
+ * Rotas /api/* NÃO devem ser tratadas pelo SSR Angular.
+ * Em `ng serve` retornam 404 JSON (sem redirecionar para home).
+ * Em `vercel dev` as Vercel Functions interceptam antes de chegar aqui.
+ */
+app.all('/api/*splat', (_req, res) => {
+  res.status(404).json({ error: 'API unavailable. Run vercel dev for full API support.' });
+});
+
+/**
  * Handle all other requests by rendering the Angular application.
  */
 app.use((req, res, next) => {

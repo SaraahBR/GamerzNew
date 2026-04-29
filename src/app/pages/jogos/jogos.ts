@@ -10,6 +10,12 @@ import { GameCardComponent } from '../../components/game-card/game-card.componen
 import { Subscription } from 'rxjs';
 import { ToastService } from '../../shared/ui/toast.service';
 import { AuthService } from '../../services/auth.service';
+import { CanvasService } from '../../services/canvas.service';
+
+// Seletores bloqueados especificamente na página Jogos
+const JOGOS_EXCLUSIONS =
+  '.card, .btn-gradiente, .btn-sec, .top-btn, .fav-btn, ' +
+  '.btn-backlog, h1, h2, h3, .toolbar, .page-header, .genre-badge';
 
 @Component({
   selector: 'app-jogos',
@@ -37,10 +43,16 @@ export class JogosComponent implements OnInit, OnDestroy {
     private gamesSvc: GamesService,
     private toasts: ToastService,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private auth: AuthService
+    private auth: AuthService,
+    private canvasSvc: CanvasService
   ) {}
 
+  get isLoggedIn(): boolean { return !!this.auth.snapshot; }
+
   ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.canvasSvc.setPage(true, JOGOS_EXCLUSIONS);
+    }
     // fecha o loader assim que a primeira lista chegar
     this.sub = this.gamesSvc.games$.subscribe((list) => {
       this.applyFilter(list);
@@ -106,6 +118,7 @@ export class JogosComponent implements OnInit, OnDestroy {
     this.sub?.unsubscribe();
     this.subAuth?.unsubscribe();
     this.clearTimers();
+    this.canvasSvc.clearPage();
   }
 
   onSearchChange() {
@@ -160,7 +173,7 @@ export class JogosComponent implements OnInit, OnDestroy {
 
     await new Promise<void>((resolve) => {
       const fin = setInterval(() => {
-        this.progress += 6;
+        this.progress = Math.min(100, this.progress + 6);
         if (this.progress >= 100) {
           clearInterval(fin);
           resolve();

@@ -1,11 +1,11 @@
 <section class="jogos">
+
   <!-- Overlay de carregamento -->
   <div class="loader" *ngIf="loading">
     <div class="panel" role="status" aria-live="polite">
-      <div class="logo">🎮</div>
+      <span class="logo">🎮</span>
       <h2>Carregando catálogo</h2>
       <p class="tip">Buscando jogos e favoritos…</p>
-
       <div class="bar">
         <div class="fill" [style.width.%]="progress"></div>
       </div>
@@ -13,17 +13,24 @@
     </div>
   </div>
 
+  <!-- Cabeçalho da página -->
+  <div class="page-header">
+    <h1>Catálogo de Jogos</h1>
+    <p class="sub">{{ games.length }} título{{ games.length !== 1 ? 's' : '' }} encontrado{{ games.length !== 1 ? 's' : '' }}</p>
+  </div>
+
+  <!-- Toolbar: busca + ações -->
   <header class="toolbar">
-    <h1>Jogos</h1>
+    <input type="search" placeholder="Buscar por título, gênero, dev..."
+           [(ngModel)]="search" (ngModelChange)="onSearchChange()" />
     <div class="actions">
-      <input type="search" placeholder="Buscar por título, gênero, dev..."
-             [(ngModel)]="search" (ngModelChange)="onSearchChange()" />
-      <a routerLink="/jogos/novo" class="btn-gradiente">+ Novo</a>
-      <a routerLink="/jogos/favoritos" class="btn-sec">Favoritos</a>
-      <a class="top-btn top-btn--hollow" routerLink="/backlog">Backlog</a>
+      <a routerLink="/jogos/novo"      class="btn-gradiente">+ Novo</a>
+      <a routerLink="/jogos/favoritos" class="btn-sec">♥ Favoritos</a>
+      <a routerLink="/backlog"         class="top-btn top-btn--hollow">Backlog</a>
     </div>
   </header>
 
+  <!-- Grid de cards -->
   <div class="grid">
     <app-game-card
       *ngFor="let g of games"
@@ -32,4 +39,22 @@
       (favoriteChange)="updateFavorite(g, $event)">
     </app-game-card>
   </div>
+
+  <!-- Empty state: logada mas sem jogos -->
+  <div class="empty-state" *ngIf="!loading && isLoggedIn && games.length === 0" role="status">
+    <div class="empty-icon" aria-hidden="true">🎮</div>
+    <h2 class="empty-title">Nenhum jogo no seu catálogo ainda</h2>
+    <p class="empty-sub">
+      Comece a construir sua coleção! Adicione seus jogos favoritos<br />
+      e acesse-os a qualquer momento.
+    </p>
+    <a routerLink="/jogos/novo" class="btn-gradiente empty-cta">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+           width="16" height="16" aria-hidden="true" style="flex-shrink:0">
+        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+      </svg>
+      Adicionar primeiro jogo
+    </a>
+  </div>
+
 </section>

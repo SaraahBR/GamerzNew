@@ -1,96 +1,149 @@
-.novo{
-  max-width: 900px;
+/* ═══════════════════════════════════════════════
+   JOGOS/NOVO — dark gaming aesthetic
+   ═══════════════════════════════════════════════ */
+
+.novo {
+  max-width: 800px;
   margin: 0 auto;
-  padding: 20px 16px 28px;
+  padding: 32px 16px 60px;
 }
 
-.novo h1{
-  color: var(--rosa-escuro);
-  margin: 0 0 12px;
+.novo h1 {
+  margin: 0 0 28px;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 900;
+  background: linear-gradient(90deg, #ff77c8, #e91e63, #d946ef);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-/* ====== GRID ====== */
-form .grid{
+/* ─── CARD DO FORMULÁRIO ──────────────────────── */
+.novo-card {
+  background: rgba(255,255,255,.030);
+  border: 1px solid rgba(233,30,99,.18);
+  border-radius: 20px;
+  padding: 28px 26px 24px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    0 0 0 1px rgba(255,119,200,.05),
+    0 0 50px rgba(233,30,99,.07),
+    0 20px 60px rgba(0,0,0,.40);
+  position: relative;
+  overflow: hidden;
+}
+
+.novo-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,119,200,.45), transparent);
+  pointer-events: none;
+}
+
+/* ─── GRID DE CAMPOS ──────────────────────────── */
+.grid {
   display: grid;
-  gap: 12px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-auto-flow: row dense;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
 }
 
-/* cada label é um "campo" */
-label{
-  display: grid;
-  gap: 6px;
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: .78rem;
   font-weight: 600;
-  color: #111827;
-  min-width: 0;
+  color: rgba(240,220,255,.60);
+  letter-spacing: .3px;
+  text-transform: uppercase;
 }
 
-/* inputs bonitos e touch-friendly */
-label input,
-label textarea{
-  width: 100%;
-  min-width: 0;
-  font: inherit;            
-  padding: 12px 14px;      
-  border: 1px solid var(--rosa-escuro);
-  border-radius: 10px;
-  background: #fff;
+label.full { grid-column: 1 / -1; }
+
+input[type="text"],
+input[type="number"],
+input[type="url"],
+textarea {
+  background: rgba(255,255,255,.045);
+  border: 1px solid rgba(233,30,99,.20);
+  border-radius: 9px;
+  color: #f0e8ff;
+  font-size: .93rem;
+  font-family: inherit;
+  padding: 10px 13px;
   outline: none;
-  transition: box-shadow .15s ease, border-color .15s ease, background .15s ease;
+  transition: border-color .2s, background .2s, box-shadow .2s;
+  resize: none;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-label textarea{
-  resize: vertical;
-  min-height: 110px;
+input::placeholder,
+textarea::placeholder { color: rgba(255,255,255,.22); }
+
+input:focus,
+textarea:focus {
+  border-color: rgba(233,30,99,.55);
+  background: rgba(255,255,255,.07);
+  box-shadow: 0 0 0 3px rgba(233,30,99,.10);
 }
 
-label input::placeholder,
-label textarea::placeholder{
-  color: #9aa3b2;
+/* Feedback de campo inválido */
+input.ng-touched.ng-invalid,
+textarea.ng-touched.ng-invalid {
+  border-color: rgba(255,80,80,.50);
+  box-shadow: 0 0 0 3px rgba(255,80,80,.08);
 }
 
-/* foco */
-label input:focus,
-label textarea:focus{
-  border-color: var(--rosa-escuro);
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(255,105,130,.15);
-}
-
-label.full{ grid-column: 1 / -1; }
-
-/* ====== BOTÃO ====== */
-.btn-gradiente{
-  margin-top: 14px;
-  background: linear-gradient(135deg, var(--rosa), var(--rosa-escuro));
+/* ─── BOTÃO SALVAR ────────────────────────────── */
+.btn-gradiente {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 32px;
+  background: linear-gradient(135deg, #e91e63, #d946ef);
   color: #fff;
-  padding: 12px 16px;
-  border-radius: 10px;
+  font-size: .97rem;
   font-weight: 700;
-  border: 0;
+  border: none;
+  border-radius: 11px;
   cursor: pointer;
-  transition: transform .2s ease, opacity .2s ease, filter .15s ease;
-  box-shadow: 0 8px 18px rgba(255,105,130,.18);
-}
-.btn-gradiente:hover{ transform: translateY(-2px); opacity: .95; }
-.btn-gradiente[disabled]{ opacity:.55; cursor:not-allowed; transform:none; }
-
-/* ====== RESPONSIVO ====== */
-/* tablets/telefones grandes: um pouco mais de ar */
-@media (max-width: 900px){
-  .novo{ padding-inline: 14px; }
+  letter-spacing: .3px;
+  transition: opacity .2s, transform .15s, box-shadow .2s;
+  box-shadow: 0 0 22px rgba(233,30,99,.30);
+  font-family: inherit;
 }
 
-/* empilha em 1 coluna no mobile */
-@media (max-width: 700px){
-  form .grid{ grid-template-columns: 1fr; }
-  .btn-gradiente{ width: 100%; }      /* botão full-width */
-  .novo h1{ font-size: clamp(1.35rem, 3.5vw, 1.6rem); }
+.btn-gradiente:hover:not(:disabled) {
+  opacity: .9;
+  transform: translateY(-1px);
+  box-shadow: 0 0 32px rgba(233,30,99,.50);
 }
 
-/* telas bem estreitas */
-@media (max-width: 420px){
-  label input, label textarea{ padding: 12px; }
-  .btn-gradiente{ padding: 12px 14px; border-radius: 9px; }
+.btn-gradiente:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+/* ─── HINT DE CAMPO ───────────────────────────── */
+.hint {
+  font-size: .75rem;
+  color: rgba(195,215,255,.40);
+  margin-top: 3px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ─── RESPONSIVE ──────────────────────────────── */
+@media (max-width: 600px) {
+  .novo { padding: 20px 12px 48px; }
+  .novo-card { padding: 20px 14px 18px; border-radius: 16px; }
+  .grid { grid-template-columns: 1fr; gap: 12px; }
+  .btn-gradiente { width: 100%; }
 }

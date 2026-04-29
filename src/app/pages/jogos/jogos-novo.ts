@@ -1,9 +1,13 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID, inject } from '@angular/core';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GamesService } from '../../services/games.service';
 import { ToastService } from '../../shared/ui/toast.service';
+import { CanvasService } from '../../services/canvas.service';
+
+const NOVO_EXCLUSIONS =
+  '.novo-card, .btn-gradiente, input, textarea, label, select, h1';
 
 @Component({
   selector: 'app-jogos-novo',
@@ -12,11 +16,23 @@ import { ToastService } from '../../shared/ui/toast.service';
   templateUrl: './jogos-novo.html',
   styleUrls: ['./jogos-novo.css'],
 })
-export class JogosNovoComponent {
+export class JogosNovoComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   private games = inject(GamesService);
   private router = inject(Router);
   private toasts = inject(ToastService);
+  private canvasSvc = inject(CanvasService);
+
+  constructor(@Inject(PLATFORM_ID) private platformId: object) {}
+
+  ngOnInit() {
+    if (!isPlatformBrowser(this.platformId)) return;
+    this.canvasSvc.setPage(true, NOVO_EXCLUSIONS);
+  }
+
+  ngOnDestroy() {
+    this.canvasSvc.clearPage();
+  }
 
   submitting = false;
 
@@ -34,10 +50,7 @@ export class JogosNovoComponent {
   async submit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      this.toasts.warning('Preencha todos os campos obrigatórios.', {
-        title: 'Formulário incompleto',
-        timeout: 2500,
-      });
+      this.toasts.warning('Preencha todos os campos obrigatórios.', { title: 'Formulário incompleto', timeout: 2500 });
       return;
     }
 
@@ -48,10 +61,7 @@ export class JogosNovoComponent {
       const created = await this.games.addGame({
         title: v.title!,
         img: v.img!,
-        genre: v.genre!
-          .split(',')
-          .map((s) => s.trim())
-          .filter(Boolean),
+        genre: v.genre!.split(',').map(s => s.trim()).filter(Boolean),
         year: Number(v.year),
         dev: v.dev!,
         pub: v.pub!,
@@ -61,26 +71,11 @@ export class JogosNovoComponent {
       });
 
       this.toasts.success('Jogo salvo com sucesso!', { timeout: 2200 });
-
-      // limpa o formulário
-      this.form.reset({
-        title: '',
-        img: '',
-        genre: '',
-        year: new Date().getFullYear(),
-        dev: '',
-        pub: '',
-        steam: '',
-        description: '',
-      });
-
+      this.form.reset({ title: '', img: '', genre: '', year: new Date().getFullYear(), dev: '', pub: '', steam: '', description: '' });
       this.router.navigate(['/jogos'], { queryParams: { added: created.id } });
-
     } catch (e: any) {
       if (e?.code === 'login_required') {
-        this.toasts.danger('Você precisa estar logado para adicionar jogos.', {
-          title: 'Login necessário',
-        });
+        this.toasts.danger('Você precisa estar logado para adicionar jogos.', { title: 'Login necessário' });
       } else {
         this.toasts.danger('Não foi possível adicionar o jogo.', { title: 'Erro' });
       }

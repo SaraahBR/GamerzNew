@@ -1,6 +1,7 @@
 <section class="login">
-  <h1>Login</h1>
-  <p class="hint">Entre para salvar seus favoritos e os jogos adicionados na sua conta.</p>
+  <div class="card">
+    <h1>Entrar</h1>
+    <p class="hint">Entre para salvar seus favoritos e os jogos adicionados na sua conta.</p>
 
   <form
     [formGroup]="form"
@@ -9,8 +10,13 @@
     [attr.aria-busy]="submitting ? 'true' : 'false'">
 
     <label>
-      <span>Nome (opcional)</span>
-      <input type="text" formControlName="name" autocomplete="name" />
+      <span>Nome</span>
+      <input type="text" formControlName="name" autocomplete="name"
+             required
+             [attr.aria-invalid]="form.get('name')?.touched && form.get('name')?.invalid ? 'true' : null" />
+      <small class="error" *ngIf="form.get('name')?.touched && form.get('name')?.invalid">
+        Informe seu nome.
+      </small>
     </label>
 
     <label>
@@ -103,5 +109,6 @@
         </a>
       </p>
     </noscript>
-  </div>
+  </div><!-- /.social-login -->
+  </div><!-- /.card -->
 </section>

@@ -15,7 +15,7 @@ export const GAMES: Game[] = [
   {
     id: 990,
     title: 'inZOI',
-    img: 'https://cdn-flowgames.s3.us-east-2.amazonaws.com/wp-content/uploads/2025/03/26145946/inzoi-pc-jogo-steam-cover-1.jpg',
+    img: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2456740/169fdacc61e59aa8d0272b3a4f1e93c8dfe8d18a/capsule_616x353.jpg?t=1761814842',
     genre: ['Simulador de Vida Real', 'Realístico'],
     year: 2025,
     dev: 'inZOI Studio',
@@ -75,7 +75,7 @@ export const GAMES: Game[] = [
     year: 2023,
     dev: 'Larian Studios',
     pub: 'Larian Studios',
-    description: 'RPG baseado em D&D 5e com foco em escolhas, reatividade e companheiros com histórias profundas.',
+    description: 'RPG baseado em D&D e com foco em escolhas, reatividade e companheiros com histórias profundas.',
     steam: 'https://store.steampowered.com/app/1086940/'
   },
   {
@@ -92,7 +92,7 @@ export const GAMES: Game[] = [
   {
     id: 997,
     title: 'The Sims™ 4',
-    img: 'https://upload.wikimedia.org/wikipedia/pt/thumb/3/34/Nova_capa_de_The_Sims_4.png/270px-Nova_capa_de_The_Sims_4.png',
+    img: 'https://image.api.playstation.com/vulcan/img/rnd/202111/3019/Btg9YJMDRcWgsbD5E6rOcdT5.jpg?w=440',
     genre: ['Simulador de Vida Real', 'Casual'],
     year: 2014,
     dev: 'Maxis',

@@ -9,7 +9,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!sid) return json(res, { user: null });
 
   const rows = await sql/*sql*/`
-    select u.id, u.email, u.name
+    select u.id, u.email, u.name, u.picture
     from sessions s
     join users u on u.id = s.user_id
     where s.id = ${sid}

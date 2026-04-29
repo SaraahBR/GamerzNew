@@ -1,47 +1,58 @@
 <section class="novo">
-  <h1>Novo Jogo</h1>
+  <h1>Adicionar Jogo</h1>
 
-  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-    <div class="grid">
-      <label> Título
-        <input type="text" formControlName="title" />
-      </label>
+  <div class="novo-card">
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="grid">
 
-      <label> Ano
-        <input type="number" inputmode="numeric" formControlName="year" />
-      </label>
+        <label>
+          Título *
+          <input type="text" formControlName="title" placeholder="Ex: Elden Ring" />
+        </label>
 
-      <label> Desenvolvedora
-        <input type="text" formControlName="dev" />
-      </label>
+        <label>
+          Ano *
+          <input type="number" inputmode="numeric" formControlName="year" placeholder="2024" />
+        </label>
 
-      <label> Publicadora
-        <input type="text" formControlName="pub" />
-      </label>
+        <label>
+          Desenvolvedora *
+          <input type="text" formControlName="dev" placeholder="Ex: FromSoftware" />
+        </label>
 
-      <label> Gêneros (separados por vírgula)
-        <input type="text" formControlName="genre" placeholder="RPG, Mundo Aberto" />
-      </label>
+        <label>
+          Publicadora *
+          <input type="text" formControlName="pub" placeholder="Ex: Bandai Namco" />
+        </label>
 
-      <label> URL da Imagem (header)
-        <input type="url" formControlName="img" />
-      </label>
+        <label>
+          Gêneros *
+          <input type="text" formControlName="genre" placeholder="RPG, Mundo Aberto" />
+          <span class="hint">Separe por vírgula</span>
+        </label>
 
-      <label> Link na Steam
-        <input type="url" formControlName="steam" />
-      </label>
+        <label>
+          Link na Steam *
+          <input type="url" formControlName="steam" placeholder="https://store.steampowered.com/..." />
+        </label>
 
-      <label class="full"> Descrição
-        <textarea rows="4" formControlName="description"></textarea>
-      </label>
-    </div>
+        <label class="full">
+          URL da Imagem *
+          <input type="url" formControlName="img" placeholder="https://..." />
+          <span class="hint">Imagem de capa usada no card</span>
+        </label>
 
-    <button
-      type="submit"
-      class="btn-gradiente"
-      [disabled]="form.invalid || submitting"
-    >
-      {{ submitting ? 'Salvando…' : 'Salvar' }}
-    </button>
-  </form>
+        <label class="full">
+          Descrição *
+          <textarea rows="4" formControlName="description"
+                    placeholder="Descreva o jogo em pelo menos 10 caracteres…"></textarea>
+        </label>
+      </div>
+
+      <button type="submit" class="btn-gradiente"
+              [disabled]="form.invalid || submitting">
+        {{ submitting ? 'Salvando…' : 'Salvar Jogo' }}
+      </button>
+    </form>
+  </div>
 </section>

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 
-export type User = { id: string; email: string; name?: string };
+export type User = { id: string; email: string; name?: string; picture?: string };
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

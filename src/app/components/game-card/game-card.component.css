@@ -1,218 +1,319 @@
-/* Card */
-.card {
-  border: 1px solid var(--rosa-escuro);
-  background: #fff;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 8px 18px rgba(0,0,0,.06);
+/* ═══════════════════════════════════════════════
+   GAME CARD — dark gaming theme
+   ═══════════════════════════════════════════════ */
 
-  /* garante altura uniforme dentro do grid */
+.card {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  /* Glassmorphism escuro */
+  background: rgba(18,5,30,.80);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(233,30,99,.18);
+  box-shadow:
+    0 8px 32px rgba(0,0,0,.4),
+    inset 0 1px 0 rgba(255,255,255,.05);
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
 }
 
+.card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(233,30,99,.55);
+  box-shadow:
+    0 16px 48px rgba(0,0,0,.55),
+    0 0 24px rgba(233,30,99,.18),
+    inset 0 1px 0 rgba(255,255,255,.07);
+}
+
+/* ─── IMAGEM ──────────────────────────────────── */
 .card img {
   width: 100%;
-  height: 160px;
+  height: 168px;
   object-fit: cover;
+  display: block;
+  transition: transform .35s ease;
 }
 
-/* Conteúdo */
+.card:hover img { transform: scale(1.04); }
+
+/* Wrapper da imagem — overflow:hidden garante corte, font-size:0 elimina
+   o gap inline que causa a linha branca no hover */
+.img-wrap {
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  font-size: 0;
+  line-height: 0;
+}
+
+.img-wrap::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 48px;
+  background: linear-gradient(to bottom, transparent, rgba(12,3,22,.95));
+  pointer-events: none;
+}
+
+/* ─── GÊNEROS (badge) ────────────────────────── */
+.genres {
+  position: absolute;
+  top: 14px; left: 14px;
+  right: 14px;              /* impede que o badge ultrapasse a borda direita */
+  display: flex;
+  gap: 5px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.genre-badge {
+  background: rgba(8,2,18,.50);
+  border: 1px solid rgba(233,30,99,.28);
+  color: rgba(255,160,215,.68);
+  font-size: .73rem;
+  font-weight: 600;
+  padding: 5px 15px;
+  border-radius: 999px;
+  letter-spacing: .2px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 0 6px rgba(233,30,99,.12);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* ─── CONTEÚDO ───────────────────────────────── */
 .content {
   padding: 14px 16px 16px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-
-  /* ocupa o espaço restante entre a imagem e o rodapé de ações */
   flex: 1 1 auto;
 }
 
-/* Título: no máx. 2 linhas para manter altura consistente */
 .content h2 {
   margin: 0;
-  color: #111827;
-
-  font-size: 1.08rem;
+  font-size: 1.06rem;
+  font-weight: 800;
   line-height: 1.25;
-
+  color: #f0e8ff;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  line-clamp: 2;                 /* <- padrão, evita o aviso do VS Code */
+  line-clamp: 2;
   overflow: hidden;
-
-  /* evita cortes estranhos dentro da palavra */
   word-break: normal;
   overflow-wrap: break-word;
-  hyphens: auto;
 }
 
-/* Descrição: clamp para 3 linhas no desktop */
 .desc {
   margin: 0;
-  color: #374151;
+  color: rgba(255,255,255,.45);
   line-height: 1.55;
-  font-size: .96rem;
-
+  font-size: .88rem;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;         /* <= ajuste fino se quiser 2 ou 4 linhas */
-  line-clamp: 3;                  /* <- padrão para compatibilidade */
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
   overflow: hidden;
-
-  /* ajuda a não “cortar no meio” visualmente */
-  word-break: normal;
-  overflow-wrap: break-word;
-  hyphens: auto;
 }
 
+/* ─── META ────────────────────────────────────── */
 .meta {
-  margin: 2px 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
   display: grid;
-  gap: 6px;
-  font-size: .92rem;
-  color: #1f2937;
+  gap: 4px;
+  font-size: .82rem;
+  color: rgba(255,255,255,.38);
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding-top: 10px;
 }
-.meta li strong { color: #111827; }
 
-/* Badge de preço dentro do card */
+.meta li strong {
+  color: rgba(255,119,200,.75);
+  font-weight: 700;
+}
+
+/* ─── BADGE DE PREÇO ──────────────────────────── */
 .deal { align-self: flex-start; }
 @media (max-width: 520px) {
-  .deal { width: 100%; display:flex; justify-content:center; }
+  .deal { width: 100%; display: flex; justify-content: center; }
 }
 
-/* Ações – sempre coladas ao rodapé do card */
+/* ─── AÇÕES ───────────────────────────────────── */
 .actions {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: auto;          /* <- empurra para o fim */
+  gap: 8px;
+  margin-top: auto;
   flex-wrap: wrap;
+  padding: 12px 16px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  background: rgba(0,0,0,.20);
 }
 
 /* Botão primário */
 .btn-gradiente {
+  display: inline-flex;
+  align-items: center;
   text-decoration: none;
-  background: linear-gradient(135deg, var(--rosa), var(--rosa-escuro));
+  background: linear-gradient(135deg, #e91e63, #d946ef);
   color: #fff;
-  padding: 8px 14px;
+  padding: 7px 14px;
   border-radius: 8px;
-  font-weight: 600;
-  transition: transform .2s ease, opacity .2s ease;
+  font-weight: 700;
+  font-size: .85rem;
   border: 0;
+  cursor: pointer;
+  transition: transform .18s ease, box-shadow .18s ease;
+  box-shadow: 0 4px 14px rgba(233,30,99,.30);
 }
-.btn-gradiente:hover { transform: translateY(-2px); opacity: .9; }
+.btn-gradiente:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(233,30,99,.5);
+  text-decoration: none;
+}
 
 /* Botão secundário */
 .btn-sec {
+  display: inline-flex;
+  align-items: center;
   text-decoration: none;
-  background: #fff;
-  color: var(--rosa-escuro);
-  border: 1px solid var(--rosa-escuro);
-  padding: 8px 14px;
+  background: rgba(255,119,200,.08);
+  color: #ff77c8;
+  border: 1px solid rgba(255,119,200,.30);
+  padding: 7px 14px;
   border-radius: 8px;
-  font-weight: 600;
-  transition: all .2s ease;
+  font-weight: 700;
+  font-size: .85rem;
+  transition: background .18s, box-shadow .18s, transform .18s;
 }
-.btn-sec:hover { background: var(--rosa-clarinho); transform: translateY(-1px); }
+.btn-sec:hover {
+  background: rgba(255,119,200,.18);
+  box-shadow: 0 0 12px rgba(255,119,200,.25);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
 
-/* Coração alinhado à direita */
+/* Steam button com logotipo */
+.steam-btn {
+  gap: 6px;
+}
+.steam-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  opacity: .9;
+}
+
+/* ─── BOTÃO FAVORITO ──────────────────────────── */
 .fav-btn {
   margin-left: auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  border: 1px solid var(--rosa-escuro);
-  background: #fff;
+  border: 1px solid rgba(233,30,99,.35);
+  background: rgba(233,30,99,.08);
   cursor: pointer;
-  transition: transform .2s ease, background .2s ease;
+  transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
   padding: 0;
+  flex-shrink: 0;
 }
-.fav-btn:hover { transform: translateY(-1px); background: var(--rosa-clarinho); }
+.fav-btn:hover {
+  transform: translateY(-1px);
+  background: rgba(233,30,99,.18);
+  box-shadow: 0 0 12px rgba(233,30,99,.30);
+}
 .fav-btn:active { transform: translateY(0) scale(0.96); }
 
-/* Ícone do coração  */
 .fav-icon {
-  width: 22px;
-  height: 22px;
-  transform: scaleY(1.12);
+  width: 20px;
+  height: 20px;
+  transform: scaleY(1.1);
   will-change: transform;
 }
 
-/* Estado padrão do coração (sem favoritar) */
 .fav-icon path {
   fill: none;
-  stroke: #911c3f;
+  stroke: #ff77c8;
   stroke-width: 1.8;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-/* Favoritado: preenchido */
 .fav-icon.is-active path {
-  fill: #d03569;
-  stroke: #851738;
+  fill: #e91e63;
+  stroke: #ff77c8;
 }
 
-/* Animação ao favoritar */
 @media (prefers-reduced-motion: no-preference) {
-  .fav-icon.is-active { animation: fav-pop 0.32s cubic-bezier(.2,.7,.3,1.2); }
+  .fav-icon.is-active { animation: fav-pop .32s cubic-bezier(.2,.7,.3,1.2); }
   @keyframes fav-pop {
-    0%   { transform: scale(0.60) scaleY(1.12); }
-    60%  { transform: scale(1.25) scaleY(1.12); }
-    100% { transform: scale(1.00) scaleY(1.12); }
+    0%   { transform: scale(0.60) scaleY(1.1); }
+    60%  { transform: scale(1.25) scaleY(1.1); }
+    100% { transform: scale(1.00) scaleY(1.1); }
   }
 }
 
-/* Botão backlog */
-.btn-backlog{
-  display:inline-flex; align-items:center; gap:8px;
-  padding:8px 12px; border-radius:10px; font-weight:700;
-  background: transparent; color: var(--rosa-escuro);
-  border: 2px solid var(--rosa-escuro);
+/* ─── BOTÃO BACKLOG ───────────────────────────── */
+.btn-backlog {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: .85rem;
+  background: transparent;
+  color: #d946ef;
+  border: 1.5px solid rgba(217,70,239,.35);
   cursor: pointer;
-  transition: transform .12s ease, box-shadow .12s ease, background .12s ease, color .12s ease;
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
 }
-.btn-backlog:hover{ transform: translateY(-1px); background: rgba(255, 105, 130, .07); }
-.btn-backlog:active{ transform: translateY(0); }
+.btn-backlog:hover {
+  transform: translateY(-1px);
+  background: rgba(217,70,239,.10);
+  box-shadow: 0 0 12px rgba(217,70,239,.22);
+}
+.btn-backlog:active { transform: translateY(0); }
 
-.btn-backlog .ico{
-  width:16px; height:16px; border-radius:4px; display:inline-block;
-  background: radial-gradient(circle at 30% 30%, var(--rosa) 0 40%, transparent 45%);
-  opacity:.85; transition: transform .2s ease;
+.btn-backlog .ico {
+  width: 14px; height: 14px;
+  border-radius: 3px;
+  display: inline-block;
+  background: radial-gradient(circle at 30% 30%, #d946ef 0 40%, transparent 45%);
+  opacity: .85;
+  transition: transform .2s ease;
 }
-.btn-backlog:hover .ico{ transform: scale(1.08); }
+.btn-backlog:hover .ico { transform: scale(1.1); }
 
-/* quando já está no backlog: muda cor e mostra o “+ Backlog” */
-.btn-backlog.added{
-  background: linear-gradient(135deg, var(--rosa), var(--rosa-escuro));
-  color:#fff; border-color: transparent;
-  box-shadow: 0 8px 18px rgba(255,105,130,.25);
+.btn-backlog.added {
+  background: linear-gradient(135deg, #d946ef, #e91e63);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 16px rgba(217,70,239,.30);
 }
-.btn-backlog.added .ico{
+.btn-backlog.added .ico {
   background: radial-gradient(circle at 30% 30%, #fff 0 40%, transparent 45%);
   opacity: .95;
 }
 
-/* Responsivo */
+/* ─── RESPONSIVO ──────────────────────────────── */
 @media (max-width: 880px) {
   .card img { height: 150px; }
-  .content h2 {
-    font-size: 1.02rem;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;              /* <- padrão */
-  }
-  .desc {
-    -webkit-line-clamp: 2;
-    line-clamp: 2;              /* <- padrão */
-  }       /* menos texto em telas menores */
+  .content h2 { font-size: 1rem; -webkit-line-clamp: 2; line-clamp: 2; }
+  .desc { -webkit-line-clamp: 2; line-clamp: 2; }
 }
 
 @media (max-width: 480px) {

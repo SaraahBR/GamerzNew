@@ -1,20 +1,169 @@
+/* ═══════════════════════════════════════════════
+   FOOTER — GamerzNew  (dark gaming / glassmorphism)
+   ═══════════════════════════════════════════════ */
+
 .gn-footer {
-  margin-top: 24px;
-  background: var(--rosa-clarinho);
-  color: var(--rosa-escuro);
-  border-top: 2px solid var(--rosa-escuro);
+  position: relative;
+  overflow: hidden;
+  margin-top: 48px;
+  background: #0a0a0f;
+  border-top: 1px solid rgba(233,30,99,.25);
+  box-shadow: 0 -1px 0 rgba(255,119,200,.08) inset;
 }
 
-.gn-wrap {
-  max-width: 1100px;
+/* ─── LINHA NEON SUPERIOR ───────────────────── */
+.gn-footer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    #ff77c8 25%,
+    #e91e63 50%,
+    #d946ef 75%,
+    transparent 100%
+  );
+}
+
+
+/* ─── PARTÍCULAS ────────────────────────────── */
+.footer-particles { position: absolute; inset: 0; pointer-events: none; }
+.fp {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  animation: float-particle 6s ease-in-out infinite;
+}
+.fp1 { width: 6px;  height: 6px;  background: #ff77c8; top: 20%; left: 10%; animation-delay: 0s;   animation-duration: 7s; }
+.fp2 { width: 4px;  height: 4px;  background: #e91e63; top: 60%; left: 25%; animation-delay: 1.5s; animation-duration: 5s; }
+.fp3 { width: 8px;  height: 8px;  background: #d946ef; top: 35%; left: 70%; animation-delay: 0.8s; animation-duration: 8s; }
+.fp4 { width: 5px;  height: 5px;  background: #ff77c8; top: 75%; left: 85%; animation-delay: 2.2s; animation-duration: 6s; }
+.fp5 { width: 3px;  height: 3px;  background: #e91e63; top: 15%; left: 55%; animation-delay: 3s;   animation-duration: 5.5s; }
+
+@keyframes float-particle {
+  0%   { transform: translateY(0)   scale(1);   opacity: 0; }
+  25%  { opacity: .6; }
+  75%  { opacity: .3; }
+  100% { transform: translateY(-40px) scale(.5); opacity: 0; }
+}
+
+/* ─── INNER GRID ────────────────────────────── */
+.gn-footer-inner {
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 18px 16px;
+  padding: 48px 24px 32px;
+  display: grid;
+  grid-template-columns: 1.8fr 1fr 1fr;
+  gap: 40px;
+}
+
+/* ─── BRAND COL ─────────────────────────────── */
+.footer-brand { display: flex; flex-direction: column; gap: 12px; }
+
+.footer-logo-link {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 10px;
+  text-decoration: none;
+}
+.footer-logo {
+  height: 36px;
+  width: auto;
+  filter: drop-shadow(0 0 8px rgba(233,30,99,.5));
+  transition: filter .3s ease;
+}
+.footer-logo-link:hover .footer-logo {
+  filter: drop-shadow(0 0 14px rgba(255,119,200,.85));
 }
 
-.made {
-  font-size: 0.95rem;
-  font-weight: 600;
+.footer-brand-name {
+  font-size: 1.2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ff77c8, #e91e63, #d946ef);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.footer-tagline {
+  margin: 0;
+  color: rgba(240,230,255,.45);
+  font-size: .9rem;
+  line-height: 1.5;
+  max-width: 260px;
+}
+
+/* ─── NAV COL ───────────────────────────────── */
+.footer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-nav-title {
+  display: block;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gn-pink, #e91e63);
+  margin-bottom: 4px;
+}
+
+.footer-nav a {
+  color: rgba(240,230,255,.6);
+  text-decoration: none;
+  font-size: .92rem;
+  font-weight: 500;
+  transition: color .2s ease, padding-left .2s ease;
+  padding-left: 0;
+}
+.footer-nav a:hover {
+  color: #ff77c8;
+  padding-left: 4px;
+  text-decoration: none;
+}
+
+/* ─── CREDITS COL ───────────────────────────── */
+.footer-credits {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.made-by {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ff77c8;
+}
+.footer-stack {
+  margin: 0;
+  font-size: .82rem;
+  color: rgba(240,230,255,.35);
+  letter-spacing: .5px;
+}
+
+/* ─── COPYRIGHT BAR ─────────────────────────── */
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  border-top: 1px solid rgba(233,30,99,.12);
+  font-size: .82rem;
+  color: rgba(240,230,255,.3);
+}
+
+/* ─── RESPONSIVE ────────────────────────────── */
+@media (max-width: 760px) {
+  .gn-footer-inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    padding: 36px 18px 24px;
+  }
+  .footer-brand { grid-column: 1 / -1; }
+}
+
+@media (max-width: 480px) {
+  .gn-footer-inner { grid-template-columns: 1fr; }
 }

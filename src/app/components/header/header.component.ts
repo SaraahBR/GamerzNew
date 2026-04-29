@@ -4,6 +4,7 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/ro
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { GamesService } from '../../services/games.service';
+import { AnimationService } from '../../services/animation.service';
 
 @Component({
   selector: 'app-header',
@@ -16,16 +17,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private auth = inject(AuthService);
   private games = inject(GamesService);
   private router = inject(Router);
+  animSvc = inject(AnimationService);
 
   user$ = this.auth.user$;
   menuOpen = false;
+  profileOpen = false;
 
   private sub?: Subscription;
 
   ngOnInit(): void {
-    // Fecha o menu quando a rota muda 
+    // Fecha o menu quando a rota muda
     this.sub = this.router.events.subscribe(ev => {
-      if (ev instanceof NavigationEnd) this.menuOpen = false;
+      if (ev instanceof NavigationEnd) { this.menuOpen = false; this.profileOpen = false; }
     });
   }
 
@@ -41,10 +44,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.menuOpen = false;
   }
 
+  toggleProfile(event: Event): void {
+    event.stopPropagation();
+    this.profileOpen = !this.profileOpen;
+  }
+
+  // Fecha o dropdown de perfil ao clicar fora
+  @HostListener('document:click')
+  onDocClick() {
+    this.profileOpen = false;
+  }
+
   // Fecha com ESC
   @HostListener('document:keydown.escape')
   onEsc() {
     this.menuOpen = false;
+    this.profileOpen = false;
   }
 
   // Se a tela foi redimensionada para desktop, garante menu fechado
@@ -56,6 +71,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   async logout() {
+    this.profileOpen = false;
     await this.auth.logout();
     await this.games.refresh();
     this.router.navigateByUrl('/');

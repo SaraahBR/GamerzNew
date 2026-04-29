@@ -68,19 +68,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const g = (await ur.json()) as GoogleUser;
     const email = (g.email || '').toLowerCase();
     const name = g.name || undefined;
+    const picture = g.picture || undefined;
     if (!email) return json(res, { error: 'email_not_provided' }, { status: 400 });
+
+    // garante que a coluna picture existe (migration idempotente)
+    await sql`alter table users add column if not exists picture text`;
 
     // gera um id para não violar NOT NULL
     const uid = randomUUID();
 
     // upsert user por email
     const userRow = (await sql`
-      insert into users (id, email, name)
-      values (${uid}, ${email}, ${name})
+      insert into users (id, email, name, picture)
+      values (${uid}, ${email}, ${name}, ${picture})
       on conflict (email) do update
-        set name = excluded.name
-      returning id, email, name
-    `) as Array<{ id: string; email: string; name: string | null }>;
+        set name = excluded.name,
+            picture = excluded.picture
+      returning id, email, name, picture
+    `) as Array<{ id: string; email: string; name: string | null; picture: string | null }>;
 
     const user = userRow[0];
 

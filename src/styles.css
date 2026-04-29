@@ -1,12 +1,19 @@
 :root {
-  --bg: #ffffff;
-  --text: #111827;
-  --muted: #6b7280;
+  /* Fundo escuro gaming */
+  --bg:   #0d0d12;
+  --bg2:  #11101a;
+  --text: #f0e6ff;
+  --muted: rgba(240,230,255,.5);
 
-  /* TEMA ROSA NUDE */
-  --rosa: #e4a4b4;       
-  --rosa-escuro: #c97a8c; 
-  --rosa-clarinho: #fbe7ec; 
+  /* Paleta rosa / pink (cores do logo) */
+  --rosa:         #e91e63;
+  --rosa-escuro:  #ad1457;
+  --rosa-medio:   #d81b60;
+  --rosa-clarinho:#fbe7ec;
+  --gn-pink:        #e91e63;
+  --gn-pink-light:  #ff77c8;
+  --gn-pink-dark:   #ad1457;
+  --gn-purple:      #d946ef;
 }
 
 *,
@@ -15,15 +22,41 @@
 
 html, body { height: 100%; }
 
+html {
+  overflow-x: hidden; /* impede scroll horizontal global */
+}
+
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial;
+  overflow-x: hidden;
+  font-family: 'Outfit', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
+  -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3 { line-height: 1.2; margin: 0 0 8px; }
-a { color: var(--rosa-escuro); text-decoration: none; }
+
+a { color: var(--gn-pink-light); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-img { max-width: 100%; display: block; }
+/* ── Acessibilidade: animações desabilitadas ── */
+/* O canvas permanece visível (partículas ainda funcionam).
+   O fundo animado para via TypeScript (animSvc.enabled()). */
+body.no-anim *,
+body.no-anim *::before,
+body.no-anim *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Container principal */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 20px 0;
+}
+
+@media (max-width: 600px) {
+  .container { padding: 14px 14px 0; }
+}

@@ -2,13 +2,13 @@
   <h1>Sobre a GamerzNew</h1>
 
   <div class="grid">
+
     <article class="texto">
       <p>
         A <strong>GamerzNew</strong> é um site criado para facilitar a descoberta de jogos e a
         navegação por catálogos. Aqui você encontra uma página inicial com destaques,
         <em>previews</em> dos jogos e um atalho para a lista completa em <code>/jogos</code>.
       </p>
-
       <p>
         Na seção <strong>Jogos</strong>, cada título é apresentado em cards com
         <strong>descrição</strong>, <strong>gêneros</strong>, <strong>ano</strong>,
@@ -18,60 +18,103 @@
         Angular (standalone) para facilitar futuras evoluções como busca, filtros e
         favoritar jogos.
       </p>
-
       <ul class="lista">
-        <li>Home com destaques e CTA para <code>/jogos</code>;</li>
-        <li>Lista de jogos com cards e links oficiais;</li>
-        <li>Página de detalhes em <code>/jogos/:id</code>;</li>
-        <li>Tema visual em tons de rosa nude para combinar com a identidade.</li>
+        <li>Home com destaques e CTA para <code>/jogos</code></li>
+        <li>Lista de jogos com cards e links oficiais</li>
+        <li>Página de detalhes em <code>/jogos/:id</code></li>
+        <li>Estética dark gaming com paleta rosa-magenta e roxo neon</li>
       </ul>
     </article>
 
-    <div class="neon-frame profile-frame">
-      <svg class="nb" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <defs>
-          <linearGradient id="nb-grad-profile" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%"   stop-color="#ff77c8"/>
-            <stop offset="25%"  stop-color="#ff2d95"/>
-            <stop offset="50%"  stop-color="#ff8ab3"/>
-            <stop offset="75%"  stop-color="#d946ef"/>
-            <stop offset="100%" stop-color="#ff77c8"/>
-          </linearGradient>
-          <filter id="nb-glow-profile" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="2.2" result="b"/>
-            <feMerge>
-              <feMergeNode in="b"/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
-        </defs>
+    <!-- PERFIL + SISTEMA SOLAR -->
+    <aside class="perfil-wrap" aria-label="Perfil de Sarah Hernandes">
+      <div class="solar-system-wrap">
 
-        <!-- Contorno fixo -->
-        <rect x="1" y="1" width="98" height="98" rx="12" ry="12"
-              fill="none" stroke="url(#nb-grad-profile)" stroke-width="2"
-              vector-effect="non-scaling-stroke"
-              filter="url(#nb-glow-profile)"/>
+        <!-- Sistema solar completo (some INTEIRO com acessibilidade) -->
+        <div class="solar-system" aria-hidden="true" [class.paused]="showAstroInfo">
+          <!-- Brilho suave do centro (não-solar) -->
+          <div class="core-glow"></div>
 
-        <!-- Pingo correndo -->
-        <rect x="1" y="1" width="98" height="98" rx="12" ry="12"
-              fill="none" stroke="url(#nb-grad-profile)" stroke-width="2"
-              stroke-linecap="round" vector-effect="non-scaling-stroke"
-              pathLength="1" stroke-dasharray="0.03 0.97">
-          <animate attributeName="stroke-dashoffset"
-                   values="1;0" dur="3.6s" repeatCount="indefinite"/>
-        </rect>
-      </svg>
+          <!-- ☿ Mercúrio -->
+          <div class="orbit o1"><span class="planet mercury"></span></div>
+          <!-- ♀ Vênus -->
+          <div class="orbit o2"><span class="planet venus"></span></div>
+          <!-- ♁ Terra -->
+          <div class="orbit o3"><span class="planet earth"></span></div>
+          <!-- ♂ Marte -->
+          <div class="orbit o4"><span class="planet mars"></span></div>
+          <!-- ♃ Júpiter -->
+          <div class="orbit o5"><span class="planet jupiter"></span></div>
+          <!-- ♄ Saturno (com anel) -->
+          <div class="orbit o6"><span class="planet saturn"></span></div>
+          <!-- ⛢ Urano -->
+          <div class="orbit o7"><span class="planet uranus"></span></div>
+          <!-- ♆ Netuno -->
+          <div class="orbit o8"><span class="planet neptune"></span></div>
 
-      <aside class="perfil" aria-label="Perfil de Sarah Hernandes">
-        <img
-          class="foto"
-          src="/Sarah-Hernandes.jpg"
-          alt="Foto de Sarah Hernandes"
-          loading="lazy"
-        />
-        <h2 class="nome">Sarah Hernandes</h2>
-        <p class="titulo">Desenvolvedora Full Stack</p>
-      </aside>
-    </div>
+          <!-- Estrelas de fundo -->
+          <span class="bg-star bs1"></span><span class="bg-star bs2"></span>
+          <span class="bg-star bs3"></span><span class="bg-star bs4"></span>
+          <span class="bg-star bs5"></span><span class="bg-star bs6"></span>
+          <span class="bg-star bs7"></span><span class="bg-star bs8"></span>
+          <span class="bg-star bs9"></span><span class="bg-star bs10"></span>
+        </div>
+
+        <!-- Foto — sempre visível, centro da cena -->
+        <img class="foto-centro" src="/Sarah-Hernandes.jpg"
+             alt="Foto de Sarah Hernandes" loading="lazy" />
+      </div>
+
+      <h2 class="nome">Sarah Hernandes</h2>
+      <p class="titulo">Desenvolvedora Full Stack</p>
+
+      <!-- Botão Informativo -->
+      <button class="astro-info-btn" (click)="toggleAstroInfo()" aria-label="Curiosidade astronômica" aria-expanded="showAstroInfo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+          <path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/>
+        </svg>
+        <span>Você Sabia?</span>
+      </button>
+
+      <!-- Backdrop (blur) para mobile -->
+      <div class="mobile-backdrop" *ngIf="showAstroInfo" (click)="toggleAstroInfo()" aria-hidden="true"></div>
+
+      <!-- Post-it Informativo -->
+      <div class="astro-post-it" *ngIf="showAstroInfo" role="dialog" aria-label="Informações sobre as órbitas">
+        <button class="close-btn" (click)="toggleAstroInfo()" aria-label="Fechar">×</button>
+        <h3>🌌 A Ciência das Órbitas</h3>
+
+        <!-- Aviso de Acessibilidade -->
+        <div class="anim-warning" *ngIf="!animSvc.enabled()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+          </svg>
+          <p>
+            <strong>Animações Desativadas!</strong><br>
+            Para ver o balé das órbitas e os planetas mencionados abaixo, desative o Modo de Acessibilidade no canto superior da tela.
+          </p>
+        </div>
+
+        <p>
+          As velocidades das órbitas não foram escolhidas ao acaso! Elas seguem as <strong>Leis de Kepler</strong> e representam 
+          a exata proporção astronômica do nosso sistema solar. Usamos a Terra (8s) como referência:
+        </p>
+        <ul class="astro-list">
+          <li><span class="planet-wrap"><span class="planet mercury post-it-planet"></span></span> <strong>Mercúrio:</strong> 1.9s <em>(88 dias reais)</em></li>
+          <li><span class="planet-wrap"><span class="planet venus post-it-planet"></span></span> <strong>Vênus:</strong> 4.9s <em>(225 dias reais)</em></li>
+          <li><span class="planet-wrap"><span class="planet earth post-it-planet"></span></span> <strong>Terra:</strong> 8.0s <em>(1 ano real)</em></li>
+          <li><span class="planet-wrap"><span class="planet mars post-it-planet"></span></span> <strong>Marte:</strong> 15.0s <em>(1.88 anos reais)</em></li>
+        </ul>
+        <p>
+          Enquanto os planetas rochosos disparam, os gigantes gasosos lá fora precisam percorrer distâncias 
+          colossais a velocidades menores, o que os faz parecer quase parados no tempo:
+        </p>
+        <ul class="astro-list">
+          <li><span class="planet-wrap"><span class="planet jupiter post-it-planet"></span></span> <strong>Júpiter:</strong> 1 min e 35s <em>(11.8 anos)</em></li>
+          <li><span class="planet-wrap"><span class="planet neptune post-it-planet"></span></span> <strong>Netuno:</strong> ~22 minutos para uma única volta!</li>
+        </ul>
+      </div>
+    </aside>
+
   </div>
 </section>

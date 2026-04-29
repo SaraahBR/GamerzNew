@@ -7,7 +7,11 @@ import { AuthService } from './auth.service';
 export class GamesService {
   private readonly auth = inject(AuthService);
 
-  private _games$ = new BehaviorSubject<Game[]>([]);
+  // Inicializa com os jogos estáticos para renderização imediata.
+  // O refresh() irá sobrescrever com favoritos e jogos customizados.
+  private _games$ = new BehaviorSubject<Game[]>(
+    GAMES.map(g => ({ ...g, favorite: false }))
+  );
   readonly games$ = this._games$.asObservable();
 
   /** Jogos criados localmente (persistidos por userId em localStorage) – usado como fallback */
@@ -219,19 +223,9 @@ export class GamesService {
     const custom = await this.fetchCustomGames();
     this._custom = custom.slice();
 
-    // base: custom da usuária + catálogo fixo
-    const base = [...this._custom, ...GAMES];
-
-    // favoritos vindos do backend
-    const favIds = new Set<number>(await this.fetchFavoriteIds());
-
-    const list = base.map(g => {
-      if (this.isServerGame(g.id)) {
-        return { ...g, favorite: favIds.has(g.id) };
-      }
-      // jogo custom já vem com favorite (Neon) – preserva
-      return { ...g };
-    });
+    // quando logada: apenas os jogos que a usuária adicionou
+    // (jogos estáticos ficam visíveis apenas para visitantes não logados)
+    const list = this._custom.slice();
 
     this._games$.next(this.sortByTitle(list));
 

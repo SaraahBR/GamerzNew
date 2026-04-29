@@ -1,6 +1,42 @@
 <footer class="gn-footer" role="contentinfo">
-  <div class="gn-wrap">
-    <p>© {{ year }} GamerzNew — Todos os direitos reservados.</p>
-    <p class="made">Sarah Hernandes</p>
+  <!-- Partículas decorativas -->
+  <div class="footer-particles" aria-hidden="true">
+    <span class="fp fp1"></span>
+    <span class="fp fp2"></span>
+    <span class="fp fp3"></span>
+    <span class="fp fp4"></span>
+    <span class="fp fp5"></span>
+  </div>
+
+  <div class="gn-footer-inner">
+    <!-- Logo + tagline -->
+    <div class="footer-brand">
+      <a routerLink="/" class="footer-logo-link">
+        <img src="/logo.png" alt="GamerzNew Logo" class="footer-logo" />
+        <span class="footer-brand-name">GamerzNew</span>
+      </a>
+      <p class="footer-tagline">Descubra, favorite e acompanhe seus jogos.</p>
+    </div>
+
+    <!-- Links -->
+    <nav class="footer-nav" aria-label="Links do rodapé">
+      <span class="footer-nav-title">Navegar</span>
+      <a routerLink="/">Home</a>
+      <a routerLink="/jogos">Jogos</a>
+      <a routerLink="/sobre">Sobre</a>
+      <a routerLink="/login">Login</a>
+    </nav>
+
+    <!-- Créditos -->
+    <div class="footer-credits">
+      <span class="footer-nav-title">Feito com ♥</span>
+      <p class="made-by">Sarah Hernandes</p>
+      <p class="footer-stack">Angular · TypeScript · CSS</p>
+    </div>
+  </div>
+
+  <!-- Barra de copyright -->
+  <div class="footer-bottom">
+    <span>© {{ year }} GamerzNew — Todos os direitos reservados.</span>
   </div>
 </footer>

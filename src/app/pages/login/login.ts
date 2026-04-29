@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID, inject } from '@angular/core';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { GamesService } from '../../services/games.service';
+import { CanvasService } from '../../services/canvas.service';
 
 @Component({
   selector: 'app-login',
@@ -12,22 +13,33 @@ import { GamesService } from '../../services/games.service';
   templateUrl: './login.html',
   styleUrls: ['./login.css'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   private auth = inject(AuthService);
   private games = inject(GamesService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private canvasSvc = inject(CanvasService);
+
+  constructor(@Inject(PLATFORM_ID) private platformId: object) {}
+
+  ngOnInit() {
+    if (!isPlatformBrowser(this.platformId)) return;
+    this.canvasSvc.setPage(true, '.card, .btn-gradiente, .btn-google, input, label, h1');
+  }
+
+  ngOnDestroy() {
+    this.canvasSvc.clearPage();
+  }
 
   form = this.fb.group({
-    name: [''],
+    name: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(3)]],
   });
 
   submitting = false;
   error?: string;
-
 
   async submit() {
     this.error = undefined;

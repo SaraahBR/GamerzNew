@@ -1,55 +1,47 @@
+<!-- ═══ HERO COM BORDA NEON ═══ -->
 <div class="neon-frame hero-frame">
   <svg class="nb" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
     <defs>
       <linearGradient id="nb-grad-hero" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" stop-color="#ff77c8" />
-        <stop offset="25%" stop-color="#ff2d95" />
-        <stop offset="50%" stop-color="#ff8ab3" />
-        <stop offset="75%" stop-color="#d946ef" />
+        <stop offset="0%"   stop-color="#ff77c8" />
+        <stop offset="25%"  stop-color="#ff2d95" />
+        <stop offset="50%"  stop-color="#ff8ab3" />
+        <stop offset="75%"  stop-color="#d946ef" />
         <stop offset="100%" stop-color="#ff77c8" />
       </linearGradient>
-      <filter id="nb-glow-hero" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="2.2" result="b" />
+
+      <!-- Glow suave (contorno base) -->
+      <filter id="nb-glow-soft" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="1.5" result="b" />
         <feMerge>
           <feMergeNode in="b" />
           <feMergeNode in="SourceGraphic" />
         </feMerge>
       </filter>
+
+      <!-- Glow intenso (pingo correndo) -->
+      <filter id="nb-glow-dot" x="-80%" y="-80%" width="260%" height="260%">
+        <feGaussianBlur stdDeviation="3.5" result="b1" />
+        <feGaussianBlur stdDeviation="1"   result="b2" in="SourceGraphic" />
+        <feMerge>
+          <feMergeNode in="b1" />
+          <feMergeNode in="b2" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
     </defs>
 
-    <!-- Contorno fixo -->
+    <!-- Contorno base estático — o shimmer vem do CSS -->
     <rect
-      x="1"
-      y="1"
-      width="98"
-      height="98"
-      rx="12"
-      ry="12"
+      x="0" y="0" width="100" height="100"
+      rx="0" ry="0"
       fill="none"
       stroke="url(#nb-grad-hero)"
-      stroke-width="2"
+      stroke-width="1.2"
       vector-effect="non-scaling-stroke"
-      filter="url(#nb-glow-hero)"
+      filter="url(#nb-glow-soft)"
+      opacity="0.55"
     />
-
-    <!-- Pingo correndo -->
-    <rect
-      x="1"
-      y="1"
-      width="98"
-      height="98"
-      rx="12"
-      ry="12"
-      fill="none"
-      stroke="url(#nb-grad-hero)"
-      stroke-width="2"
-      stroke-linecap="round"
-      vector-effect="non-scaling-stroke"
-      pathLength="1"
-      stroke-dasharray="0.03 0.97"
-    >
-      <animate attributeName="stroke-dashoffset" values="1;0" dur="3.6s" repeatCount="indefinite" />
-    </rect>
   </svg>
 
   <section class="hero reveal">
@@ -61,21 +53,16 @@
     </p>
 
     <ul class="hero-pills" aria-label="Principais benefícios">
-      <li>
-        <span class="pill"><strong>Favoritos salvos por conta</strong></span>
-      </li>
-      <li>
-        <span class="pill"><strong>Melhor preço do momento</strong></span>
-      </li>
-      <li>
-        <span class="pill"><strong>Backlog simples e rápido</strong></span>
-      </li>
+      <li><span class="pill"><strong>Favoritos salvos por conta</strong></span></li>
+      <li><span class="pill"><strong>Melhor preço do momento</strong></span></li>
+      <li><span class="pill"><strong>Backlog simples e rápido</strong></span></li>
     </ul>
 
     <a routerLink="/jogos" class="btn">Ver todos os jogos</a>
   </section>
 </div>
 
+<!-- ═══ DESTAQUES ═══ -->
 <section class="previews">
   <header class="previews-head">
     <h2>Destaques</h2>
@@ -85,9 +72,10 @@
   <div class="grid">
     <article class="card">
       <img
-        src="https://cdn-flowgames.s3.us-east-2.amazonaws.com/wp-content/uploads/2025/03/26145946/inzoi-pc-jogo-steam-cover-1.jpg"
+        src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2456740/169fdacc61e59aa8d0272b3a4f1e93c8dfe8d18a/capsule_616x353.jpg?t=1761814842"
         alt="inZOI"
         loading="lazy"
+        style="object-fit: cover; object-position: center 20%;"
       />
       <div class="content">
         <h3>inZOI</h3>

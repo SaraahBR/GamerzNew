@@ -52,11 +52,12 @@ export class JogosFavoritosComponent implements OnInit, OnDestroy {
         this.svc.loadedOnce;
 
       if (hasCache) {
-        // sem overlay; atualiza em background
-        this.loading = false;
-        this.progress = 100;
+        // Agora sempre exibe o carregamento para evitar o "falso 100%"
+        this.startLoading();
         await Promise.allSettled([this.svc.refresh(), this.auth.me()]);
         this.logged = !!this.auth.snapshot;
+        await this.completeLoading();
+        this.loading = false;
       } else {
         // primeira vez: com overlay animado
         this.startLoading();

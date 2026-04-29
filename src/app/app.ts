@@ -5,6 +5,7 @@ import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ToastContainerComponent } from './shared/ui/toast-container.component';
+import { GalaxyCanvasComponent } from './components/galaxy-canvas/galaxy-canvas.component';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,8 @@ import { ToastContainerComponent } from './shared/ui/toast-container.component';
     RouterOutlet,
     HeaderComponent,
     FooterComponent,
-    ToastContainerComponent, 
+    ToastContainerComponent,
+    GalaxyCanvasComponent,
   ],
   templateUrl: './app.html',
   styleUrls: ['./app.css'],

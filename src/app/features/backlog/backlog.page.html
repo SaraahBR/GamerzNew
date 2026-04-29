@@ -7,60 +7,61 @@
   </header>
 
   <!-- Formulário de novo item -->
-  <form [formGroup]="form" (ngSubmit)="submit()" class="grid new-item">
-    <label class="field">
-      <span class="label">Título</span>
-      <input placeholder="Título" formControlName="title" />
-    </label>
+  <form [formGroup]="form" (ngSubmit)="submit()" class="backlog-form">
+    <div class="form-grid">
+      <label class="field">
+        <span class="label">Título *</span>
+        <input placeholder="Nome do jogo" formControlName="title" />
+      </label>
 
-    <label class="field">
-      <span class="label">Plataforma</span>
-      <input placeholder="Plataforma" formControlName="platform" />
-    </label>
+      <label class="field">
+        <span class="label">Plataforma</span>
+        <input placeholder="PC, PS5, Xbox…" formControlName="platform" />
+      </label>
 
-    <label class="field">
-      <span class="label">Imagem (URL)</span>
-      <input placeholder="https://..." formControlName="img" />
-    </label>
+      <label class="field">
+        <span class="label">Imagem (URL)</span>
+        <input placeholder="https://…" formControlName="img" />
+      </label>
 
-    <label class="field">
-      <span class="label">Prioridade</span>
-      <select formControlName="priority">
-        <option value="alta">Prioridade: Alta</option>
-        <option value="media">Prioridade: Média</option>
-        <option value="baixa">Prioridade: Baixa</option>
-      </select>
-    </label>
+      <label class="field">
+        <span class="label">Prioridade</span>
+        <select formControlName="priority">
+          <option value="alta">🔴 Alta</option>
+          <option value="media">🟡 Média</option>
+          <option value="baixa">🟢 Baixa</option>
+        </select>
+      </label>
 
-    <label class="field">
-      <span class="label">Status</span>
-      <select formControlName="status">
-        <option value="pendente">Pendente</option>
-        <option value="jogando">Jogando</option>
-        <option value="zerado">Zerado</option>
-        <option value="dropado">Dropado</option>
-      </select>
-    </label>
+      <label class="field">
+        <span class="label">Status</span>
+        <select formControlName="status">
+          <option value="pendente">Pendente</option>
+          <option value="jogando">Jogando</option>
+          <option value="zerado">Zerado</option>
+          <option value="dropado">Dropado</option>
+        </select>
+      </label>
 
-    <label class="field full">
-      <span class="label">Notas</span>
-      <textarea rows="2" placeholder="Notas" formControlName="notes"></textarea>
-    </label>
+      <label class="field full">
+        <span class="label">Notas</span>
+        <textarea rows="2" placeholder="Observações sobre o jogo…" formControlName="notes"></textarea>
+      </label>
+    </div>
 
-    <button type="submit" class="btn">Adicionar</button>
+    <button type="submit" class="btn-add" [disabled]="form.invalid">Adicionar ao Backlog</button>
   </form>
 
   <!-- Lista de itens -->
-  <ul class="list">
-    <li class="item" *ngFor="let it of items()">
+  <ul class="list" *ngIf="items().length > 0; else emptyBlock">
+    <li class="item-card" *ngFor="let it of items()">
       <!-- thumb -->
       <img *ngIf="it.img" [src]="it.img" [alt]="it.title" class="thumb" />
 
       <div class="info">
         <div class="row">
           <strong class="title">{{ it.title }}</strong>
-          <span
-            class="badge"
+          <span class="badge"
             [class.pendente]="it.status === 'pendente'"
             [class.jogando]="it.status === 'jogando'"
             [class.zerado]="it.status === 'zerado'"
@@ -70,9 +71,9 @@
         </div>
 
         <div class="meta">
-          <span class="tag hollow" *ngIf="it.platform">{{ it.platform }}</span>
-          <span class="tag hollow" *ngIf="it.priority">Prioridade: {{ it.priority }}</span>
-          <span class="muted">Adicionado {{ it.createdAt | date:'dd/MM/yyyy, HH:mm' }}</span>
+          <span class="tag" *ngIf="it.platform">{{ it.platform }}</span>
+          <span class="tag" *ngIf="it.priority">Prioridade: {{ it.priority }}</span>
+          <span class="muted">{{ it.createdAt | date:'dd/MM/yyyy, HH:mm' }}</span>
         </div>
 
         <p class="notes" *ngIf="it.notes">{{ it.notes }}</p>
@@ -88,7 +89,11 @@
     </li>
   </ul>
 
-  <footer class="footer">
+  <ng-template #emptyBlock>
+    <div class="empty">Nenhum item no backlog ainda. Adicione acima! 🎮</div>
+  </ng-template>
+
+  <footer class="footer" *ngIf="items().length > 0">
     <button class="ghost" type="button" (click)="clear()">Limpar tudo</button>
   </footer>
 </section>

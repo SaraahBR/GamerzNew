@@ -1,149 +1,580 @@
+/* ═══════════════════════════════════════════════
+   SOBRE — dark gaming + Sistema Solar completo (8 planetas)
+   ═══════════════════════════════════════════════ */
+
+:host {
+  display: block;
+  overflow-x: hidden; /* impede scroll horizontal por órbitas externas */
+}
+
 .sobre {
-  max-width: 1100px;
+  max-width: 1060px;
   margin: 0 auto;
-  padding: 20px 16px 28px;
+  padding: 36px 16px 60px;
+  overflow-x: hidden;
 }
 
 .sobre h1 {
-  margin-bottom: 14px;
-  color: var(--rosa-escuro);
+  margin: 0 0 32px;
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+  font-weight: 900;
+  background: linear-gradient(90deg, #ff77c8, #e91e63, #d946ef);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
+/* ─── LAYOUT ──────────────────────────────────── */
 .grid {
   display: grid;
-  gap: 20px;
-  grid-template-columns: 1.4fr 0.8fr;
-  align-items: start;
+  gap: 32px;
+  grid-template-columns: 1.1fr 1fr;
+  align-items: center;
 }
+@media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
 
-@media (max-width: 880px) {
-  .grid { grid-template-columns: 1fr; }
+/* ─── BLOCO DE TEXTO ──────────────────────────── */
+.texto {
+  background: rgba(255,255,255,.032);
+  border: 1px solid rgba(233,30,99,.14);
+  border-radius: 18px;
+  padding: 30px 28px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
-
 .texto p {
-  margin: 0 0 12px;
-  color: #374151;
-  line-height: 1.6;
-  font-size: 1rem;
+  margin: 0 0 16px;
+  color: rgba(195,215,255,.90);
+  line-height: 1.75;
+  font-size: .97rem;
+}
+.texto p:last-of-type { margin-bottom: 0; }
+.texto strong { color: #ff9dd4; font-weight: 700; }
+.texto em     { color: #c4aaff; font-style: italic; }
+.texto code {
+  background: rgba(233,30,99,.12);
+  border: 1px solid rgba(233,30,99,.22);
+  color: #ff9dd4; font-size:.85em; padding:1px 7px; border-radius:5px;
+}
+.lista { margin:16px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:9px; }
+.lista li { color:rgba(195,215,255,.82); font-size:.92rem; padding-left:22px; position:relative; }
+.lista li::before { content:'✦'; position:absolute; left:0; color:#e91e63; font-size:.65rem; top:4px; }
+
+/* ════════════════════════════════════════════════
+   PERFIL + SISTEMA SOLAR
+   ════════════════════════════════════════════════ */
+.perfil-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  animation: floatIn .55s cubic-bezier(.22,.68,0,1.2) both;
+}
+@keyframes floatIn {
+  from { opacity:0; transform:translateY(14px); }
+  to   { opacity:1; transform:translateY(0); }
 }
 
-.texto h3{
-  margin: 14px 0 8px;
-  color: var(--rosa-escuro);
+/* Wrapper que ocupa exatamente o espaço do sistema solar */
+.solar-system-wrap {
+  position: relative;
+  width: 420px;
+  height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.lista {
-  margin: 8px 0 12px;
-  padding-left: 18px;
+/* ─── SISTEMA SOLAR (some inteiro com no-anim) ─── */
+.solar-system {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.nota{
-  margin-top: 10px;
-  background: #fff;
-  border: 1px solid var(--rosa-escuro);
-  border-radius: 10px;
-  padding: 10px 12px;
-  font-weight: 600;
-  color: #1f2937;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
-}
-
-/* Perfil */
-.perfil {
-  align-self: start;
-  background: #fff;
-  border: 1px solid var(--rosa-escuro);
-  border-radius: 12px;
-  padding: 16px;
-  text-align: center;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
-  animation: floatIn .45s ease both;
-}
-@keyframes floatIn{
-  from{ opacity: 0; transform: translateY(8px); }
-  to  { opacity: 1; transform: translateY(0); }
-}
-
-.foto {
-  width: 160px;
-  height: 160px;
-  object-fit: cover;
+/* Brilho suave no centro — cor galáctica, não-solar */
+.core-glow {
+  position: absolute;
+  width: 155px; height: 155px;
   border-radius: 50%;
-  border: 3px solid var(--rosa-escuro);
-  margin: 0 auto 10px;
-  display: block;
+  background: radial-gradient(circle,
+    rgba(180,60,220,.18) 0%,
+    rgba(120,30,200,.10) 40%,
+    transparent 70%);
+  animation: core-pulse 5s ease-in-out infinite alternate;
+  z-index: 1;
+  pointer-events: none;
+}
+@keyframes core-pulse {
+  from { transform: scale(.90); opacity:.55; }
+  to   { transform: scale(1.12); opacity:.95; }
 }
 
+/* ─── ÓRBITAS ─────────────────────────────────── */
+.orbit {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.20);
+  top: 50%; left: 50%;
+  animation: orbit-spin linear infinite;
+}
+
+/* Cada órbita centralizada via margem negativa = -raio */
+/* Velocidades baseadas na astronomia real (Proporcional: Terra = 8s) */
+.o1 { width:164px; height:164px; margin:-82px  0 0 -82px;  animation-duration: 1.9s; }  /* Mercúrio: ~0.24 anos terrestres */
+.o2 { width:196px; height:196px; margin:-98px  0 0 -98px;  animation-duration: 4.9s; animation-direction:reverse; } /* Vênus: ~0.61 anos */
+.o3 { width:228px; height:228px; margin:-114px 0 0 -114px; animation-duration: 8s; }    /* Terra: 1 ano */
+.o4 { width:260px; height:260px; margin:-130px 0 0 -130px; animation-duration: 15s; animation-direction:reverse; } /* Marte: ~1.88 anos */
+.o5 { width:300px; height:300px; margin:-150px 0 0 -150px; animation-duration: 95s; }   /* Júpiter: ~11.86 anos */
+.o6 { width:340px; height:340px; margin:-170px 0 0 -170px; animation-duration: 235s; animation-direction:reverse; } /* Saturno: ~29.46 anos */
+.o7 { width:376px; height:376px; margin:-188px 0 0 -188px; animation-duration: 672s; }  /* Urano: ~84 anos */
+.o8 { width:412px; height:412px; margin:-206px 0 0 -206px; animation-duration: 1318s; animation-direction:reverse; } /* Netuno: ~164.8 anos */
+
+@keyframes orbit-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Pausar animações quando o modal informativo está aberto */
+.solar-system.paused .orbit {
+  animation-play-state: paused !important;
+}
+.solar-system.paused .bg-star {
+  animation-play-state: paused !important;
+}
+
+/* ─── PLANETAS ────────────────────────────────── */
+/* Posicionados no topo da órbita: margin-top = -(raio da órbita) */
+.planet {
+  position: absolute;
+  border-radius: 50%;
+  top: 50%; left: 50%;
+}
+
+/* ☿ MERCÚRIO — 6px, cinza-amarronzado, craterizado */
+.mercury {
+  width:6px; height:6px;
+  margin:-82px 0 0 -3px;
+  background: radial-gradient(circle at 35% 30%, #c0bdb5, #7a7570, #3c3835);
+  box-shadow: 0 0 3px rgba(150,140,130,.45);
+}
+
+/* ♀ VÊNUS — 10px, amarelo-pálido, atmosfera densa */
+.venus {
+  width:10px; height:10px;
+  margin:-98px 0 0 -5px;
+  background: radial-gradient(circle at 38% 30%, #f8ecc0, #d4b86a, #a88830);
+  box-shadow: 0 0 7px rgba(220,185,90,.55), 0 0 14px rgba(220,185,90,.20);
+}
+
+/* ♁ TERRA — 11px, azul oceano + manchas verdes + névoa branca */
+.earth {
+  width:11px; height:11px;
+  margin:-114px 0 0 -5.5px;
+  background:
+    radial-gradient(circle at 28% 22%, rgba(80,210,110,.70) 0%, transparent 35%),
+    radial-gradient(circle at 68% 65%, rgba(50,180,70,.55) 0%, transparent 28%),
+    radial-gradient(circle at 50% 18%, rgba(255,255,255,.40) 0%, transparent 22%),
+    radial-gradient(circle at 50% 50%, #2878d0 0%, #184f90 65%, #0a2848 100%);
+  box-shadow: 0 0 8px rgba(40,120,208,.65), 0 0 18px rgba(40,120,208,.22);
+}
+
+/* ♂ MARTE — 8px, ferrugem avermelhada */
+.mars {
+  width:8px; height:8px;
+  margin:-130px 0 0 -4px;
+  background:
+    radial-gradient(circle at 30% 18%, rgba(255,220,200,.50) 0%, transparent 20%),
+    radial-gradient(circle at 50% 50%, #c84520 0%, #902e10 65%, #5a1008 100%);
+  box-shadow: 0 0 5px rgba(200,70,30,.55);
+}
+
+/* ♃ JÚPITER — 22px, listras laranja/creme/marrom + Grande Mancha Vermelha */
+.jupiter {
+  width:22px; height:22px;
+  margin:-150px 0 0 -11px;
+  background:
+    radial-gradient(circle at 72% 58%, rgba(180,60,40,.85) 0%, rgba(180,60,40,.0) 18%),
+    repeating-linear-gradient(
+      180deg,
+      #b86828 0px,  #b86828 3px,
+      #e8c080 3px,  #e8c080 5px,
+      #c07838 5px,  #c07838 8px,
+      #f0d090 8px,  #f0d090 10px,
+      #c88048 10px, #c88048 13px,
+      #e0b870 13px, #e0b870 16px,
+      #b86030 16px, #b86030 19px,
+      #d8a860 19px, #d8a860 22px
+    );
+  box-shadow: 0 0 10px rgba(210,145,60,.60), 0 0 22px rgba(210,145,60,.22);
+}
+
+/* ♄ SATURNO — 19px, dourado, com anel inclinado icônico */
+.saturn {
+  width:19px; height:19px;
+  margin:-170px 0 0 -9.5px;
+  background: radial-gradient(circle at 38% 32%, #f5e090, #c8a030, #907010);
+  box-shadow: 0 0 8px rgba(220,175,50,.55), 0 0 18px rgba(220,175,50,.20);
+  position: absolute;
+  overflow: visible;
+}
+/* Anel de Saturno via pseudo-elemento */
+.saturn::before {
+  content: '';
+  position: absolute;
+  width: 190%;
+  height: 75%;
+  border: 2.5px solid rgba(215,180,80,.65);
+  border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) rotateX(70deg);
+  pointer-events: none;
+  box-shadow: 0 0 6px rgba(215,180,80,.30);
+}
+
+/* ⛢ URANO — 14px, azul-esverdeado pálido */
+.uranus {
+  width:14px; height:14px;
+  margin:-188px 0 0 -7px;
+  background: radial-gradient(circle at 40% 32%, #c0f0f0, #70d0d8, #308898);
+  box-shadow: 0 0 8px rgba(100,208,215,.50), 0 0 16px rgba(100,208,215,.18);
+}
+
+/* ♆ NETUNO — 13px, azul cobalto profundo */
+.neptune {
+  width:13px; height:13px;
+  margin:-206px 0 0 -6.5px;
+  background: radial-gradient(circle at 38% 30%, rgba(120,160,255,.60) 0%, transparent 30%),
+              radial-gradient(circle at 50% 50%, #3060e0 0%, #1838a8 60%, #081850 100%);
+  box-shadow: 0 0 8px rgba(48,96,224,.60), 0 0 18px rgba(48,96,224,.22);
+}
+
+/* ─── AJUSTES ESPECÍFICOS PARA DESKTOP (Órbitas sutis e mais juntas) ─── */
+@media (min-width: 901px) {
+  .orbit {
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+  
+  .o1 { width:150px; height:150px; margin:-75px 0 0 -75px; }
+  .mercury { margin:-75px 0 0 -3px; }
+  
+  .o2 { width:174px; height:174px; margin:-87px 0 0 -87px; }
+  .venus { margin:-87px 0 0 -5px; }
+  
+  .o3 { width:200px; height:200px; margin:-100px 0 0 -100px; }
+  .earth { margin:-100px 0 0 -5.5px; }
+  
+  .o4 { width:226px; height:226px; margin:-113px 0 0 -113px; }
+  .mars { margin:-113px 0 0 -4px; }
+  
+  .o5 { width:256px; height:256px; margin:-128px 0 0 -128px; }
+  .jupiter { margin:-128px 0 0 -11px; }
+  
+  .o6 { width:286px; height:286px; margin:-143px 0 0 -143px; }
+  .saturn { margin:-143px 0 0 -9.5px; }
+  
+  .o7 { width:312px; height:312px; margin:-156px 0 0 -156px; }
+  .uranus { margin:-156px 0 0 -7px; }
+  
+  .o8 { width:338px; height:338px; margin:-169px 0 0 -169px; }
+  .neptune { margin:-169px 0 0 -6.5px; }
+}
+
+/* ─── ESTRELAS DE FUNDO ────────────────────────── */
+.bg-star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  animation: star-twinkle ease-in-out infinite alternate;
+}
+.bs1  { width:3px;height:3px; top:5%;  left:8%;  animation-duration:2.1s; box-shadow:0 0 4px #ff77c8; }
+.bs2  { width:2px;height:2px; top:80%; left:6%;  animation-duration:3.0s; }
+.bs3  { width:3px;height:3px; top:4%;  left:80%; animation-duration:2.5s; box-shadow:0 0 4px #d946ef; }
+.bs4  { width:2px;height:2px; top:88%; left:87%; animation-duration:1.8s; }
+.bs5  { width:4px;height:4px; top:50%; left:1%;  animation-duration:3.4s; box-shadow:0 0 5px #a78bfa; }
+.bs6  { width:2px;height:2px; top:20%; left:95%; animation-duration:2.8s; }
+.bs7  { width:3px;height:3px; top:93%; left:42%; animation-duration:2.2s; box-shadow:0 0 4px #ff77c8; }
+.bs8  { width:2px;height:2px; top:12%; left:52%; animation-duration:3.6s; }
+.bs9  { width:2px;height:2px; top:68%; left:96%; animation-duration:2.4s; box-shadow:0 0 3px #7dd3fc; }
+.bs10 { width:3px;height:3px; top:35%; left:3%;  animation-duration:3.1s; }
+
+@keyframes star-twinkle {
+  from { opacity:.10; transform:scale(.7); }
+  to   { opacity:.88; transform:scale(1.25); }
+}
+
+/* ─── FOTO (sempre visível, z-index alto) ─────── */
+.foto-centro {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  position: relative;
+  z-index: 10;
+  border: 3px solid transparent;
+  background-image:
+    linear-gradient(#0d0120, #0d0120),
+    linear-gradient(135deg, #d946ef, #8b5cf6, #6030c0);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow:
+    0 0 20px rgba(130,40,200,.32),
+    0 0 48px rgba(100,20,180,.14);
+}
+
+/* ─── NOME & CARGO ────────────────────────────── */
 .nome {
-  margin: 6px 0 2px;
-  font-size: 1.15rem;
-  color: #111827;
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #ff77c8, #d946ef);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-
 .titulo {
   margin: 0;
-  color: var(--rosa-escuro);
+  color: rgba(195,215,255,.55);
   font-weight: 600;
+  font-size: .88rem;
+  letter-spacing: .3px;
 }
 
-/* ======== NEON WRAPPER ======== */
-:root { --hero-radius: 12px; --hero-max: 950px; }
+/* ─── ASTRO INFO BOTÃO E POST-IT ───────────────── */
+.astro-info-btn {
+  margin-top: -6px;
+  background: rgba(233,30,99,.12);
+  border: 1px solid rgba(233,30,99,.3);
+  color: #ff9dd4;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+.astro-info-btn:hover {
+  background: rgba(233,30,99,.25);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(233,30,99,.2);
+}
 
-/* Wrapper da moldura do HERO */
-.neon-frame.hero-frame{
-  position: relative;
-  max-width: var(--hero-max);
-  margin: 0 auto 22px;          
-  border-radius: var(--hero-radius);
-  overflow: hidden;
-}
-.neon-frame.hero-frame > .nb{
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  pointer-events: none;
-}
-/* Faz o HERO ocupar exatamente o wrapper */
-.neon-frame.hero-frame > .hero{
-  margin: 0;                   
-  max-width: none;             
-  width: 100%;
-  border-radius: inherit;        
+.astro-post-it {
+  position: absolute;
+  top: 210px; /* Centro exato do solar-system-wrap (420px / 2) */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  background: rgba(13,13,20,.95);
+  border: 1px solid rgba(167,139,250,.4);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,.9), 0 0 20px rgba(167,139,250,.25);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 50;
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+  text-align: left;
 }
 
-/* Wrapper da moldura do PERFIL */
-.neon-frame.profile-frame{
-  position: relative;
-  display: inline-block;         
-  border-radius: var(--hero-radius);
-  overflow: hidden;
+@keyframes popIn {
+  0% { opacity: 0; transform: translate(-50%, -40%) scale(0.9); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
-.neon-frame.profile-frame > .nb{
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  pointer-events: none;
+
+.astro-post-it .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: #a78bfa;
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
 }
-.neon-frame.profile-frame > .perfil{
-  border-radius: inherit;
+.astro-post-it .close-btn:hover { color: #fff; }
+.astro-post-it h3 { margin: 0 0 12px; font-size: 1.05rem; color: #d8b4fe; }
+
+/* Aviso de acessibilidade ativada */
+.anim-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: rgba(233,30,99,.15);
+  border: 1px solid rgba(233,30,99,.4);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  color: #ff9dd4;
+}
+.anim-warning svg { flex-shrink: 0; margin-top: 2px; }
+.anim-warning p { margin: 0; font-size: 0.8rem; line-height: 1.4; color: rgba(255,255,255,.8); }
+.anim-warning strong { color: #ff9dd4; }
+
+.astro-post-it p { font-size: 0.85rem; color: rgba(195,215,255,.85); margin: 0 0 10px; line-height: 1.5; }
+.astro-post-it .astro-list { margin: 0 0 12px; padding: 0; list-style: none; font-size: 0.82rem; }
+.astro-post-it .astro-list li { margin-bottom: 6px; display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,.75); }
+.astro-post-it .astro-list li strong { color: #e2e8f0; }
+.astro-post-it .astro-list li em { color: #94a3b8; font-style: normal; font-size: 0.75rem; }
+
+/* Planetas idênticos dentro da lista do modal */
+.planet-wrap {
+  width: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.post-it-planet {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  margin: 0 !important;
+  animation: none !important;
+}
+
+/* ════════════════════════════════════════════════
+   ACESSIBILIDADE — body.no-anim:
+   SOME TODO o sistema solar (órbitas + planetas + estrelas + glow)
+   Foto permanece visível com borda neon simples
+   ════════════════════════════════════════════════ */
+:host-context(body.no-anim) .solar-system { display: none !important; }
+
+/* Wrapper encolhe para o tamanho da foto ampliada */
+:host-context(body.no-anim) .solar-system-wrap {
+  width: 190px;
+  height: 190px;
+}
+
+/* Modal flutua mais para cima no PC para não estourar a tela e evitar scroll */
+:host-context(body.no-anim) .astro-post-it {
+  top: 95px; /* Centro da nova wrapper menor */
+}
+
+/* Foto cresce no PC */
+:host-context(body.no-anim) .foto-centro {
+  width: 180px;
+  height: 180px;
+  box-shadow: 0 0 0 3px rgba(233,30,99,.40);
+  background-image:
+    linear-gradient(#0d0120, #0d0120),
+    linear-gradient(135deg, #ff77c8, #e91e63, #d946ef);
+}
+
+/* Correções específicas para o Mobile quando Acessibilidade está ativa */
+@media (max-width: 900px) {
+  :host-context(body.no-anim) .solar-system-wrap {
+    width: auto;
+    height: auto;
+    transform: none !important;
+    margin: 0 !important;
+  }
+  :host-context(body.no-anim) .foto-centro { width: 130px; height: 130px; }
+}
+@media (max-width: 480px) {
+  :host-context(body.no-anim) .foto-centro { width: 110px; height: 110px; }
+}
+@media (max-width: 360px) {
+  :host-context(body.no-anim) .foto-centro { width: 90px; height: 90px; }
+}
+
+:host-context(body.no-anim) .perfil-wrap {
+  animation: none !important;
+  gap: 14px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .neon-border .nb animate { display: none; }
+  .solar-system { display: none !important; }
+  .perfil-wrap  { animation: none !important; }
 }
 
-/* Acessibilidade */
-@media (prefers-reduced-motion: reduce){
-  .glow-fox::before,
-  .glow-fox::after{
-    animation: none !important;
+/* ─── MOBILE / TABLET ────────────────────────── */
+/*
+  Escalamos o WRAPPER completo — não o solar-system interno.
+  O overflow-x:hidden em html/body previne o scroll horizontal.
+  Margens negativas compensam o espaço de layout que o transform não reduz.
+*/
+
+/* Tablet (≤900px): 1 coluna */
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr; }
+  .foto-centro { width: 130px; height: 130px; }
+}
+
+/* Smartphone grande (≤760px) */
+@media (max-width: 760px) {
+  .solar-system-wrap {
+    transform: scale(.88);
+    margin: -26px;
   }
 }
 
-/* Mobile refinements */
-@media (max-width: 560px) {
-  .sobre { padding: 16px 12px 24px; }
-  .texto p { font-size: .98rem; }
-  .foto { width: 130px; height: 130px; }
+/* Smartphone médio (≤480px) */
+@media (max-width: 480px) {
+  .sobre { padding: 24px 12px 44px; }
+  .texto { padding: 20px 14px; }
+  .solar-system-wrap {
+    transform: scale(.72);
+    margin: -59px;
+  }
+  .foto-centro { width: 110px; height: 110px; }
 }
 
-/* Respeita prefers-reduced-motion */
-@media (prefers-reduced-motion: reduce){
-  .perfil { animation: none !important; }
+/* Smartphone pequeno (≤360px) */
+@media (max-width: 360px) {
+  .solar-system-wrap {
+    transform: scale(.58);
+    margin: -88px;
+  }
+  .foto-centro { width: 90px; height: 90px; }
+}
+
+/* Backdrop para mobile */
+.mobile-backdrop {
+  display: none;
+}
+
+/* Modal Responsivo (Mobile) */
+@media (max-width: 900px) {
+  .mobile-backdrop {
+    display: block;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(13, 1, 32, 0.4);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 40; /* Atrás do post-it (50), na frente do resto */
+    animation: fadeIn 0.3s ease-out both;
+  }
+
+  .astro-post-it,
+  :host-context(body.no-anim) .astro-post-it {
+    position: fixed;
+    top: 50% !important;
+    bottom: auto !important;
+    right: auto;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    width: calc(100% - 40px);
+    max-width: 400px;
+    animation: popInMobile 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+  }
+}
+@keyframes popInMobile {
+  0% { opacity: 0; transform: translate(-50%, -45%) scale(0.9); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
