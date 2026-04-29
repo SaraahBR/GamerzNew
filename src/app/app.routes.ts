@@ -1,13 +1,4 @@
 import { Routes } from '@angular/router';
-
-import { HomeComponent } from './pages/home/home';
-import { JogosComponent } from './pages/jogos/jogos';
-import { SobreComponent } from './pages/sobre/sobre';
-import { JogoDetalhesComponent } from './pages/jogos/jogo-detalhes';
-import { JogosNovoComponent } from './pages/jogos/jogos-novo';
-import { JogosFavoritosComponent } from './pages/jogos/jogos-favoritos';
-import { LoginComponent } from './pages/login/login';
-
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -17,15 +8,35 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/backlog/backlog.page').then(m => m.BacklogPage),
   },
-
-  { path: '', component: HomeComponent, pathMatch: 'full' },
-
-  { path: 'jogos', component: JogosComponent },
-  { path: 'jogos/novo', component: JogosNovoComponent, canActivate: [authGuard] },
-  { path: 'jogos/favoritos', component: JogosFavoritosComponent },
-  { path: 'jogos/:id', component: JogoDetalhesComponent },
-  { path: 'sobre', component: SobreComponent },
-  { path: 'login', component: LoginComponent },
-
+  { 
+    path: '', 
+    loadComponent: () => import('./pages/home/home').then(m => m.HomeComponent),
+    pathMatch: 'full' 
+  },
+  { 
+    path: 'jogos', 
+    loadComponent: () => import('./pages/jogos/jogos').then(m => m.JogosComponent) 
+  },
+  { 
+    path: 'jogos/novo', 
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/jogos/jogos-novo').then(m => m.JogosNovoComponent) 
+  },
+  { 
+    path: 'jogos/favoritos', 
+    loadComponent: () => import('./pages/jogos/jogos-favoritos').then(m => m.JogosFavoritosComponent) 
+  },
+  { 
+    path: 'jogos/:id', 
+    loadComponent: () => import('./pages/jogos/jogo-detalhes').then(m => m.JogoDetalhesComponent) 
+  },
+  { 
+    path: 'sobre', 
+    loadComponent: () => import('./pages/sobre/sobre').then(m => m.SobreComponent) 
+  },
+  { 
+    path: 'login', 
+    loadComponent: () => import('./pages/login/login').then(m => m.LoginComponent) 
+  },
   { path: '**', redirectTo: '' },
 ];

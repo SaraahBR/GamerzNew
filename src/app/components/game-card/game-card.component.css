@@ -18,6 +18,7 @@
     0 8px 32px rgba(0,0,0,.4),
     inset 0 1px 0 rgba(255,255,255,.05);
   transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+  will-change: transform, box-shadow, border-color;
 }
 
 .card:hover {
@@ -36,6 +37,7 @@
   object-fit: cover;
   display: block;
   transition: transform .35s ease;
+  will-change: transform;
 }
 
 .card:hover img { transform: scale(1.04); }

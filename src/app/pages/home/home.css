@@ -106,6 +106,7 @@
     radial-gradient(40% 35% at 85% 85%, rgba(217,70,239,.10), transparent 50%);
   animation: floatGlow 10s ease-in-out infinite alternate;
   pointer-events: none;
+  will-change: transform, opacity;
 }
 @keyframes floatGlow {
   from { transform: translateY(-8px) scale(1.02); opacity: .8; }

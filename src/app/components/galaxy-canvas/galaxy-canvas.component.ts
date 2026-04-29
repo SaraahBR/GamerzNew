@@ -1,6 +1,6 @@
 import {
   Component, AfterViewInit, OnDestroy,
-  HostListener, ViewChild, ElementRef, Inject, PLATFORM_ID
+  ViewChild, ElementRef, Inject, PLATFORM_ID, NgZone, ChangeDetectionStrategy
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { AnimationService } from '../../services/animation.service';
@@ -31,6 +31,7 @@ const GLOBAL_BLOCK = '.gn-header, .gn-footer, app-header, app-footer';
 @Component({
   selector: 'app-galaxy-canvas',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   // eslint-disable-next-line @angular-eslint/component-max-inline-declarations
   template:
     '<canvas #galaxyCanvas class="galaxy-canvas" aria-hidden="true"></canvas>' +
@@ -52,31 +53,43 @@ export class GalaxyCanvasComponent implements AfterViewInit, OnDestroy {
   private pmx = -999; private pmy = -999;
   private constellationTimer = 0;
 
+  // Handlers para limpar eventos dps
+  private onMouseBind = this.onMouse.bind(this);
+  private onResizeBind = this.onResize.bind(this);
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
     private animSvc: AnimationService,
-    private canvasSvc: CanvasService
+    private canvasSvc: CanvasService,
+    private ngZone: NgZone
   ) {}
 
   ngAfterViewInit() {
     if (!isPlatformBrowser(this.platformId)) return;
-    this.ctx  = this.bgRef.nativeElement.getContext('2d')!;
+    this.ctx  = this.bgRef.nativeElement.getContext('2d', { alpha: false })!;
     this.pCtx = this.pRef.nativeElement.getContext('2d')!;
     this.resize();
     this.genStars();
-    this.loop();
+
+    // Roda os listeners e o loop fora do Angular para não disparar Change Detection! (Gigante ganho de performance)
+    this.ngZone.runOutsideAngular(() => {
+      document.addEventListener('mousemove', this.onMouseBind, { passive: true });
+      window.addEventListener('resize', this.onResizeBind, { passive: true });
+      this.loop();
+    });
   }
 
   ngOnDestroy() {
-    if (isPlatformBrowser(this.platformId)) cancelAnimationFrame(this.raf);
+    if (isPlatformBrowser(this.platformId)) {
+      cancelAnimationFrame(this.raf);
+      document.removeEventListener('mousemove', this.onMouseBind);
+      window.removeEventListener('resize', this.onResizeBind);
+    }
   }
 
-  @HostListener('document:mousemove', ['$event'])
-  onMouse(e: MouseEvent) { this.mx = e.clientX; this.my = e.clientY; }
+  private onMouse(e: MouseEvent) { this.mx = e.clientX; this.my = e.clientY; }
 
-  @HostListener('window:resize')
-  onResize() {
-    if (!isPlatformBrowser(this.platformId)) return;
+  private onResize() {
     this.resize(); this.genStars();
   }
 

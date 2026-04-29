@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -7,6 +7,7 @@ import { ItadService, ItadOffer } from '../../services/itad.service';
 import { map, of, shareReplay } from 'rxjs';
 import { DealBadgeComponent } from '../../components/deal-badge/deal-badge.component';
 import { GamesService } from '../../services/games.service';
+import { CanvasService } from '../../services/canvas.service';
 
 type DealRow = {
   store: string;
@@ -17,14 +18,18 @@ type DealRow = {
   url: string;
 };
 
+// Seletores onde as partículas NÃO devem aparecer para não atrapalhar a leitura/clique
+const DETALHES_EXCLUSIONS = 'h1, .desc, .meta, .deals-acc, .btn-gradiente, .btn-sec, .banner, th, td, summary';
+
 @Component({
   selector: 'app-jogo-detalhes',
   standalone: true,
   imports: [CommonModule, RouterLink, DealBadgeComponent],
   templateUrl: './jogo-detalhes.html',
-  styleUrls: ['./jogo-detalhes.css']
+  styleUrls: ['./jogo-detalhes.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class JogoDetalhesComponent {
+export class JogoDetalhesComponent implements OnInit, OnDestroy {
   game?: Game;
   deals$ = of<DealRow[]>([]); 
 
@@ -32,10 +37,16 @@ export class JogoDetalhesComponent {
     private route: ActivatedRoute,
     private itad: ItadService,
     private gamesSvc: GamesService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    private canvasSvc: CanvasService,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private cdr: ChangeDetectorRef
   ) {}
 
   async ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.canvasSvc.setPage(true, DETALHES_EXCLUSIONS);
+    }
+
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
     // 1) tenta catálogo estático (prerender)
@@ -50,6 +61,7 @@ export class JogoDetalhesComponent {
     }
 
     this.game = found;
+    this.cdr.markForCheck(); // Notifica Angular para renderizar (necessário com OnPush)
     if (!this.game) return;
 
     // 3) carrega ofertas (preferência BR; fallback para US ocorre no /api/itad)
@@ -67,8 +79,13 @@ export class JogoDetalhesComponent {
         ),
         shareReplay({ bufferSize: 1, refCount: true })
       );
+      this.cdr.markForCheck(); // Atualiza a view quando o Observable é configurado
     } else {
       this.deals$ = of([]);
     }
+  }
+
+  ngOnDestroy() {
+    this.canvasSvc.clearPage();
   }
 }
