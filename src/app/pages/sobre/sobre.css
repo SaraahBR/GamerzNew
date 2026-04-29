@@ -511,13 +511,35 @@
 @media (max-width: 900px) {
   .grid { grid-template-columns: 1fr; }
   .foto-centro { width: 130px; height: 130px; }
+  
+  /* Órbitas menos espaçadas, menores e mais fracas/opacas no mobile */
+  .orbit { border-color: rgba(255, 255, 255, 0.12); }
+  
+  .o1 { width:140px; height:140px; margin:-70px 0 0 -70px; }
+  .o2 { width:162px; height:162px; margin:-81px 0 0 -81px; }
+  .o3 { width:184px; height:184px; margin:-92px 0 0 -92px; }
+  .o4 { width:206px; height:206px; margin:-103px 0 0 -103px; }
+  .o5 { width:232px; height:232px; margin:-116px 0 0 -116px; }
+  .o6 { width:258px; height:258px; margin:-129px 0 0 -129px; }
+  .o7 { width:282px; height:282px; margin:-141px 0 0 -141px; }
+  .o8 { width:306px; height:306px; margin:-153px 0 0 -153px; }
+
+  /* Ajusta o raio dos planetas para grudarem nas novas órbitas reduzidas */
+  .mercury { margin-top: -70px; }
+  .venus   { margin-top: -81px; }
+  .earth   { margin-top: -92px; }
+  .mars    { margin-top: -103px; }
+  .jupiter { margin-top: -116px; }
+  .saturn  { margin-top: -129px; }
+  .uranus  { margin-top: -141px; }
+  .neptune { margin-top: -153px; }
 }
 
 /* Smartphone grande (≤760px) */
 @media (max-width: 760px) {
   .solar-system-wrap {
-    transform: scale(.88);
-    margin: -26px;
+    transform: scale(.95); /* Aumentado levemente pois as órbitas já estão bem menores nativamente */
+    margin: -10px;
   }
 }
 
